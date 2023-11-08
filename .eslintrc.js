@@ -18,6 +18,7 @@ module.exports = {
   'no-empty':'warn',
   'no-empty-function':'warn',
   'no-multiple-empty-lines':'warn',
+  'no-unused-vars':'warn',
   //空格格式
   'no-extra-parens':'warn',
   'space-before-function-paren':'warn',
