@@ -1,34 +1,37 @@
 <template>
-<div>
-  <el-container>
-        <el-aside id="achievement-side">
-            <el-menu>
-                <el-menu-item index="1">成果录入申请</el-menu-item>
-                <el-menu-item index="2">成果填写</el-menu-item>
-                <el-menu-item index="3">全部成果</el-menu-item>
-            </el-menu>
-        </el-aside>
-        <el-main></el-main>
-    </el-container>
-</div>
+    <div>
+        <el-container>
+            <el-aside id="workload-side">
+                <el-menu :default-openeds="['2']">
+                    <el-menu-item index="1">理论课</el-menu-item>
+                    <el-submenu index="2">
+                        <template slot="title">实验课</template>
+                        <el-menu-item index="2-1">A类</el-menu-item>
+                        <el-menu-item index="2-2">B类</el-menu-item>
+                    </el-submenu>
+                    <el-menu-item index="3">指导课程设计集中性实习</el-menu-item>
+                    <el-menu-item index="4">指导社会调查</el-menu-item>
+                    <el-menu-item index="5">指导分散性实习工程设计训练</el-menu-item>
+                    <el-menu-item index="6">指导毕业设计</el-menu-item>
+                </el-menu>
+            </el-aside>
+            <el-main></el-main>
+        </el-container>
+    </div>
 </template>
-
+    
 <script>
-// import ParamSetting from '@/components/device_control_detail/ParamSetting.vue'
-// import SwitchSetting from '@/components/device_control_detail/SwitchSetting.vue'
-// import TimerSetting from '@/components/device_control_detail/TimerSetting.vue'
-// import ModeSetting from '@/components/device_control_detail/ModeSetting.vue'
-// import RebootSetting from '@/components/device_control_detail/RebootSetting.vue'
-// import CarSetting from '@/components/device_control_detail/CarSetting.vue'
-// import axios from 'axios'
-
 export default {
-  name: 'TeachingTask'
+  name: 'TeachingTask',
+  data(){
+    return {
+    }
+  }
 }
 </script>
-
+    
 <style scoped lang="less">
-#achievement-side{
+#workload-side{
     position: absolute;
     background-color: yellow!important;;
     width: 233px!important;
