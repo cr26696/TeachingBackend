@@ -53,6 +53,7 @@ export default {
     i{
       position: absolute;
       left: 40px;
+      top: 22px;
     }
     span{
       position: absolute;
@@ -60,6 +61,7 @@ export default {
       font-size: 14px;
       font-weight: 400;
       line-height: 20px;
+      top: 21px;
       color: rgba(255, 255, 255, 1);
     }
     //嵌套伪类选择器
