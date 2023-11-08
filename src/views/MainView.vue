@@ -1,8 +1,7 @@
 <template>
 
 <el-container id="container">
-  <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>
-  
+  <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>  
   <el-container>
     <el-header height="80px">
     <HeaderBar></HeaderBar>
@@ -18,7 +17,7 @@
 <script>
 // @ is an alias to /src
 import SideBar from '@/components/outerframe/SideBar.vue'
-import HeaderBar from '@/components/outerframe/HeaderBar.vue'
+import HeaderBar from '@/components/outerframe/Headerbar'
 
 export default {
   name: 'MainView',

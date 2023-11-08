@@ -20,14 +20,14 @@
       </router-link>
     </el-menu-item>
     <el-menu-item index="3">
-      <router-link to="/mainview/alarmInfo" style="text-decoration: none">
+      <router-link to="/mainview/deviceControl" style="text-decoration: none">
         <div>
         <i class="el-icon-date"></i>
         <span>奖项录入</span>
       </div>
       </router-link>
     </el-menu-item><el-menu-item index="4">
-      <router-link to="/mainview/alarmInfo" style="text-decoration: none">
+      <router-link to="/mainview/deviceList" style="text-decoration: none">
         <div>
         <i class="el-icon-message"></i>
         <span>结果查询</span>
