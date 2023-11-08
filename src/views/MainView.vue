@@ -1,7 +1,7 @@
 <template>
 
 <el-container id="container">
-  <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>
+  <el-aside width="240px"><SideBar></SideBar></el-aside>
   <el-container>
     <el-header height="80px">
     <HeaderBar></HeaderBar>
@@ -34,10 +34,7 @@ export default {
 </script>
 
 <style>
-.el-aside {
-  background: linear-gradient(180deg, rgba(31, 41, 53, 1) 0%, rgba(66, 83, 101, 1) 100%);
-  color: #333;
-}
+
 .el-header{
     position: relative;
     background-color: hsla(183, 13%, 67%, 0.85);
@@ -56,6 +53,10 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
+  > .el-aside {
+    background: linear-gradient(180deg, rgba(31, 41, 53, 1) 0%, rgba(66, 83, 101, 1) 100%);
+    color: #333;
+  }
 }
 
 </style>
