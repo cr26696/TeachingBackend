@@ -27,6 +27,7 @@ export default {
 
 <style scoped lang="less">
 .el-menu{
+  border: none;
   background-color: unset;
   #logo{
     position: absolute;
