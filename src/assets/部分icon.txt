@@ -1,0 +1,22 @@
+el-icon-d-arrow-left 返回上一级
+el-icon-search 搜索...
+el-icon-switch-button 重启设备
+el-icon-bell
+el-icon-caret-bottom 下拉菜单
+el-icon-document-copy 复制设备ID
+el-icon-setting 右上角齿轮设置按钮
+
+
+weather (if used)
+el-icon-light-rain
+el-icon-lightning
+el-icon-heavy-rain
+el-icon-sunrise
+el-icon-sunrise-1
+el-icon-sunset
+el-icon-sunny
+el-icon-cloudy
+el-icon-partly-cloudy
+el-icon-cloudy-and-sunny
+el-icon-moon
+el-icon-moon-night
