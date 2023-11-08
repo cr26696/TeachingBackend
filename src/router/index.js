@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MainView from '@/views/MainView.vue'
-import DeviceList from '@/components/DeviceList.vue'
 import DeviceControl from '@/components/DeviceControl.vue'
 import AlarmInfo from '@/components/AlarmInfo.vue'
 import FacultyInfo from '@/components/FacultyInfo'
@@ -21,18 +20,22 @@ const routes = [
     children: [
       {
         path: '/',
-        redirect: FacultyInfo
+        redirect: 'facultyInfo'
       },
       {
-        path: 'deviceList',
-        component: DeviceList
+        path: 'facultyInfo',
+        component: FacultyInfo
       },
       {
-        path: 'deviceControl',
+        path: 'deviceControl', // teachingTask
         component: DeviceControl
       },
       {
-        path: 'alarmInfo',
+        path: 'alarmInfo', // prizeRecord
+        component: AlarmInfo
+      },
+      {
+        path: 'alarmInfo', // query
         component: AlarmInfo
       }
     ]

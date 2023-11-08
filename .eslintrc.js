@@ -19,6 +19,8 @@ module.exports = {
     'no-extra-parens' : 'warn',
     'no-irregular-whitespace' : 'warn',
     'no-trailing-spaces':'warn',
-    'key-spacing':'warn'
+    'key-spacing':'warn',
+    'comma-spacing':'warn',
+    'spaced-comment':'warn'
   }
 }

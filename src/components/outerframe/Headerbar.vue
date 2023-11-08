@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'TopBar',
+  name: 'HeaderBar',
   data () {
     return {
     }
