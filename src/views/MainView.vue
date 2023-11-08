@@ -1,17 +1,15 @@
 <template>
 
 <el-container id="container">
-  <el-header height="9%">
-    <div>
-      <el-image :src="mscr">
-
-      </el-image>
-    </div>
-  </el-header>
+  <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>
+  
   <el-container>
-    <el-aside width="12%"><SideBar></SideBar></el-aside>
+    <el-header height="80px">
+    <HeaderBar></HeaderBar>
+   </el-header>
     <el-main>
-      <router-view/></el-main>
+      <router-view/>
+    </el-main>
   </el-container>
 </el-container>
 
@@ -20,9 +18,12 @@
 <script>
 // @ is an alias to /src
 import SideBar from '@/components/outerframe/SideBar.vue'
+import HeaderBar from '@/components/outerframe/HeaderBar.vue'
+
 export default {
   name: 'MainView',
   components: {
+    HeaderBar,
     SideBar
   },
   data () {
@@ -34,27 +35,28 @@ export default {
 </script>
 
 <style>
- .el-header{
+.el-aside {
+  background: linear-gradient(180deg, rgba(31, 41, 53, 1) 0%, rgba(66, 83, 101, 1) 100%);
+  color: #333;
+}
+.el-header{
+    position: relative;
     background-color: hsla(183, 13%, 67%, 0.85);
     color: #333;
-  }
+    padding: 0!important;
+}
 
-  .el-aside {
-    background-color: hsla(133, 30%, 58%, 0.85);
-    color: #333;
-  }
+.el-main {
+  background-color: hsla(140, 100%, 98%, 0.85);
+  color: #333;
+  position: relative;
+  padding: 0 !important;
+}
 
-  .el-main {
-    background-color: hsla(140, 100%, 98%, 0.85);
-    color: #333;
-    position: relative;
-    padding: 0 !important;
-  }
-
- #container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-  }
+#container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 
 </style>

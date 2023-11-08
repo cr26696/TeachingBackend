@@ -18,6 +18,7 @@ module.exports = {
     'no-empty-function': 'warn',
     'no-extra-parens' : 'warn',
     'no-irregular-whitespace' : 'warn',
-    'no-trailing-spaces':'warn'
+    'no-trailing-spaces':'warn',
+    'key-spacing':'warn'
   }
 }

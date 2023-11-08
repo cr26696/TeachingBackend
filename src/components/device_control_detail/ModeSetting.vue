@@ -70,8 +70,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   mounted () {
     console.log('mounted阶段currentMode：' + this.currentMode)
     this.currentMode = 0
