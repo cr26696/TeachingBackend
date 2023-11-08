@@ -2,7 +2,7 @@
 <div>
   <el-container>
         <el-aside id="achievement-side">
-            <el-menu>
+            <el-menu :default-openeds="['1']">
                 <el-submenu index="1">
                         <template slot="title">学评教排名</template>
                         <el-menu-item index="1-1">学校排名</el-menu-item>
