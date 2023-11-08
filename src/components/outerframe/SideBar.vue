@@ -74,6 +74,7 @@ export default {
     top: 34px
   }
   .el-menu-item{
+    height: 60px!important;
     padding: 0!important;
     i{
       position: absolute;

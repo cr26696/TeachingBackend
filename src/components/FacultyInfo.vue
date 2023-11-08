@@ -277,7 +277,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'DeviceList',
+  name: 'FacultyInfo',
   data: function () {
     return {
       list: [],
