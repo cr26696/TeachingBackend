@@ -1,14 +1,8 @@
 <template>
 
 <el-container id="container">
-<<<<<<< HEAD
   <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>  
   <el-container>
-=======
-  <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>
-  
-  <el-container style="min-width: 1280px;">
->>>>>>> 5d66ab0e23f3b6f39a4d7f6e2cbaeb7d0fb63f47
     <el-header height="80px">
     <HeaderBar></HeaderBar>
    </el-header>

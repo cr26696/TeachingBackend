@@ -5,6 +5,7 @@ import MainView from '@/views/MainView.vue'
 import DeviceList from '@/components/DeviceList.vue'
 import DeviceControl from '@/components/DeviceControl.vue'
 import AlarmInfo from '@/components/AlarmInfo.vue'
+import FacultyInfo from '@/components/FacultyInfo'
 
 Vue.use(VueRouter)
 
@@ -20,7 +21,7 @@ const routes = [
     children: [
       {
         path: '/',
-        redirect: 'deviceList'
+        redirect: FacultyInfo
       },
       {
         path: 'deviceList',
