@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-
+    <span>欢迎登陆教学评估小助手后台应用系统</span>
+    <span><input type="text" name="" id=""></span>
+    <button>mails</button>
+    <button>notices</button>
+    <button>avatar</button>
   </div>
 </template>
 
