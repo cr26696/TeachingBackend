@@ -3,7 +3,7 @@
 <el-container id="container">
   <el-aside width="240px"  style=""><SideBar></SideBar></el-aside>
   
-  <el-container>
+  <el-container style="min-width: 1280px;">
     <el-header height="80px">
     <HeaderBar></HeaderBar>
    </el-header>
