@@ -23,7 +23,7 @@
 // import axios from 'axios'
 
 export default {
-  name: 'DeviceControl'
+  name: 'TeachingTask'
 }
 </script>
 

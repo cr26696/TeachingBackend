@@ -2,9 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MainView from '@/views/MainView.vue'
-import DeviceControl from '@/components/DeviceControl.vue'
-import AlarmInfo from '@/components/AlarmInfo.vue'
-import FacultyInfo from '@/components/FacultyInfo'
+import TeachingTask from '@/components/TeachingTask.vue'
+import PrizeRecord from '@/components/PrizeRecord.vue'
+import FacultyInfo from '@/components/FacultyInfo.vue'
+import QueryRank from '@/components/QueryRank.vue'
+
+// 下面4行代码用于修复重复跳转同一个路由地址报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(VueRouter)
 
@@ -15,7 +22,6 @@ const routes = [
   },
   {
     path: '/mainview',
-    name: 'MainView',
     component: MainView,
     children: [
       {
@@ -27,16 +33,16 @@ const routes = [
         component: FacultyInfo
       },
       {
-        path: 'deviceControl', // teachingTask
-        component: DeviceControl
+        path: 'teachingTask',
+        component: TeachingTask
       },
       {
-        path: 'alarmInfo', // prizeRecord
-        component: AlarmInfo
+        path: 'prizeRecord',
+        component: PrizeRecord
       },
       {
-        path: 'alarmInfo', // query
-        component: AlarmInfo
+        path: 'queryRank',
+        component: QueryRank
       }
     ]
   }

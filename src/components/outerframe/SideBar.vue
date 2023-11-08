@@ -1,42 +1,12 @@
-<template>
-  <el-menu>
+<template><el-menu>
     <div style="height: 80px;display: flex;align-items: center;">
       <img id="logo" :src=logo><span id="logo_text">评估助手</span><img id="logo_three_line" :src=logo_three_line>
     </div>
-    <el-menu-item index="1">
-      <router-link to="/mainview/deviceList" style="text-decoration: none">
-        <div>
-          <i class="el-icon-menu"></i>
-          <span>教职工信息</span>
-        </div>
-      </router-link>
-    </el-menu-item>
-    <el-menu-item index="2">
-      <router-link to="/mainview/alarmInfo" style="text-decoration: none">
-        <div>
-        <i class="el-icon-folder"></i>
-        <span>教师工作量核算</span>
-      </div>
-      </router-link>
-    </el-menu-item>
-    <el-menu-item index="3">
-      <router-link to="/mainview/deviceControl" style="text-decoration: none">
-        <div>
-        <i class="el-icon-date"></i>
-        <span>奖项录入</span>
-      </div>
-      </router-link>
-    </el-menu-item><el-menu-item index="4">
-      <router-link to="/mainview/deviceList" style="text-decoration: none">
-        <div>
-        <i class="el-icon-message"></i>
-        <span>结果查询</span>
-      </div>
-      </router-link>
-    </el-menu-item>
-
-  </el-menu>
-</template>
+    <el-menu-item index="1" @click="routerGo('/mainview/facultyInfo')"><div><i class="el-icon-menu"></i><span>教职工信息</span></div></el-menu-item>
+    <el-menu-item index="2" @click="routerGo('/mainview/teachingTask')"><div><i class="el-icon-folder"></i><span>教师工作量核算</span></div></el-menu-item>
+    <el-menu-item index="3" @click="routerGo('/mainview/prizeRecord')"><div><i class="el-icon-date"></i><span>奖项录入</span></div></el-menu-item>
+    <el-menu-item index="4" @click="routerGo('/mainview/queryRank')"><div><i class="el-icon-message"></i><span>结果查询</span></div></el-menu-item>
+</el-menu></template>
 
 <script>
 export default {
@@ -46,11 +16,15 @@ export default {
       logo: require('@/assets/icon/Meher_icon.png'),
       logo_three_line: require('@/assets/icon/Three_line.png')
     }
+  },
+  methods: {
+    routerGo (target) {
+      this.$router.push(target)
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .el-menu{
   background-color: unset;
@@ -87,6 +61,13 @@ export default {
       font-weight: 400;
       line-height: 20px;
       color: rgba(255, 255, 255, 1);
+    }
+    //嵌套伪类选择器
+    &:hover{
+      background-color:rgb(29, 38, 49)!important;
+    }
+    &:focus{
+      background-color:rgba(22, 29, 38, 1)!important;
     }
   }
 }

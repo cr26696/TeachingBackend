@@ -23,7 +23,7 @@
 <script>
 // import axios from 'axios'
 export default {
-  name: 'AlarmInfo'
+  name: 'PrizeRecord'
 //   data: function () {
 //     return {
 //       deviceIdImei: '',
