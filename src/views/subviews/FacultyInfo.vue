@@ -201,8 +201,6 @@ export default {
       this.displayItems = this.items.slice(start, end)
     }
   },
-  created () {
-  },
   mounted () {
     this.total = this.items.length
     this.getDisplayItems()

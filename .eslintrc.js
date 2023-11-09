@@ -33,7 +33,7 @@ module.exports = {
     semi: 'off',
     quotes: 'off',
     'comma-spacing': 'off',
-    'comma-dangle': 'warn',
+    'comma-dangle': 'off',
     // 命名规范
     camelcase: "warn",
     'vue/multi-word-component-names': 'warn'
