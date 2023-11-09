@@ -1,12 +1,9 @@
 <template>
-  <div class="container">
+  <div class="containerHeadbar">
     <span id="t_welcome">欢迎登陆教学评估小助手后台应用系统</span>
     <input type="text" name="" id="" placeholder='请输入想要查询内容...'>
     <div id="spliter"></div>
-    <button>m</button>
-    <button>n</button>
-    <div id="spliter"></div>
-    <button id="avatar" style="float: right;">avatar</button>
+    <button id="avatar" style="float: right;">退出</button>
   </div>
 </template>
 
@@ -21,7 +18,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container{
+.containerHeadbar{
   @top_height: 80px;
 
   display: flex;
@@ -39,31 +36,29 @@ export default {
   input{
     width: 280px;
     height: 40px;
-    margin-right: 15px;
     background-color: rgba(237, 244, 251, 1);
     border-radius: 10px;
     border: none;
   }
-  button{
-    margin-left: 12px;
-    margin-right: 12px;
-    height: 20px;
-    width: 20px;
-  }
   #spliter{
     top: 30px;
-    width: 20px;
-    height: 0px;
-    transform: rotate(90deg);
+    height: 20px;
+    margin: 0 36px 0 40px;
     border: 1px solid rgba(130, 145, 169, 0.53);
   }
-  #avatar{
+  button{
+    width: 95px;
+    height: 45px;
     margin-right: 39px;
-    margin-left: 15px;
-    width: 36px;
-    height: 36px;
+    font-size: 18px;
+    font-weight: 700;
+    text-indent: 5px;
+    letter-spacing: 5px;
+    line-height: 16px;
     border-radius: 6px;
-    background: rgba(130, 145, 169, 1);
+    border: none;
+    color: white;
+    background: linear-gradient(135deg, rgba(255, 68, 86, 1) 0%, rgba(255, 135, 73, 1) 100%);
   }
 }
 </style>

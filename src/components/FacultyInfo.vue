@@ -189,7 +189,7 @@ export default {
       console.log(item)
     },
     computeSpan (index) {
-      return (index + 1) % 5 === 0 ? 4 : 5
+      return (index + 1) % 6 === 0 ? 4 : 5
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -272,7 +272,7 @@ export default {
       border: none;
       background: rgba(255, 255, 255, 1);
       &:hover{
-        border: 1px solid rgb(228, 228, 228);
+        outline: 2px solid rgb(189, 189, 189);
       }
     }
     button{
@@ -286,7 +286,7 @@ export default {
       border: none;
       background: rgba(0, 129, 255, 1);
       &:hover{
-        border: 1px solid rgb(0, 79, 158);
+        outline: 1px solid rgb(18, 121, 225, 0.5);
       }
       div:nth-child(1){
         position: absolute;
@@ -309,7 +309,7 @@ export default {
     .el-col:nth-child(-n + 6){
       margin-bottom: 22px;
     }
-    .el-col:nth-child(7){
+    .el-col:nth-child(1) .el-col:nth-child(7){
       padding-left: 0!important;
     }
     .el-card {
@@ -320,6 +320,9 @@ export default {
       background-color: white;
       /deep/ .el-card__body{
         padding: 0px!important;
+      }
+      &:hover{
+        outline: 2px solid rgb(90, 90, 176);
       }
       //elementui自带类el-card__body样式在外层被定义,从内层修改加deep使用。
       .cardBody {

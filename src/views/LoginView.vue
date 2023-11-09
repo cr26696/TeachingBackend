@@ -59,8 +59,9 @@ export default {
   .containerLoginBox{
     display: flex;
     position: absolute;
-    left: 324.93px;
-    top: 157px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
     width: 1260px;
     height: 782px;
     margin-bottom: 141px;
