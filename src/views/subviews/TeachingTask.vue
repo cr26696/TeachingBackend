@@ -119,7 +119,7 @@ export default {
 }
 .circle-grey{
     position: absolute;
-    top: 24px;
+    top: 25px;
     left: 35px;
     width: 10px;
     height: 10px;
