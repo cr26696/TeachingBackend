@@ -43,7 +43,7 @@ export default {
 }
 
 .el-main {
-  background-color: hsla(140, 100%, 98%, 0.85);
+  background-color: rgba(219,231,238,1);
   color: #333;
   position: relative;
   padding: 0 !important;

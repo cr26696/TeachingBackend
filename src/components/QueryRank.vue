@@ -25,8 +25,8 @@ export default {
 <style scoped lang="less">
 #achievement-side{
     position: absolute;
-    background-color: yellow!important;;
     width: 233px!important;
+    background: rgba(255, 255, 255, 1);
     height: 100%;
 }
 </style>

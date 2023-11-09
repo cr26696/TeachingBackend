@@ -13,14 +13,12 @@
       </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <input type="text">
+    <input type="text" placeholder="请输入教职工姓名">
     <button><div></div><div></div></button>
   </div>
 </div></template>
 
 <script>
-// import axios from 'axios'
-
 export default {
   name: 'FacultyInfo',
   data: function () {
@@ -33,44 +31,11 @@ export default {
     }
   },
   methods: {
-    // async initDeviceList () {
-    //   const { data: res } = await axios.get('http://49.235.106.165:1020/device/getAllList', { params: { pageNum: 1, pageSize: 8 } })
-    //   console.log(res)
-    //   if (res.code === 2000) {
-    //     this.list = res.data.list.records
-    //   }
-    // },
-    // async query () {
-    //   const { data: query } = await axios.get('http://49.235.106.165:1020/device/getAllList', { params: { pageNum: 1, pageSize: 8, deviceIdImei: this.deviceID } })
-    //   console.log(this.deviceID)
-    //   console.log(query)
-    //   if (query.code === 2000) {
-    //     this.list = query.data.list.records
-    //     console.log(this.list)
-    //   }
-    // },
-    // async resetList () {
-    //   const { data: resetL } = await axios.get('http://49.235.106.165:1020/device/getAllList', { params: { pageNum: 1, pageSize: 8 } })
-    //   console.log(resetL)
-    //   if (resetL.code === 2000) {
-    //     this.list = resetL.data.list.records
-    //     console.log(this.list)
-    //   }
-    // },
-    // pushParamstoAlarm (n) {
-    //   console.log(n.deviceIdImei)
-    //   this.$router.push({ path: '/MainView/AlarmInfo', query: { deviceID: n.deviceIdImei } })
-    // },
-    // pushParamstoControl (n) {
-    //   console.log(n.deviceIdImei)
-    //   this.$router.push({ path: '/MainView/DeviceControl', query: { deviceID: n.deviceIdImei } })
-    // }
     handleDropdownClick (item) {
       console.log(item)
     }
   },
   created () {
-    // this.initDeviceList()
   }
 }
 </script>

@@ -33,7 +33,7 @@ export default {
 <style scoped lang="less">
 #workload-side{
     position: absolute;
-    background-color: yellow!important;;
+    background: rgba(255, 255, 255, 1);
     width: 233px!important;
     height: 100%;
 }
