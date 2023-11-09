@@ -3,16 +3,16 @@
         <el-container>
             <el-aside id="workload-side">
                 <el-menu :default-openeds="['2']">
-                    <el-menu-item index="1">理论课</el-menu-item>
+                    <el-menu-item index="1"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
                     <el-submenu index="2">
-                        <template slot="title">实验课</template>
-                        <el-menu-item index="2-1">A类</el-menu-item>
-                        <el-menu-item index="2-2">B类</el-menu-item>
+                        <template slot="title"><i class="circle-red"></i><span>实验课</span></template>
+                        <el-menu-item index="2-1"><span>A类</span></el-menu-item>
+                        <el-menu-item index="2-2"><span>B类</span></el-menu-item>
                     </el-submenu>
-                    <el-menu-item index="3">指导课程设计集中性实习</el-menu-item>
-                    <el-menu-item index="4">指导社会调查</el-menu-item>
-                    <el-menu-item index="5">指导分散性实习工程设计训练</el-menu-item>
-                    <el-menu-item index="6">指导毕业设计</el-menu-item>
+                    <el-menu-item index="3" style="text-wrap"><i class="circle-blue"></i><span class="twoline">指导课程设计<br>集中性实习</span></el-menu-item>
+                    <el-menu-item index="4"><i class="circle-purple"></i><span>指导社会调查</span></el-menu-item>
+                    <el-menu-item index="5"><i class="circle-green"></i><span class="twoline">指导分散性实习<br>工程设计训练</span></el-menu-item>
+                    <el-menu-item index="6"><i class="circle-grey"></i><span>指导毕业设计</span></el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main></el-main>
@@ -35,9 +35,116 @@ export default {
     background: rgba(255, 255, 255, 1);
     width: 233px!important;
     height: 100%;
+    .el-menu-item{
+    height: 60px!important;
+    }
+    span{
+        position: absolute;
+        left: 50px;
+        top: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0px;
+        line-height: 20px;
+        color: rgba(130, 145, 169, 1);
+        text-align: left;
+        vertical-align: top;
+        white-space: pre-wrap;
+    }
+    .twoline{
+        top: 11px !important;
+    }
 }
 .el-menu-item.is-active{
     background-color: rgba(237, 244, 251, 1);
     border-left: 6px solid rgba(0, 129, 255, 1);
+}
+.text-wrap{
+    white-space: pre-wrap;
+}
+.circle-orange{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(255, 138, 72, 1);
+}
+.circle-red{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(255,61,87,1);
+}
+.circle-blue{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(34,204,226,1);
+}
+.circle-purple{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(240,12,225,1);
+}
+.circle-green{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(9,182,109,1);
+}
+.circle-grey{
+    position: absolute;
+    top: 24px;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    opacity: 1;
+    background: rgba(130,145,169,1);
+}
+</style>
+<style lang="less">
+.el-submenu__title{
+height: 60px!important;
+    span{
+            position: absolute;
+            left: 50px;
+            top: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0px;
+            line-height: 20px;
+            color: rgba(130, 145, 169, 1);
+            text-align: left;
+            vertical-align: top;
+
+        }
+
 }
 </style>

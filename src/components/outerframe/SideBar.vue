@@ -73,5 +73,8 @@ export default {
       background-color:rgba(22, 29, 38, 1)!important;
     }
   }
+  .el-menu-item.is-active{
+    border-left: 6px solid rgba(0, 129, 255, 1);
+}
 }
 </style>
