@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MainView from '@/views/MainView.vue'
+import LoginView from '@/views/LoginView.vue'
 import TeachingTask from '@/components/TeachingTask.vue'
 import PrizeRecord from '@/components/PrizeRecord.vue'
 import FacultyInfo from '@/components/FacultyInfo.vue'
@@ -45,6 +46,10 @@ const routes = [
         component: QueryRank
       }
     ]
+  },
+  {
+    path: '/loginview',
+    component: LoginView
   }
 ]
 
