@@ -19,17 +19,16 @@
         </el-container>
     </div>
 </template>
-    
 <script>
 export default {
   name: 'TeachingTask',
-  data(){
+  data () {
     return {
     }
   }
 }
 </script>
-    
+
 <style scoped lang="less">
 #workload-side{
     position: absolute;

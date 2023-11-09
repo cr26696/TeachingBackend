@@ -16,6 +16,28 @@
     <input type="text" placeholder="请输入教职工姓名">
     <button><div></div><div></div></button>
   </div>
+  <el-row>
+    <el-col v-for="(item, index) in displayItems" :key="index" :span="4">
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>卡片名称</span>
+          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        </div>
+        <div>
+          <p>{{ item.name }}</p>
+        </div>
+        <div slot="footer" class="clearfix">
+          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
+  <el-pagination
+    @current-change="handleCurrentChange"
+    :current-page="currentPage"
+    :page-size="pageSize"
+    :total="total">
+  </el-pagination>
 </div></template>
 
 <script>
@@ -24,18 +46,140 @@ export default {
   data: function () {
     return {
       infoFields: ['优秀指导教师', '2级教师', '3级教师', '4级教师'],
-      list: [],
-      deviceID: '',
-      queryRes: '',
-      getInfo: []
+      items: [{
+        name: '张三',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '王五',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phoone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      }],
+      displayItems: [],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0
     }
   },
   methods: {
     handleDropdownClick (item) {
       console.log(item)
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.getDisplayItems()
+    },
+    getDisplayItems() {
+      const start = (this.currentPage - 1) * this.pageSize
+      const end = start + this.pageSize
+      this.displayItems = this.items.slice(start, end)
     }
   },
   created () {
+    this.total = this.items.length
+  },
+  mounted () {
+    this.getDisplayItems()
   }
 }
 </script>
@@ -68,7 +212,6 @@ export default {
       line-height: 20px;
       color: rgba(0, 0, 0, 1);
     }
-    
     .el-dropdown{
       box-sizing:content-box;
       position: absolute;
@@ -88,7 +231,7 @@ export default {
         i:first-child{
           position: relative;
           left: 30px;
-      } 
+      }
     }
     }
     input{
