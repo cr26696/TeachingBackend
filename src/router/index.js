@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 
 import MainView from '@/views/MainView.vue'
 import LoginView from '@/views/LoginView.vue'
-import TeachingTask from '@/components/TeachingTask.vue'
-import PrizeRecord from '@/components/PrizeRecord.vue'
-import FacultyInfo from '@/components/FacultyInfo.vue'
-import QueryRank from '@/components/QueryRank.vue'
+import TeachingTask from '@/views/subviews/TeachingTask.vue'
+import PrizeRecord from '@/views/subviews/PrizeRecord.vue'
+import FacultyInfo from '@/views/subviews/FacultyInfo.vue'
+import QueryRank from '@/views/subviews/QueryRank.vue'
 
 // 下面4行代码用于修复重复跳转同一个路由地址报错
 const originalPush = VueRouter.prototype.push
