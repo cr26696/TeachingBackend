@@ -1,4 +1,4 @@
-<template><div id="container">
+<template><div id="ContainerFacultyInfo">
   <p id="title">教职工信息</p>
   <div id="div_search_params">
     <span id="field_Prompt">范围</span>
@@ -16,18 +16,23 @@
     <input type="text" placeholder="请输入教职工姓名">
     <button><div></div><div></div></button>
   </div>
-  <el-row>
+  <el-row :gutter="16">
     <el-col v-for="(item, index) in displayItems" :key="index" :span="4">
       <el-card>
-        <div slot="header" class="clearfix">
-          <span>卡片名称</span>
-          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-        </div>
-        <div>
+        <div class="cardBody">
+          <button><div></div><div></div><div></div></button>
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="imgurl"
+            :preview-src-list="srcList">
+          </el-image>
           <p>{{ item.name }}</p>
+          <p>{{item.position}}</p>
         </div>
-        <div slot="footer" class="clearfix">
-          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+        <div class="cardFooter">
+          <div><i class="el-icon-location"></i><span>{{item.number}}</span></div>
+          <div><i class="el-icon-message"></i><span>{{item.mail}}</span></div>
+          <div><i class="el-icon-phone"></i><span>{{item.phone}}</span></div>
         </div>
       </el-card>
     </el-col>
@@ -36,7 +41,8 @@
     @current-change="handleCurrentChange"
     :current-page="currentPage"
     :page-size="pageSize"
-    :total="total">
+    :total="total"
+    layout="prev,pager,next">
   </el-pagination>
 </div></template>
 
@@ -50,120 +56,140 @@ export default {
         name: '张三',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '王五',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       },{
         name: '赵四',
         position: '院长',
         number: '1234',
-        phoone: '13811112222',
+        phone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phone: '13811112222',
+        mail: 'zhangsan@hdu.edu'
+      },{
+        name: '赵四',
+        position: '院长',
+        number: '1234',
+        phone: '13811112222',
         mail: 'zhangsan@hdu.edu'
       }],
+      imgurl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      srcList: [
+        'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+      ],
       displayItems: [],
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 12,
       total: 0
     }
   },
   methods: {
     handleDropdownClick (item) {
       console.log(item)
+    },
+    computeSpan (index) {
+      return (index + 1) % 5 === 0 ? 4 : 5
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -176,21 +202,23 @@ export default {
     }
   },
   created () {
-    this.total = this.items.length
   },
   mounted () {
+    this.total = this.items.length
     this.getDisplayItems()
   }
 }
 </script>
 
 <style scoped lang="less">
-#container{
+#ContainerFacultyInfo{
   height: 100%;
+  min-width: 1680px;
   background-color: rgba(235, 236, 237, 1);
   #title{
     position: relative;
-    margin-left: 30px;
+    margin-left: calc((100% - 1610px) / 2)!important;
+    margin-right: calc((100% - 1610px) / 2)!important;
     margin-top: 35px;
     font-size: 30px;
     font-weight: 700;
@@ -201,12 +229,14 @@ export default {
     display: flex;
     position: relative;
     height: 40px;
+    margin-left: calc((100% - 1610px) / 2)!important;
+    margin-right: calc((100% - 1610px) / 2)!important;
     margin-top: 32px;
     justify-content: flex-end;
     align-items: center;
-    #field_Prompt{
+    & > span{
       position: absolute;
-      left: 32px;
+      left: 0px;
       font-size: 18px;
       font-weight: 400;
       line-height: 20px;
@@ -216,7 +246,7 @@ export default {
       box-sizing:content-box;
       position: absolute;
       transform: translateX(-50%);
-      left: 152px;
+      left: 120px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 1);
       &:hover{
@@ -231,8 +261,8 @@ export default {
         i:first-child{
           position: relative;
           left: 30px;
+        }
       }
-    }
     }
     input{
       position: relative;
@@ -252,7 +282,6 @@ export default {
       position: relative;
       width: 40px;
       height: 40px;
-      margin-right: 36px;
       border-radius: 6px;
       border: none;
       background: rgba(0, 129, 255, 1);
@@ -273,5 +302,105 @@ export default {
       }
     }
   }
+  .el-row {
+    margin-left: calc((100% - 1610px) / 2)!important;
+    margin-right: calc((100% - 1610px) / 2)!important;
+    margin-top: 23px!important;
+    .el-col:nth-child(-n + 6){
+      margin-bottom: 22px;
+    }
+    .el-col:nth-child(7){
+      padding-left: 0!important;
+    }
+    .el-card {
+      padding: 0!important;
+      width: 255px;
+      height: 350px;
+      border-radius: 8px;
+      background-color: white;
+      /deep/ .el-card__body{
+        padding: 0px!important;
+      }
+      //elementui自带类el-card__body样式在外层被定义,从内层修改加deep使用。
+      .cardBody {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        height: 220px;
+        button{
+          position: absolute;
+          right: 2px;
+          top: 10px;
+          padding: 4px 14px;
+          background:none;
+          border: none;
+          cursor:pointer;
+          div{
+            box-sizing: border-box;
+            position: relative;
+            width: 2px;
+            height: 2px;
+            border-radius: 1px;
+            background-color: rgba(130, 145, 169, 1);
+            border: 2px solid rgba(130, 145, 169, 1);
+          }
+          >div:nth-child(2){
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+        }
+        /deep/ img{
+          border-radius: 6px;
+          background: rgba(130, 145, 169, 1);
+        }
+        p:nth-of-type(1){
+          position: relative;
+          width: 64px;
+          height: 21px;
+          margin-top: 14px;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 21px;
+          text-align:center;
+        }
+        p:nth-of-type(2){
+          position: relative;
+          width: 56px;
+          height: 21px;
+          margin-top: 3px;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 21px;
+          text-align:center;
+          color: rgba(130, 145, 169, 1);
+        }
+      }
+      .cardFooter{
+        display: flex;
+        height: 130px;
+        flex-direction: column;
+        justify-content: space-evenly;
+        background-color: rgba(237, 244, 251, 1);
+        i{
+          position: relative;
+          height: 20px;
+          margin-left: 27px;
+        }
+        span{
+          position: relative;
+          height: 20px;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+  .el-pagination{
+    float: right;
+    margin-top: 24px!important;
+    margin-right: calc((100% - 1610px) / 2)!important;
+  }
 }
+
 </style>
