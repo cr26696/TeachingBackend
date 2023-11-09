@@ -37,4 +37,7 @@ export default {
     width: 233px!important;
     height: 100%;
 }
+.el-menu-item.is-active{
+    background-color: rgba(237, 244, 251, 1);
+}
 </style>

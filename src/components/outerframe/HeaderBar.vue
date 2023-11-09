@@ -40,6 +40,9 @@ export default {
     width: 280px;
     height: 40px;
     margin-right: 15px;
+    background-color: rgba(237, 244, 251, 1);
+    border-radius: 10px;
+    border: none;
   }
   button{
     margin-left: 12px;
