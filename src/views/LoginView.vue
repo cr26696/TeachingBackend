@@ -26,7 +26,7 @@
           <button>忘记密码</button>
         </div>
       </div>
-      <button>立即登录</button>
+      <button class="login">立即登录</button>
     </div>
   </div>
 </div></template>
@@ -179,12 +179,52 @@ export default {
           margin-bottom: 17px;
         }
         & > div{
+          position: relative;
+          width: 347px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 15px;
           input{
             position: relative;
             width: 25px;
             height: 25px;
+            cursor:pointer;
           }
+          span{
+            position: absolute;
+            left: 45px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 23.17px;
+            cursor:default;
+            color: rgba(51, 51, 51, 1);}
+          button{
+            width: 64px;
+            height: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 23.17px;
+            border: none;
+            background: none;
+            cursor:pointer;
+            color: rgba(30, 135, 240, 1);}
         }
+      }
+      button.login{
+        position: relative;
+        width: 347.39px;
+        height: 44.69px;
+        margin-top: 94px;
+        border-radius: 6px;
+        border: none;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 5px;
+        line-height: 16px;
+        color: white;
+        cursor:pointer;
+        background: rgba(0, 129, 255, 1);
       }
     }
   }
