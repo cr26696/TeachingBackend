@@ -38,5 +38,6 @@ export default {
 }
 .el-menu-item.is-active{
     background-color: rgba(237, 244, 251, 1);
+    border-left: 6px solid rgba(0, 129, 255, 1);
 }
 </style>
