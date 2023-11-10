@@ -1,0 +1,24 @@
+<template>
+<div>
+    <p id="title">成果填写</p>
+</div>
+</template>
+
+<script>
+export default {
+  name: 'Inputachi'
+}
+
+</script>
+
+<style>
+/* #title{
+    top: 25px;
+    left: 40px;
+    margin-top: 35px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 43.44px;
+    color: rgba(0, 0, 0, 1);
+} */
+</style>

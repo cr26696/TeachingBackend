@@ -1,4 +1,4 @@
-<template><el-menu>
+<template><el-menu default-active="1">
     <div style="height: 80px;display: flex;align-items: center;">
       <img id="logo" :src=logo><span id="logo_text">评估助手</span><img id="logo_three_line" :src=logo_three_line>
     </div>

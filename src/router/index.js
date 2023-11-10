@@ -7,6 +7,8 @@ import TeachingTask from '@/views/subviews/TeachingTask.vue'
 import PrizeRecord from '@/views/subviews/PrizeRecord.vue'
 import FacultyInfo from '@/views/subviews/FacultyInfo.vue'
 import QueryRank from '@/views/subviews/QueryRank.vue'
+import Inputachi from '@/views/subviews/subpage/Inputachi.vue'
+import Allachi from '@/views/subviews/subpage/Allachi.vue'
 
 // 下面4行代码用于修复重复跳转同一个路由地址报错
 const originalPush = VueRouter.prototype.push
@@ -39,7 +41,21 @@ const routes = [
       },
       {
         path: 'prizeRecord',
-        component: PrizeRecord
+        component: PrizeRecord,
+        children: [
+          {
+            path: '/',
+            redirect: 'inputachi'
+          },
+          {
+            path: 'inputachi',
+            component: Inputachi
+          },
+          {
+            path: 'allachi',
+            component: Allachi
+          }
+        ]
       },
       {
         path: 'queryRank',

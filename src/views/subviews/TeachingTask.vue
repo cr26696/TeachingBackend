@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <el-aside id="workload-side">
-                <el-menu :default-openeds="['2']">
+                <el-menu :default-openeds="['2']" default-active="1">
                     <el-menu-item index="1"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
                     <el-submenu index="2">
                         <template slot="title"><i class="circle-red"></i><span>实验课</span></template>
