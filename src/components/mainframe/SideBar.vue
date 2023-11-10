@@ -72,9 +72,15 @@ export default {
     &:focus{
       background-color:rgba(22, 29, 38, 1)!important;
     }
+    &.is-active::before{
+      //使用::before需要设置content否则不存在于dom
+      content:'';
+      height:100%;
+      width:6px;
+      position:absolute;
+      border-radius: 0px 5px 5px 0px;
+      background: rgba(0, 129, 255, 1);
+    }
   }
-  .el-menu-item.is-active{
-    border-left: 6px solid rgba(0, 129, 255, 1);
-}
 }
 </style>
