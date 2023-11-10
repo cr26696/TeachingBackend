@@ -55,9 +55,16 @@ export default {
         top: 11px !important;
     }
 }
-.el-menu-item.is-active{
-    background-color: rgba(237, 244, 251, 1);
-    border-left: 6px solid rgba(0, 129, 255, 1);
+.el-menu-item{
+    &.is-active::before{
+        content:'';
+        height:100%;
+        width:6px;
+        left: 0px;
+        position:absolute;
+        border-radius: 0px 5px 5px 0px;
+        background: rgba(0, 129, 255, 1);
+    }
 }
 .text-wrap{
     white-space: pre-wrap;
