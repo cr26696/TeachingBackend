@@ -42,6 +42,7 @@
     :current-page="currentPage"
     :page-size="pageSize"
     :total="total"
+    :background="enbackground"
     layout="prev,pager,next">
   </el-pagination>
 </div></template>
@@ -51,6 +52,7 @@ export default {
   name: 'FacultyInfo',
   data: function () {
     return {
+      enbackground: true,
       infoFields: ['优秀指导教师', '2级教师', '3级教师', '4级教师'],
       items: [{
         name: '张三',
