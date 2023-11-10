@@ -2,7 +2,7 @@
   <div class="containerLoginBox">
     <div class="loginLeft">
       <div class="divIcon"><img :src="iconWhite" /><span>评估助手</span></div>
-      <button class="b_register" @click="ToRegister">注册</button>
+      <button class="b_register" @click="emitChangeTo('registerBox')">注册</button>
       <p class="welcomeText">
         <span>欢迎登陆</span><br />
         <span>教学评估小助手</span><br />
@@ -27,7 +27,7 @@
         <div>
           <input type="checkbox" />
           <span>记住密码</span>
-          <button>忘记密码</button>
+          <button @click="emitChangeTo('forgetBox')">忘记密码</button>
         </div>
       </div>
       <button class="login">立即登录</button>
@@ -47,8 +47,8 @@ export default {
     };
   },
   methods: {
-    ToRegister () {
-      this.$emit('subButtonClicked', 'registerBox');
+    emitChangeTo (type) {
+      this.$emit('subButtonClicked', type);
     }
   }
 };

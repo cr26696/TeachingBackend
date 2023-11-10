@@ -1,11 +1,11 @@
 <template>
-  <div id="containerLoginView">
-    <!-- 这里接受2种子组件emit的事件，根据参数切换 -->
-    <transition :name="`${componentType}`">
-    <component
-      @subButtonClicked="changeLoginBox"
-      :is="componentType"
-    ></component>
+  <div id="containerLoginView" :style="cssVars">
+    <!-- 这里接受3种子组件emit的事件，根据参数切换 -->
+    <transition :name="transitionStyle">
+      <component
+        @subButtonClicked="changeLoginBox"
+        :is="currentType"
+      ></component>
     </transition>
   </div>
 </template>
@@ -14,26 +14,39 @@
 // @ is an alias to /src
 import loginBox from "@/components/login/logBox.vue";
 import registerBox from "@/components/login/regiBox.vue";
+import forgetBox from "@/components/login/forgetBox.vue";
+
 export default {
   name: "LoginView",
   components: {
     loginBox,
-    registerBox
+    registerBox,
+    forgetBox,
   },
   data() {
     return {
-      componentType: loginBox,
+      previousType: 'loginBox',
+      currentType: 'loginBox',
     };
   },
   methods: {
     changeLoginBox(type) {
-      this.componentType = `${type}`;
+      this.previousType = this.currentType;
+      this.currentType = `${type}`;
     },
   },
+  computed: {
+    cssVars() {
+      return {
+        '--trans': `${this.previousType}to${this.currentType}`
+      }
+    }
+  }
 };
 </script>
 
 <style scoped lang="less">
+
 #containerLoginView {
   position: absolute;
   width: 100%;
@@ -43,36 +56,55 @@ export default {
   background-size: cover;
   background-image: url("@/assets/background/login_background.png");
 }
-.loginBox-enter-active {
-  transform: translate(-50%,-50%);
+//下方为过渡特效----------------------------
+.tologinBox-enter-active {
+  transform: translate(-50%, -50%);
+}
+.tologinBox-leave-active {
+  transform: translate(-50%, -50%);
+}
+.tologinBox-enter {
+  transform: translate(-250%, -50%);
+}
+.tologinBox-leave-to {
+  transform: translate(350%, -50%);
+}
+.tologinBox-enter-active,
+.tologinBox-leave-active {
   transition: transform 1s ease-in-out;
 }
-.loginBox-leave-active {
-  transform: translate(-50%,-50%);
+//toRegi
+.toregisterBox-enter-active {
+  transform: translate(-50%, -50%);
+}
+.toregisterBox-leave-active {
+  transform: translate(-50%, -50%);
+}
+.toregisterBox-enter {
+  transform: translate(250%, -50%);
+}
+.toregisterBox-leave-to {
+  transform: translate(-350%, -50%);
+}
+.toregisterBox-enter-active,
+.toregisterBox-leave-active {
   transition: transform 1s ease-in-out;
 }
-.loginBox-enter{
-  transform: translate(-350%,-50%);
-  transition: transform 1s ease-in-out;
+//toForget
+.toforgetBox-leave {
+  opacity: 1;
 }
-.loginBox-leave-to {
-  transform: translate(350%,-50%);
-  transition: transform 1s ease-in-out;
+.toforgetBox-leave-to {
+  opacity: 0;
 }
-.registerBox-enter-active {
-  transform: translate(-50%,-50%);
-  transition: transform 1s ease-in-out;
+.toforgetBox-enter {
+  opacity: 0;
 }
-.registerBox-leave-active {
-  transform: translate(-50%,-50%);
-  transition: transform 1s ease-in-out;
+.toforgetBox-enter-to {
+  opacity: 1;
 }
-.registerBox-enter{
-  transform: translate(350%,-50%);
-  transition: transform 1s ease-in-out;
-}
-.registerBox-leave-to {
-  transform: translate(-350%,-50%);
-  transition: transform 1s ease-in-out;
+.toforgetBox-leave-active,
+.toforgetBox-enter-active {
+  transition: opacity ease-in-out;
 }
 </style>
