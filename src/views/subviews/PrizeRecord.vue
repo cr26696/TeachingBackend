@@ -2,7 +2,7 @@
     <div>
       <el-container>
             <el-aside id="achievement-side">
-                <el-menu default-active="1">
+                <el-menu>
                     <!-- <el-menu-item index="1"><i class="el-icon-files"></i><span>成果录入申请</span></el-menu-item> -->
                     <el-menu-item index="1" @click="com='Inputachi'"><i class="el-icon-position"></i><span>成果填写</span></el-menu-item>
                     <el-menu-item index="2" @click="com='Allachi'"><i class="el-icon-edit-outline"></i><span>全部成果</span></el-menu-item>

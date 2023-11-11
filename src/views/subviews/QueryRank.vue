@@ -2,7 +2,7 @@
 <div>
   <el-container>
         <el-aside id="achievement-side">
-            <el-menu :default-openeds="['1']" default-active="1-1">
+            <el-menu :default-openeds="['1']">
                 <el-submenu index="1">
                         <template slot="title"><span>学评教排名</span></template>
                         <el-menu-item index="1-1" @click="com='SchoolRank'"><i id="iconblue" class="el-icon-folder" style="color: blue;"></i><span>学校排名</span></el-menu-item>
