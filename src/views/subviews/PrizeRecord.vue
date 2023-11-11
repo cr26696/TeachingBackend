@@ -43,7 +43,7 @@ export default {
 #achievement-side{
     position: absolute;
     background: rgba(255, 255, 255, 1);
-    width: 233px!important;
+    width: 232px!important;
     height: 100%;
  
   .submain{

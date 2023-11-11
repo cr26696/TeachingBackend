@@ -33,7 +33,7 @@ export default {
 #workload-side{
     position: absolute;
     background: rgba(255, 255, 255, 1);
-    width: 233px!important;
+    width: 232px!important;
     height: 100%;
     .el-menu-item{
     height: 60px!important;

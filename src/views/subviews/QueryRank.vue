@@ -11,7 +11,7 @@
                 <el-menu-item index="2"><span class="maintitle">教学业绩考核</span></el-menu-item>
             </el-menu>
         </el-aside>
-        <el-main>
+        <el-main id="achievement-main">
             <component :is="com"></component>
         </el-main>
     </el-container>
@@ -20,7 +20,7 @@
 
 <script>
 import AcademyRank from './subpage/AcademyRank.vue';
-import SchoolRnak from './subpage/SchoolRank.vue'
+import SchoolRank from './subpage/SchoolRank.vue'
 export default {
   name: 'QueryRank',
   data() {
@@ -28,17 +28,24 @@ export default {
       com: ''
     }
   },
-  component:{
+  components:{
     AcademyRank,
-    SchoolRnak
+    SchoolRank
   }
 }
 </script>
 
 <style scoped lang="less">
+#achievement-main{
+    left: 232px;
+    position: absolute;
+    padding: 0 !important;
+    height: 1000px;
+    width: 1448px;
+}
 #achievement-side{
     position: absolute;
-    width: 233px!important;
+    width: 232px!important;
     background: rgba(255, 255, 255, 1);
     height: 100%;
     .el-menu-item{
