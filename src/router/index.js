@@ -41,21 +41,21 @@ const routes = [
       },
       {
         path: 'prizeRecord',
-        component: PrizeRecord,
-        children: [
-          {
-            path: '/',
-            redirect: 'inputachi'
-          },
-          {
-            path: 'inputachi',
-            component: Inputachi
-          },
-          {
-            path: 'allachi',
-            component: Allachi
-          }
-        ]
+        component: PrizeRecord
+        // children: [
+        //   {
+        //     path: '/',
+        //     redirect: 'inputachi'
+        //   },
+        //   {
+        //     path: 'inputachi',
+        //     component: Inputachi
+        //   },
+        //   {
+        //     path: 'allachi',
+        //     component: Allachi
+        //   }
+        // ]
       },
       {
         path: 'queryRank',

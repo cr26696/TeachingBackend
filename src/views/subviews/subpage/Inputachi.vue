@@ -12,13 +12,13 @@ export default {
 </script>
 
 <style>
-/* #title{
+#title{
     top: 25px;
-    left: 40px;
+    left: 300px;
     margin-top: 35px;
     font-size: 30px;
     font-weight: 700;
     line-height: 43.44px;
     color: rgba(0, 0, 0, 1);
-} */
+}
 </style>
