@@ -20,6 +20,7 @@ module.exports = {
     'no-multiple-empty-lines': 'warn',
     'no-unused-vars': 'warn',
     'vue/no-unused-components': 'warn',
+	'no-undef': 'warn',
     // 空格格式
     'no-extra-parens': 'off',
     'space-before-function-paren': 'off',
@@ -29,11 +30,14 @@ module.exports = {
     'key-spacing': 'warn',
     'spaced-comment': 'warn',
     'space-before-blocks': 'warn',
+	'object-curly-spacing': 'warn',
     // 结尾符号
     semi: 'off',
     quotes: 'off',
     'comma-spacing': 'off',
     'comma-dangle': 'off',
+	'object-property-newline': 'off',
+	'object-curly-newline': 'off',
     // 命名规范
     camelcase: "warn",
     'vue/multi-word-component-names': 'warn'
