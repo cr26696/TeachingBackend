@@ -22,6 +22,7 @@ module.exports = {
     'vue/no-unused-components': 'warn',
 	'no-undef': 'warn',
     // 空格格式
+	indent : 'warn',
     'no-extra-parens': 'off',
     'space-before-function-paren': 'off',
     'no-irregular-whitespace': 'warn',
@@ -31,6 +32,8 @@ module.exports = {
     'spaced-comment': 'warn',
     'space-before-blocks': 'warn',
 	'object-curly-spacing': 'warn',
+	'padded-blocks' : 'warn',
+	'space-in-parens' : 'warn',
     // 结尾符号
     semi: 'off',
     quotes: 'off',
