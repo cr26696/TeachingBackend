@@ -30,7 +30,7 @@
           <button @click="emitChangeTo('forgetBox')">忘记密码</button>
         </div>
       </div>
-      <button class="login">立即登录</button>
+      <button class="login" @click="handleLogin">立即登录</button>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@
 <script>
 // @ is an alias to /src
 import imgIconWhite from "@/assets/icon/icon_white.png";
+import router from "@/router";
 export default {
   name: "loginBox",
   components: {},
@@ -47,9 +48,15 @@ export default {
     };
   },
   methods: {
-    emitChangeTo (type) {
+    emitChangeTo(type) {
       this.$emit('subButtonClicked', type);
+    },
+    handleLogin() {
+      console.log("本地值以设置");
+      window.localStorage.isAuthenticated = true;
+      router.push('/')
     }
+
   }
 };
 </script>
@@ -73,11 +80,9 @@ export default {
     width: 482px;
     height: 100%;
     border-radius: 8px 0px 0px 8px;
-    background: linear-gradient(
-      134.72deg,
-      rgba(255, 61, 87, 1) 0%,
-      rgba(255, 138, 72, 1) 100%
-    );
+    background: linear-gradient(134.72deg,
+        rgba(255, 61, 87, 1) 0%,
+        rgba(255, 138, 72, 1) 100%);
 
     .divIcon {
       display: flex;
@@ -85,11 +90,13 @@ export default {
       align-items: center;
       left: 36px;
       top: 35px;
+
       span {
-        color:white;
+        color: white;
         margin-left: 17px;
       }
     }
+
     button.b_register {
       position: absolute;
       right: 34px;
@@ -107,6 +114,7 @@ export default {
       border: 1px solid rgba(255, 255, 255, 1);
       background: none;
     }
+
     p.welcomeText {
       position: absolute;
       width: 342px;
@@ -116,19 +124,23 @@ export default {
       text-align: center;
       color: white;
       font-weight: 700;
+
       span:nth-of-type(1) {
         font-size: 30px;
         line-height: 38px;
       }
+
       span:nth-of-type(2) {
         font-size: 35px;
         line-height: 50px;
       }
+
       span:nth-of-type(3) {
         font-size: 30px;
         line-height: 38px;
       }
     }
+
     p.welcomeEN {
       position: absolute;
       left: 77px;
@@ -142,6 +154,7 @@ export default {
       color: white;
     }
   }
+
   .loginRight {
     display: flex;
     flex-direction: column;
@@ -150,7 +163,8 @@ export default {
     text-align: center;
     width: 778px;
     height: 100%;
-    & > span {
+
+    &>span {
       position: relative;
       width: 271.44px;
       height: 43px;
@@ -159,7 +173,8 @@ export default {
       line-height: 43.44px;
       margin-top: 148px;
     }
-    & > p {
+
+    &>p {
       position: relative;
       margin-top: 23px;
       width: 431px;
@@ -169,36 +184,42 @@ export default {
       line-height: 24px;
       color: rgba(130, 145, 169, 1);
     }
+
     div.divInput {
       display: flex;
       position: relative;
       flex-direction: column;
       align-items: center;
       margin-top: 66px;
-      & > input {
+
+      &>input {
         width: 347.39px;
         height: 44.69px;
         opacity: 0.5;
         border-radius: 6px;
         border: 1px solid rgba(130, 145, 169, 1);
       }
+
       input:nth-of-type(2) {
         margin-top: 17px;
         margin-bottom: 17px;
       }
-      & > div {
+
+      &>div {
         position: relative;
         width: 347px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-top: 15px;
+
         input {
           position: relative;
           width: 25px;
           height: 25px;
           cursor: pointer;
         }
+
         span {
           position: absolute;
           left: 45px;
@@ -208,6 +229,7 @@ export default {
           cursor: default;
           color: rgba(51, 51, 51, 1);
         }
+
         button {
           width: 64px;
           height: 24px;
@@ -221,6 +243,7 @@ export default {
         }
       }
     }
+
     button.login {
       position: relative;
       width: 347.39px;
@@ -237,5 +260,4 @@ export default {
       background: rgba(0, 129, 255, 1);
     }
   }
-}
-</style>
+}</style>

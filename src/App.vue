@@ -1,11 +1,25 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      iconWhite: imgIconWhite
+    };
+  },
+  beforeCreated() {
+    window.localStorage.isAuthenticated = false;
+    console.log("本地值以设置false");
+  }
+};
+</script>
+
 <style lang="less">
-#app{
+#app {
   position: relative;
   height: 100%;
   width: 100%;

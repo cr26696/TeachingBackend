@@ -28,7 +28,7 @@ export default {
       com: ''
     }
   },
-  components:{
+  components: {
     AcademyRank,
     SchoolRank
   }
