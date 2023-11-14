@@ -17,7 +17,7 @@
 		</el-menu>
 	</el-aside>
 	<el-main class="subMainContainer">
-		<p class="text_class_type">{{ this.classType[this.menuIndex][1] }}</p>
+		<p class="text_class_type" v-if="this.menuIndex!==''">{{ this.classType[this.menuIndex][1] }}</p>
 		<el-dropdown trigger="click" >
 			<span class="el-dropdown-link">
 				下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
@@ -36,8 +36,12 @@
 			start-placeholder="开始日期"
 			end-placeholder="结束日期">
 		</el-date-picker><button>确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
-		<el-table class="taskDisplayTable" :data="displayItems">
-		<el-table-column v-for="(val, key, index) in displayItems[0]" :prop="key" :key="index" :label="key"
+		<el-table class="taskDisplayTable" :data="displayItems" v-if="this.menuIndex!==''">
+			<el-table-column 
+			v-for="(val, key, index) in displayItems[0]" 
+			:prop="key" 
+			:key="index" 
+			:label="key"
 			width="80px"></el-table-column>
 		</el-table>
 		<button>上传</button><button>添加</button><button>👇</button>
@@ -198,8 +202,8 @@ export default {
 		//占位
 	},
 	created() {
-		this.menuIndex = '1';
-		this.totalItems = this.classList.length;
+		this.menuIndex = '';
+		this.totalItems = this.classKeywordExperimentA.length;
 		this.getDisplayItems()
 	},
 	mounted() {
