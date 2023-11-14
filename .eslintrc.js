@@ -37,7 +37,6 @@ module.exports = {
 		'object-curly-spacing': 'off',
 		'padded-blocks': 'off',
 		'space-in-parens': 'warn',
-		'no-multiple-empty-lines': 'off',
 		// 结尾符号
 		semi: 'off',
 		quotes: 'off',

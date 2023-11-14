@@ -40,17 +40,17 @@ export default {
   width: 100%;
   border: none;
   background-color: unset;
-
+  div:nth-of-type(1){
+    justify-content: center;
+  }
   #logo {
-    position: absolute;
-    left: 39px;
-    top: 27px
+    position: relative;
+    
   }
 
   #logo_text {
-    position: absolute;
-    left: 99px;
-
+    position: relative;
+    margin: 0px 8px;
     font-size: 20px;
     font-weight: 700;
     line-height: 20px;
@@ -58,9 +58,7 @@ export default {
   }
 
   #logo_three_line {
-    position: absolute;
-    left: 191px;
-    top: 34px
+    position: relative;
   }
 
   .el-menu-item {

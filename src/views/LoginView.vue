@@ -29,17 +29,20 @@ export default {
       currentType: 'loginBox',
     };
   },
-  methods: {
-    changeLoginBox(type) {
-      this.previousType = this.currentType;
-      this.currentType = `${type}`;
-    },
-  },
   computed: {
+    transitionStyle: function () {
+      return this.previousType
+    },
     cssVars() {
       return {
         '--trans': `${this.previousType}to${this.currentType}`
       }
+    }
+  },
+  methods: {
+    changeLoginBox(type) {
+      this.previousType = this.currentType;
+      this.currentType = `${type}`;
     }
   }
 };
