@@ -8,7 +8,6 @@
 export default {
   data() {
     return {
-      iconWhite: imgIconWhite
     };
   },
   beforeCreated() {
