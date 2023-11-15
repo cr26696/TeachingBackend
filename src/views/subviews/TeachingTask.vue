@@ -251,8 +251,7 @@ export default {
 				if (queryString) {
 					const filter1 = this.createFilter(field, queryString)
 					suggestions = datalogsUnique.filter(filter1)
-				}
-				else {
+				} else {
 					suggestions = datalogsUnique
 				}
 				// 调用 callback 返回建议列表的数据

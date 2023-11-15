@@ -36,19 +36,18 @@ export default {
 </script>
 
 <style scoped lang="less">
-#achievement-main{
-    left: 232px;
-    position: absolute;
-    padding: 0 !important;
-    height: 1000px;
-    width: 1448px;
-}
-#achievement-side{
-    position: absolute;
-    width: 232px!important;
-    background: rgba(255, 255, 255, 1);
+.el-container{
+    position: relative;
+	height: 100%;
+    #achievement-side{
+    width: 15% !important;
+    min-width: 200px;
+    max-width: 220px;
     height: 100%;
+    min-height: 500px;
+    background-color: white;
     .el-menu-item{
+    padding: 0px!important;
     height: 60px!important;
     i{
         position: absolute;
@@ -81,6 +80,56 @@ export default {
     }
     }
 }
+    
+}
+#achievement-main{
+    left: 232px;
+    position: absolute;
+    padding: 0 !important;
+    height: 1000px;
+    width: 1448px;
+}
+// #achievement-side{
+//     width: 15% !important;
+//     min-width: 200px;
+//     max-width: 220px;
+//     height: 100%;
+//     min-height: 500px;
+//     background-color: white;
+//     .el-menu-item{
+//     padding: 0px!important;
+//     height: 60px!important;
+//     i{
+//         position: absolute;
+//         left: 40px;
+//         top: 21px;
+//     }
+//     span{
+//       position: absolute;
+//       left: 74px;
+//       font-size: 14px;
+//       font-weight: 400;
+//       line-height: 20px;
+//       top: 21px;
+//     }
+//     .maintitle{
+//         position: absolute;
+//         left: 20px;
+//         font-weight: 400;
+//         line-height: 20px;
+//         top: 21px;
+//         height: 21px;
+//         opacity: 1;
+//         font-size: 18px;
+//         font-weight: 500;
+//         letter-spacing: 0px;
+//         line-height: 21px;
+//         color: rgba(130, 145, 169, 1);
+//         text-align: left;
+//         vertical-align: top;
+//     }
+//     }
+// }
 .el-menu-item{
     &.is-active::before{
         content:'';
