@@ -38,6 +38,8 @@ module.exports = {
 		'space-in-parens': 'warn',
 		'arrow-spacing': 'warn',
 		'keyword-spacing': 'warn',
+		'no-mixed-spaces-and-tabs': 'warn',
+		'semi-spacing': 'warn',
 		// 结尾符号
 		semi: 'off',
 		quotes: 'off',
