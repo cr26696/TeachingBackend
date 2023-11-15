@@ -21,7 +21,6 @@
 import Allachi from './subpage/Allachi.vue';
 import Inputachi from './subpage/Inputachi.vue';
 
-
 export default {
   name: 'PrizeRecord',
   data() {

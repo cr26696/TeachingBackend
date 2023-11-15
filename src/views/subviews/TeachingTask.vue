@@ -68,13 +68,6 @@
 				</el-col>
 			</el-row>
 		</el-dialog>
-		<el-autocomplete
-			class="inline-input"
-			v-model="state1"
-			:fetch-suggestions="querySearchtest"
-			placeholder="请输入内容"
-			@select="handleSelecttest"
-		></el-autocomplete>
 	</el-main>
 </el-container>
 </template>
@@ -247,26 +240,23 @@ export default {
 		},
 		querySearch(index) {
 			return (queryString, cb) => {
-				var field = this.KeywordExperimentA[index][0]
-				var dataLogs = this.classListExperimentA.map( (obj) => {
+				const field = this.KeywordExperimentA[index][0]
+				const dataLogs = this.classListExperimentA.map((obj) => {
 					return {
 						value : obj[field]
 					}
 				})
-				var datalogs2 = this.restaurants
-				var results
-				var results2
+				const datalogsUnique = this.getArrayUnique(dataLogs, 'value')
+				let suggestions = null
 				if (queryString) {
-					var filter1 = this.createFilter(field, queryString)
-					results =  dataLogs.filter(filter1)
-					//results =  dataLogs.filter(this.createFilter(field, queryString))
+					const filter1 = this.createFilter(field, queryString)
+					suggestions = datalogsUnique.filter(filter1)
 				}
 				else {
-					results = dataLogs
-					results2 = dataLogs
+					suggestions = datalogsUnique
 				}
 				// 调用 callback 返回建议列表的数据
-				cb(results);
+				cb(suggestions);
 			}
 		},
 		createFilter(field, queryString) {
@@ -274,46 +264,21 @@ export default {
 				return (str.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
 			};
 		},
+		getArrayUnique(arr, field) {
+			const res = new Map();
+			return arr.filter((arr) => !res.has(arr[field]) && res.set(arr[field], 1))
+		},
 		handleSelect(item) {
 			console.log(item);
 		},
-		loadAll() {
-			return [
-				{ classCode: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
-				{ classCode: "Hot shoney 首尔炸鸡（仙霞路）", address: "上海市长宁区淞虹路661号" },
-				{ classCode: "新旺角茶餐厅", address: "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-				{ classCode: "泷千家(天山西路店)", address: "天山西路438号" },
-			]
-		},
-		handleSelecttest(item) {
-			console.log(item);
-		},
-		querySearchtest(queryString, cb) {
-			var restaurants = this.restaurants;
-			var results = queryString ? restaurants.filter(this.createFiltertest(queryString)) : restaurants;
-			// 调用 callback 返回建议列表的数据
-			cb(results);
-		},
-		createFiltertest(queryString) {
-			return (restaurant) => {
-			return (restaurant[classCode].toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
-			};
-		},
 	},
-	beforeCreated() {
-		//占位
-	},
+	beforeCreated() {},
 	created() {
-		//占位
 		this.menuIndex = '0'
 		this.updateData()
 		this.dataInput = new Array(this.KeywordExperimentA.length)
-
 	},
-	mounted() {
-		//占位
-		this.restaurants = this.loadAll();
-	},
+	mounted() {},
 	watch: {
 		menuIndex() {
 			this.updateData()
