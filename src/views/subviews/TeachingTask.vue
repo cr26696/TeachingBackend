@@ -1,14 +1,14 @@
 <template>
 <el-container>
 	<el-aside id="workload-side">
-		<el-menu :default-openeds="['2']" :default-active="menuIndex" @select="handleMenuChange">
+		<el-menu :default-openeds="['1-1']" :default-active="menuIndex" @select="handleMenuSelect">
 		<el-menu-item index="0"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
-		<el-submenu>
+		<el-submenu index="1-1">
 			<template slot="title"><i class="circle-red"></i><span>实验课</span></template>
-			<el-menu-item index="2"><span>A类</span></el-menu-item>
-			<el-menu-item index="3"><span>B类</span></el-menu-item>
+			<el-menu-item index="1"><span>A类</span></el-menu-item>
+			<el-menu-item index="2"><span>B类</span></el-menu-item>
 		</el-submenu>
-		<el-menu-item index="4" style="text-wrap"><i class="circle-blue"></i><span
+		<el-menu-item index="3" style="text-wrap"><i class="circle-blue"></i><span
 			class="twoline">指导课程设计<br>集中性实习</span></el-menu-item>
 		<el-menu-item index="4"><i class="circle-purple"></i><span>指导社会调查</span></el-menu-item>
 		<el-menu-item index="5"><i class="circle-green"></i><span
@@ -16,7 +16,7 @@
 		<el-menu-item index="6"><i class="circle-grey"></i><span>指导毕业设计</span></el-menu-item>
 		</el-menu>
 	</el-aside>
-	<el-main class="subMainContainer">
+	<el-main class="subMainContainer" v-if="menuIndex">
 		<p class="text_class_type" v-if="this.menuIndex!==''">{{ this.classType[this.menuIndex][1] }}</p>
 		<el-dropdown trigger="click" >
 			<span class="el-dropdown-link">
@@ -30,8 +30,8 @@
 			</el-dropdown-menu>
 		</el-dropdown>
 		<el-date-picker
-			v-model="dataRange"
-			type="daterange"
+			v-model="filterDate"
+			type="datarange"
 			range-separator="至"
 			start-placeholder="开始日期"
 			end-placeholder="结束日期">
@@ -44,8 +44,37 @@
 			:label="key"
 			width="80px"></el-table-column>
 		</el-table>
-		<button>上传</button><button>添加</button><button>👇</button>
+		<button @click="handleUpload">上传</button><button @click="handleAdd">添加</button><button>👇</button>
 		<el-pagination></el-pagination>
+		<el-dialog title="表格上传"	:visible.sync="showDialogUpload" width="30%">
+			<el-upload class="upload-demo" drag action="" multiple>
+				<i class="el-icon-upload"></i>
+				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+			</el-upload>
+			<el-progress :percentage="50"></el-progress>
+			<div class="dialog_footer"><button><span>↑</span>确认上传</button></div>
+		</el-dialog>
+		<el-dialog title="" :v-if="showDialogAdd" :visible.sync="showDialogAdd" width="70%">
+			<el-row>
+				<el-col v-for="(item, index) in KeywordExperimentA" :key="index" :span="4">
+					<p>{{ item[1] }}</p>
+					<el-autocomplete
+					class="inline-input"
+					v-model="dataInput[index]"
+					:fetch-suggestions="querySearch(index)"
+					placeholder="请输入内容"
+					@select="handleSelect"
+					></el-autocomplete>
+				</el-col>
+			</el-row>
+		</el-dialog>
+		<el-autocomplete
+			class="inline-input"
+			v-model="state1"
+			:fetch-suggestions="querySearchtest"
+			placeholder="请输入内容"
+			@select="handleSelecttest"
+		></el-autocomplete>
 	</el-main>
 </el-container>
 </template>
@@ -54,9 +83,16 @@ export default {
 	name: 'TeachingTask',
 	data() {
 		return {
+			//侧栏显示、选中
 			menuIndex: '',
-			dataRange: '',
 			classType: [['classTheory', '理论课'], ['classExperimentA', '实验课 A类'], ['classExperimentB', '实验课 B类'], ['classGathered', '集中实习'], ['classInvestigate', '社会调查'], ['classSeparated', '分散实习'], ['classGraduate', '毕业设计指导']],
+			//筛选条件
+			filterDate: '',
+			filterName: '',
+			classList:['嵌入式','数集','模集'],
+			//各字段中文名
+			KeywordExperimentA: [['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
+			//原始数据与待显示数据，分页
 			classListExperimentA: [
 				{
 				classCode: '(2021-2022-2)-S0418053-3', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
@@ -180,34 +216,109 @@ export default {
 				},
 			],
 			displayItems: [],
-			classKeywordExperimentA: [['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
 			currentPage: 1,
 			pageSize: 10,
 			totalItems: 0,
-			classList:['嵌入式','数集','模集']
+			//dialog显示控制
+			showDialogUpload: false,
+			showDialogAdd: false,
+			//dialogAdd数据接受
+			dataInput: [],
+			restaurants: [],
+			state1: '',
 		}
 	},
 	methods: {
-		handleMenuChange(val) {
-			this.menuIndex = val
+		handleMenuSelect(key) {
+			this.menuIndex = key
 		},
-		getDisplayItems() {
+		updateData() {
+			//要求有menuIndex，进行axios读数据，准备数据
+			this.totalItems = this.classListExperimentA.length;
 			const start = (this.currentPage - 1) * this.pageSize
 			const end = start + this.pageSize
 			this.displayItems = this.classListExperimentA.slice(start, end)
-			//console.log(this.classListExperimentA.slice(start, end))
+		},
+		handleUpload() {
+			this.showDialogUpload = true
+		},
+		handleAdd() {
+			this.showDialogAdd = true
+		},
+		querySearch(index) {
+			return (queryString, cb) => {
+				var field = this.KeywordExperimentA[index][0]
+				var dataLogs = this.classListExperimentA.map( (obj) => {
+					return {
+						value : obj[field]
+					}
+				})
+				var datalogs2 = this.restaurants
+				var results
+				var results2
+				if (queryString) {
+					var filter1 = this.createFilter(field, queryString)
+					results =  dataLogs.filter(filter1)
+					//results =  dataLogs.filter(this.createFilter(field, queryString))
+				}
+				else {
+					results = dataLogs
+					results2 = dataLogs
+				}
+				// 调用 callback 返回建议列表的数据
+				cb(results);
+			}
+		},
+		createFilter(field, queryString) {
+			return (str) => {
+				return (str.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
+			};
+		},
+		handleSelect(item) {
+			console.log(item);
+		},
+		loadAll() {
+			return [
+				{ classCode: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
+				{ classCode: "Hot shoney 首尔炸鸡（仙霞路）", address: "上海市长宁区淞虹路661号" },
+				{ classCode: "新旺角茶餐厅", address: "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+				{ classCode: "泷千家(天山西路店)", address: "天山西路438号" },
+			]
+		},
+		handleSelecttest(item) {
+			console.log(item);
+		},
+		querySearchtest(queryString, cb) {
+			var restaurants = this.restaurants;
+			var results = queryString ? restaurants.filter(this.createFiltertest(queryString)) : restaurants;
+			// 调用 callback 返回建议列表的数据
+			cb(results);
+		},
+		createFiltertest(queryString) {
+			return (restaurant) => {
+			return (restaurant[classCode].toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
+			};
 		},
 	},
 	beforeCreated() {
 		//占位
 	},
 	created() {
-		this.menuIndex = '';
-		this.totalItems = this.classKeywordExperimentA.length;
-		this.getDisplayItems()
+		//占位
+		this.menuIndex = '0'
+		this.updateData()
+		this.dataInput = new Array(this.KeywordExperimentA.length)
+
 	},
 	mounted() {
 		//占位
+		this.restaurants = this.loadAll();
+	},
+	watch: {
+		menuIndex() {
+			this.updateData()
+			this.dataInput = new Array(this.KeywordExperimentA.length)
+		}
 	}
 }
 </script>

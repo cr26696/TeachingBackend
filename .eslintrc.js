@@ -23,10 +23,9 @@ module.exports = {
 		'no-undef': 'warn',
 		'prefer-const': 'warn',
 		// 空格格式
-		'no-tabs': 'off',
 		indent: ['off','tab'],
+		'no-tabs': 'off',
 		'no-extra-parens': 'off',
-		
 		'space-before-function-paren': 'off',
 		'no-irregular-whitespace': 'warn',
 		'no-trailing-spaces': 'off',
@@ -37,6 +36,8 @@ module.exports = {
 		'object-curly-spacing': 'off',
 		'padded-blocks': 'off',
 		'space-in-parens': 'warn',
+		'arrow-spacing': 'warn',
+		'keyword-spacing': 'warn',
 		// 结尾符号
 		semi: 'off',
 		quotes: 'off',
@@ -44,8 +45,10 @@ module.exports = {
 		'comma-dangle': 'off',
 		'object-property-newline': 'off',
 		'object-curly-newline': 'off',
+		'brace-style': 'off',
 		// 命名规范
 		camelcase: "warn",
-		'vue/multi-word-component-names': 'warn'
+		'vue/multi-word-component-names': 'warn',
+		'quote-props': 'warn'
 	}
 }
