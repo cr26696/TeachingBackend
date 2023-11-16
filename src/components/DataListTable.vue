@@ -80,4 +80,64 @@ export default {
 }
 </script>
 <style scoped lang="less">
+.el-table {
+	width: 100%;
+	/deep/.el-table__header {
+		height: 30px !important;
+		div.cell {
+			height: 20px;
+		}
+	}
+	/deep/.el-table__body-wrapper {
+		.el-table__body {
+			/* 滚动条整体高 必须项 */
+			border-right: none;
+			overflow-x: scroll;
+			overflow-x: overlay;
+			overflow-y: scroll;
+			/* overflow-y为了不出现水平滚动条*/
+			border: 1px solid #ddd;
+			//padding-bottom: 150px;
+			div.cell {
+				height: 20px;
+			}
+		}
+		&::after {
+			content: '';
+			position: absolute;
+			z-index: -1;
+			width: calc(100% - 80px);
+			left: 40px;
+			bottom: -30px;
+			height: 20px;
+			background: #666;
+		}
+		&::-webkit-scrollbar {
+			width: 5px;
+			/* 滚动条的宽高 必须项 */
+			height: 20px;
+			top: 50px;
+		}
+		&::-webkit-scrollbar-track {
+			background-color: #409eff;
+		}
+		&::-webkit-scrollbar-track-piece {
+			&:start {
+				background: orange;
+				margin-left: 40px;
+			}
+			&:end {
+				background: orange;
+				margin-right: 40px;
+			}
+		}
+		&::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			/*滚动条的圆角*/
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+			background-color: #409eff;
+			/*滚动条的背景颜色*/
+		}
+	}
+}
 </style>

@@ -1,37 +1,33 @@
 <template>
 	<el-container>
 		<el-aside id="workload-side">
-			<el-menu :default-openeds="['1-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
-				<el-menu-item index="1"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
+			<el-menu ref="subMenu1" :default-openeds="['2-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
+				<el-menu-item index="1"><i class="circle circle-orange"></i><span>理论课</span></el-menu-item>
 				<el-submenu index="2-1">
-					<template slot="title"><i class="circle-red"></i><span>实验课</span></template>
-					<el-menu-item index="2"><span>A类</span></el-menu-item>
-					<el-menu-item index="3"><span>B类</span></el-menu-item>
-				</el-submenu>
-				<el-menu-item index="4" style="text-wrap"><i class="circle-blue"></i><span
+					<template slot="title"><i class="circle circle-red"></i><span>实验课</span></template>
+				<el-menu-item index="2"><span>A类</span></el-menu-item>
+				<el-menu-item index="3"><span>B类</span></el-menu-item>
+			</el-submenu>
+				<el-menu-item index="4" style="text-wrap"><i class="circle circle-blue"></i><span
 						class="twoline">指导课程设计<br>集中性实习</span></el-menu-item>
-				<el-menu-item index="5"><i class="circle-purple"></i><span>指导社会调查</span></el-menu-item>
-				<el-menu-item index="6"><i class="circle-green"></i><span
-						class="twoline">指导分散性实习<br>工程设计训练</span></el-menu-item>
-				<el-menu-item index="7"><i class="circle-grey"></i><span>指导毕业设计</span></el-menu-item>
+				<el-menu-item index="5"><i class="circle circle-purple"></i><span>指导社会调查</span></el-menu-item>
+				<el-menu-item index="6"><i class="circle circle-green"></i><span
+				class="twoline">指导分散性实习<br>工程设计训练</span></el-menu-item>
+				<el-menu-item index="7"><i class="circle circle-grey"></i><span>指导毕业设计</span></el-menu-item>
 			</el-menu>
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
 			<p class="text_class_type" v-if="this.menuIndex !== ''">{{ this.classType[this.menuIndex][1] }}</p>
 			<el-dropdown trigger="click">
-				<span class="el-dropdown-link">
-					下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-				</span>
+				<span class="el-dropdown-link">下拉菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
 				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item v-for="(item, index) in classList" :key="index"
-						@click.native="handleDropdownClick(item)">
-						{{ item }}
+					<el-dropdown-item v-for="(item, index) in classList" :key="index" @click.native="handleDropdownClick(item)">
+							{{ item }}
 					</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<el-date-picker v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期"
-				end-placeholder="结束日期">
-			</el-date-picker><button>确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
+			<el-date-picker v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+			<button>确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
 			<DataListTable 
 				:isDisplayed="this.menuIndex !== ''" 
 				:selectWidth="30" 
@@ -255,8 +251,8 @@ export default {
 			const {...query} = this.$router.currentRoute.query
 			this.$router.replace({query: {...query, key}})
 		},
-		handleMenuClose() {
-			console.log('不要关闭')
+		handleMenuClose(key, keyPath) {
+			this.$refs.subMenu1.open(keyPath);
 		},
 		updateData() {
 			//要求有menuIndex，进行axios读数据，准备数据
@@ -323,7 +319,6 @@ export default {
 .el-container {
 	position: relative;
 	height: 100%;
-
 	#workload-side {
 		width: 15% !important;
 		min-width: 200px;
@@ -331,44 +326,76 @@ export default {
 		height: 100%;
 		min-height: 500px;
 		background-color: white;
-
-		.el-menu-item {
-			padding: 0px !important;
-			height: 60px !important;
-
-			&.is-active::before {
+		.el-menu{
+			//字体，不含位置
+			.twoline{
+				line-height: 1;
+			}
+			span{
+				font-size: 14px;
+				font-weight: 500;
+				color: rgba(130, 145, 169, 1);
+			}
+			//菜单项自适应flex
+			/deep/.el-submenu__title, .el-menu-item{
+				display: flex;
+				align-items: center;
+			}
+			>.el-menu-item {
+				padding: 0px !important;
+				height: 60px !important;
+				>i {
+					position: relative;
+					margin-left: 40px;
+					margin-right: 6px;
+				}
+			}
+			/deep/.el-submenu__title{
+				padding: 0px !important;
+				height: 60px !important;
+				>i {
+					position: relative;
+					margin-left: 40px;
+					margin-right: 6px;
+				}
+				>span{
+					position: relative;
+					top: 0px!important;
+					left: 0px!important;
+				}
+			}
+			/deep/.el-menu.el-menu--inline{
+				>li{
+						display: flex;
+					align-items: center;
+				}
+				li::before{
+					content: "";
+					position: relative;
+					margin-right: 70px;
+				}
+				span{
+					position: relative;
+					background-color: white;
+					width: 100%;
+					height: 30px;
+					border-radius: 6px;
+				}
+			}
+			.el-icon-arrow-down::before{
 				content: '';
+			}
+			.el-menu-item.is-active::before {
+				content: '';
+				position: absolute;
 				height: 100%;
 				width: 6px;
 				left: 0px;
-				position: absolute;
 				border-radius: 0px 5px 5px 0px;
 				background: rgba(0, 129, 255, 1);
 			}
 		}
-
-		/deep/ .el-submenu__title {
-			padding: 0px !important;
-		}
-
-		span {
-			position: relative;
-			left: 50px;
-			top: 20px;
-			font-size: 14px;
-			font-weight: 500;
-			line-height: 20px;
-			color: rgba(130, 145, 169, 1);
-			text-align: left;
-			vertical-align: top;
-			white-space: pre-wrap;
-		}
-
-		.twoline {
-			top: 11px !important;
-		}
 	}
-
 	.subMainContainer {
 		>span {
 			margin-top: 36px;
@@ -381,87 +408,15 @@ export default {
 			margin-left: 120px;
 			border-radius: 6px;
 			background: rgba(255, 255, 255, 1);
-
 			.el-dropdown-selfdefine {
 				display: flex;
 				align-items: center;
 				width: 130px;
 				height: 40px;
 				padding-left: 8px;
-
 				i:first-child {
 					position: relative;
 					left: 30px;
-				}
-			}
-		}
-		.el-table {
-			width: 100%;
-
-			/deep/.el-table__header {
-				height: 30px !important;
-
-				div.cell {
-					height: 20px;
-				}
-			}
-
-			/deep/.el-table__body-wrapper {
-				.el-table__body {
-					/* 滚动条整体高 必须项 */
-					border-right: none;
-					overflow-x: scroll;
-					overflow-x: overlay;
-					overflow-y: scroll;
-					/* overflow-y为了不出现水平滚动条*/
-					border: 1px solid #ddd;
-
-					//padding-bottom: 150px;
-					div.cell {
-						height: 20px;
-					}
-				}
-
-				&::after {
-					content: '';
-					position: absolute;
-					z-index: -1;
-					width: calc(100% - 80px);
-					left: 40px;
-					bottom: -30px;
-					height: 20px;
-					background: #666;
-				}
-
-				&::-webkit-scrollbar {
-					width: 5px;
-					/* 滚动条的宽高 必须项 */
-					height: 20px;
-					top: 50px;
-				}
-
-				&::-webkit-scrollbar-track {
-					background-color: #409eff;
-				}
-
-				&::-webkit-scrollbar-track-piece {
-					&:start {
-						background: orange;
-						margin-left: 40px;
-					}
-
-					&:end {
-						background: orange;
-						margin-right: 40px;
-					}
-				}
-
-				&::-webkit-scrollbar-thumb {
-					border-radius: 10px;
-					/*滚动条的圆角*/
-					-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-					background-color: #409eff;
-					/*滚动条的背景颜色*/
 				}
 			}
 		}
@@ -487,94 +442,16 @@ export default {
 }
 
 /*图标-------------------------------------------*/
-.circle-orange {
-	position: absolute;
-	top: 24px;
-	left: 35px;
+.circle {
+	display: block;
 	width: 10px;
 	height: 10px;
 	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(255, 138, 72, 1);
 }
-
-.circle-red {
-	position: absolute;
-	top: 24px;
-	left: 35px;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(255, 61, 87, 1);
-}
-
-.circle-blue {
-	position: absolute;
-	top: 24px;
-	left: 35px;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(34, 204, 226, 1);
-}
-
-.circle-purple {
-	position: absolute;
-	top: 24px;
-	left: 35px;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(240, 12, 225, 1);
-}
-
-.circle-green {
-	position: absolute;
-	top: 24px;
-	left: 35px;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(9, 182, 109, 1);
-}
-
-.circle-grey {
-	position: absolute;
-	top: 25px;
-	left: 35px;
-	width: 10px;
-	height: 10px;
-	border-radius: 5px;
-	margin-right: 5px;
-	opacity: 1;
-	background: rgba(130, 145, 169, 1);
-}
+.circle-orange {background: rgba(255, 138, 72, 1);}
+.circle-red {background: rgba(255, 61, 87, 1);}
+.circle-blue {background: rgba(34, 204, 226, 1);}
+.circle-purple {background: rgba(240, 12, 225, 1);}
+.circle-green {background: rgba(9, 182, 109, 1);}
+.circle-grey {background: rgba(130, 145, 169, 1);}
 </style>
-<style lang="less">
-.el-submenu__title {
-	height: 60px !important;
-
-	span {
-		position: absolute;
-		left: 50px;
-		top: 20px;
-		font-size: 14px;
-		font-weight: 500;
-		letter-spacing: 0px;
-		line-height: 20px;
-		color: rgba(130, 145, 169, 1);
-		text-align: left;
-		vertical-align: top;
-
-	}
-
-}</style>
