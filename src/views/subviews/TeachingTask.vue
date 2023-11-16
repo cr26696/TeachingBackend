@@ -247,9 +247,12 @@ export default {
 		
 	},
 	methods: {
-		handleMenuSelect(key) {
-			const {...query} = this.$router.currentRoute.query
-			this.$router.replace({query: {...query, key}})
+		handleMenuSelect(subMenuIndex) {
+			if (subMenuIndex !== this.menuIndex) {
+				const {...query} = this.$router.currentRoute.query
+				this.$router.replace({query: {...query, subMenuIndex}})
+				this.menuIndex = this.$route.query.subMenuIndex
+			}
 		},
 		handleMenuClose(key, keyPath) {
 			this.$refs.subMenu1.open(keyPath);
@@ -304,15 +307,6 @@ export default {
 		else this.menuIndex = tempIndex 
 		this.updateData()
 		this.addDataForm = new Array(this.classMetaInfoLength)
-	},
-	beforeRouteLeave(to,from,next) {
-		if (to.path !== from.path) {
-			if (from.path === '/mainview/teachingTask') {
-				const newQuery = JSON.parse(JSON.stringify(to.query)) // 先拷贝一个一模一样的对象
-				delete newQuery.subMenuIndex //再删除page
-				this.$router.replace({ query: newQuery }) //再把新的替换了
-			}
-		}
 	}
 }
 </script>

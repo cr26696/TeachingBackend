@@ -108,7 +108,7 @@ router.beforeEach(async (to, from, next) => {
 		to.name !== 'login'
 	) next({ name: 'login' })
 	// 将用户重定向到登录页面
-	else if (to.path === from.path) {
+	else if (to.fullPath === from.fullPath) {
 		console.log('不要重复跳转'); 
 	}
 	else next() 
