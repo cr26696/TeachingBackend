@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-aside id="workload-side">
+		<el-aside>
 			<el-menu ref="subMenu1" :default-openeds="['2-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
 				<el-menu-item index="1"><i class="circle circle-orange"></i><span>理论课</span></el-menu-item>
 				<el-submenu index="2-1">
@@ -319,25 +319,26 @@ export default {
 .el-container {
 	position: relative;
 	height: 100%;
-	#workload-side {
+	.el-aside {
 		width: 15% !important;
 		min-width: 200px;
 		max-width: 220px;
 		height: 100%;
 		min-height: 500px;
 		background-color: white;
-		.el-menu{
-			//字体，不含位置
-			.twoline{
-				line-height: 1;
-			}
+		>.el-menu{
+			//最外层menu
 			span{
+				//字体，不含位置
 				font-size: 14px;
 				font-weight: 500;
 				color: rgba(130, 145, 169, 1);
 			}
-			//菜单项自适应flex
-			/deep/.el-submenu__title, .el-menu-item{
+			.twoline{
+				line-height: 1;
+			}
+			//菜单项,子菜单内容项自适应flex排列
+			/deep/.el-menu-item, .el-submenu__title {
 				display: flex;
 				align-items: center;
 			}
@@ -350,42 +351,49 @@ export default {
 					margin-right: 6px;
 				}
 			}
-			/deep/.el-submenu__title{
-				padding: 0px !important;
-				height: 60px !important;
-				>i {
-					position: relative;
-					margin-left: 40px;
-					margin-right: 6px;
-				}
-				>span{
-					position: relative;
-					top: 0px!important;
-					left: 0px!important;
-				}
-			}
-			/deep/.el-menu.el-menu--inline{
-				>li{
-						display: flex;
+			>.el-submenu{
+				background-color: wheat;
+				/deep/.el-submenu__title{
+					display: flex;
 					align-items: center;
+					padding: 0px !important;
+					height: 60px !important;
+					>i {
+						position: relative;
+						margin-left: 40px;
+						margin-right: 6px;
+					}
+					>span{
+						position: relative;
+						top: 0px!important;
+						left: 0px!important;
+					}
 				}
-				li::before{
-					content: "";
-					position: relative;
-					margin-right: 70px;
-				}
-				span{
-					position: relative;
-					background-color: white;
-					width: 100%;
-					height: 30px;
-					border-radius: 6px;
+					/deep/.el-menu{
+					background: none;
+					background-color: red;
+					>.el-menu-item{
+						display: flex;
+						align-items: center;
+						::before{
+							content: "";
+							position: relative;
+							margin-right: 70px;
+						}
+					}
+					span{
+						position: relative;
+						background-color: white;
+						width: 100%;
+						height: 30px;
+						border-radius: 6px;
+					}
 				}
 			}
 			.el-icon-arrow-down::before{
 				content: '';
 			}
-			.el-menu-item.is-active::before {
+			>.el-menu-item.is-active::before {
 				content: '';
 				position: absolute;
 				height: 100%;
@@ -393,6 +401,15 @@ export default {
 				left: 0px;
 				border-radius: 0px 5px 5px 0px;
 				background: rgba(0, 129, 255, 1);
+			}
+			.el-submenu.is-active.is-opened::before {
+				content: "1";
+				position: absolute;
+				height: 100%;
+				width: 6px;
+				left: 0px;
+				border-radius: 0px 5px 5px 0px;
+				background: rgb(232, 67, 149);
 			}
 		}
 	}
