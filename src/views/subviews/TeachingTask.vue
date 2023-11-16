@@ -273,8 +273,20 @@ export default {
 				const tempArr = targetArr.map((obj) => {
 					return { value: obj[field] }
 				})
+<<<<<<< HEAD
+				const datalogsUnique = this.getArrayUnique(dataLogs, 'value')
+				let suggestions = null
+				if (queryString) {
+					const filter1 = this.createFilter(field, queryString)
+					suggestions = datalogsUnique.filter(filter1)
+				} else {
+					suggestions = datalogsUnique
+				}
+				// 调用 callback 返回建议列表的数据
+=======
 				const uniqueArr = this.getArrayUnique(tempArr, 'value')
 				const suggestions = (queryString) ? uniqueArr.filter(this.createFilter(field, queryString)) : uniqueArr;
+>>>>>>> 748abeeb805b1c2f23891679860ea7e693e49682
 				cb(suggestions);
 			}
 		},
