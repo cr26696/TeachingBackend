@@ -28,7 +28,14 @@ export default {
   data() {
     return {
     }
-  }
+  },
+	beforeRouteLeave(to,from,next) {
+		console.log("SSto:")
+		console.log(to)
+		console.log("SSfrom:")
+		console.log(from)
+		next()
+	}
 }
 </script>
 

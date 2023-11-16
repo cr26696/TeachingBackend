@@ -1,19 +1,19 @@
 <template>
 	<el-container>
 		<el-aside id="workload-side">
-			<el-menu :default-openeds="['1-1']" :default-active="menuIndex" @select="handleMenuSelect">
-				<el-menu-item index="0"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
-				<el-submenu index="1-1">
+			<el-menu :default-openeds="['1-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
+				<el-menu-item index="1"><i class="circle-orange"></i><span>理论课</span></el-menu-item>
+				<el-submenu index="2-1">
 					<template slot="title"><i class="circle-red"></i><span>实验课</span></template>
-					<el-menu-item index="1"><span>A类</span></el-menu-item>
-					<el-menu-item index="2"><span>B类</span></el-menu-item>
+					<el-menu-item index="2"><span>A类</span></el-menu-item>
+					<el-menu-item index="3"><span>B类</span></el-menu-item>
 				</el-submenu>
-				<el-menu-item index="3" style="text-wrap"><i class="circle-blue"></i><span
+				<el-menu-item index="4" style="text-wrap"><i class="circle-blue"></i><span
 						class="twoline">指导课程设计<br>集中性实习</span></el-menu-item>
-				<el-menu-item index="4"><i class="circle-purple"></i><span>指导社会调查</span></el-menu-item>
-				<el-menu-item index="5"><i class="circle-green"></i><span
+				<el-menu-item index="5"><i class="circle-purple"></i><span>指导社会调查</span></el-menu-item>
+				<el-menu-item index="6"><i class="circle-green"></i><span
 						class="twoline">指导分散性实习<br>工程设计训练</span></el-menu-item>
-				<el-menu-item index="6"><i class="circle-grey"></i><span>指导毕业设计</span></el-menu-item>
+				<el-menu-item index="7"><i class="circle-grey"></i><span>指导毕业设计</span></el-menu-item>
 			</el-menu>
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
@@ -32,20 +32,20 @@
 			<el-date-picker v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期"
 				end-placeholder="结束日期">
 			</el-date-picker><button>确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
-			<el-table :data="displayItems" v-if="this.menuIndex !== ''">
-				<el-table-column type="selection" width="30">
-				</el-table-column>
-				<el-table-column v-for="(val, key, index) in displayItems[0]" :prop="key" :key="index" :label="classMetaInfo[index][1]"
-					:width="flexColumnWidth(classMetaInfo[index][0], displayItems)"></el-table-column>
-			</el-table>
+			<DataListTable 
+				:isDisplayed="this.menuIndex !== ''" 
+				:selectWidth="30" 
+				:itemsToDisplay="displayItems" 
+				:fieldInfos="classMetaInfo" 
+			></DataListTable>
 			<button @click="handleUpload">上传</button><button @click="handleAdd">添加</button><button>👇</button>
 			<el-pagination
 				@current-change="handlePaginationChange"
 				:current-page="currentPage"
-				:pager-count="3"
 				:page-size="pageSize"
 				:total="totalItem"
 				layout="prev, pager, next">
+				<!-- :pager-count="3"这个属性需要为5-21 -->
 			</el-pagination>
 			<!-- 两个对话框 -------------------------------->
 			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%">
@@ -72,8 +72,12 @@
 	</el-container>
 </template>
 <script>
+import DataListTable from '@/components/DataListTable.vue'
 export default {
 	name: 'TeachingTask',
+	components:{
+		DataListTable
+	},
 	data() {
 		return {
 			//侧栏显示、选中
@@ -101,9 +105,7 @@ export default {
 			filterDate: '',
 			filterName: '',
 			classList: ['嵌入式', '数集', '模集'],
-			//各字段中文名
-			KeywordExperimentA: [['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-			//原始数据与待显示数据，分页
+			//原始数据，分页
 			classListExperimentA: [
 				{
 					classCode: '(2021-2022-2)-S0418053-3', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
@@ -227,8 +229,7 @@ export default {
 				},
 			],
 			currentPage: 1,
-			pageSize: 10,
-			totalItem: 0,
+			pageSize: 5,
 			//dialog显示控制
 			showDialogUpload: false,
 			showDialogAdd: false,
@@ -245,15 +246,21 @@ export default {
 		classMetaInfo() {
 			return this.classMetaInfos[this.menuIndex]
 		},
-		classMetaInfoLength() { return this.classMetaInfo.length }
+		classMetaInfoLength() { return this.classMetaInfo.length },
+		totalItem() { return this.classListExperimentA.length },
+		
 	},
 	methods: {
 		handleMenuSelect(key) {
-			this.menuIndex = key
+			const {...query} = this.$router.currentRoute.query
+			this.$router.replace({query: {...query, key}})
+		},
+		handleMenuClose() {
+			console.log('不要关闭')
 		},
 		updateData() {
 			//要求有menuIndex，进行axios读数据，准备数据
-			this.totalItem = this.classListExperimentA.length;
+			
 		},
 		handleUpload() {
 			this.showDialogUpload = true
@@ -284,66 +291,9 @@ export default {
 			const res = new Map();
 			return arr.filter((arr) => !res.has(arr[field]) && res.set(arr[field], 1))
 		},
-		flexColumnWidth(str, arr1, flag = 'max') {
-			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
-			// flag为可选值，可不传该参数,传参时可选'max'或'equal',默认为'max'
-			// flag为'max'则设置列宽适配该列中最长的内容,flag为'equal'则设置列宽适配该列中第一行内容的长度。
-			str = str + ''
-			let columnContent = ''
-			if (!arr1 || !arr1.length || arr1.length === 0 || arr1 === undefined) return
-			if (!str || !str.length || str.length === 0 || str === undefined) return
-			if (flag === 'equal') {
-				// 获取该列中第一个不为空的数据(内容)
-				for (let i = 0; i < arr1.length; i++) {
-					if (arr1[i][str].length > 0) {
-						// console.log('该列数据[0]:', arr1[0][str])
-						columnContent = arr1[i][str]
-						break
-					}
-				}
-			} else {
-				// 获取该列中最长的数据(内容)
-				let index = 0
-				for (let i = 0; i < arr1.length; i++) {
-					if (arr1[i][str] === null) {
-						return
-					}
-					// eslint-disable-next-line
-					const now_temp = arr1[i][str] + ''
-					// eslint-disable-next-line
-					const max_temp = arr1[index][str] + ''
-					// eslint-disable-next-line
-					if (now_temp.length > max_temp.length) {
-						index = i
-					}
-				}
-				columnContent = arr1[index][str]
-			}
-			// console.log('该列数据[i]:', columnContent)
-			// 以下分配的单位长度可根据实际需求进行调整
-			let flexWidth = 0
-			for (const char of columnContent) {
-				if ((char >= 'A' && char <= 'Z') || (char >= 'a' && char <= 'z')) {
-					// 如果是英文字符，为字符分配8个单位宽度
-					flexWidth += 8
-				} else if (char >= '\u4e00' && char <= '\u9fa5') {
-					// 如果是中文字符，为字符分配15个单位宽度
-					flexWidth += 15
-				} else {
-					// 其他种类字符，为字符分配8个单位宽度
-					flexWidth += 8
-				}
-			}
-			if (flexWidth < 80) {
-				// 设置最小宽度
-				flexWidth = 80
-			}
-			// if (flexWidth > 250) {
-			//   // 设置最大宽度
-			//   flexWidth = 250
-			// }
-			return flexWidth + 'px'
-		},
+		handlePaginationChange(val) {
+			this.currentPage = val
+		}
 	},
 	watch: {
 		menuIndex() {
@@ -351,13 +301,20 @@ export default {
 			this.addDataForm = new Array(this.classMetaInfoLength)
 		}
 	},
-	beforeCreated() { },
 	created() {
-		this.menuIndex = '0'
+		const tempIndex = this.$router.currentRoute.query.subMenuIndex
+		if (tempIndex === undefined) this.menuIndex = '1'
+		else this.menuIndex = tempIndex 
 		this.updateData()
 		this.addDataForm = new Array(this.classMetaInfoLength)
 	},
-	mounted() { },
+	beforeRouteLeave(to,from,next) {
+		// eslint-disable-next-line
+		let newQuery = JSON.parse(JSON.stringify(to.query)) // 先拷贝一个一模一样的对象
+		delete newQuery.subMenuIndex //再删除page
+		this.$router.replace({ query: newQuery }) //再把新的替换了
+		next()
+	}
 }
 </script>
 
@@ -510,7 +467,7 @@ export default {
 		.el-pagination{
 			float: right;
 			margin-top: 24px!important;
-			margin-right: calc((100% - 1610px) / 2)!important;
+		
 		}
 	}
 

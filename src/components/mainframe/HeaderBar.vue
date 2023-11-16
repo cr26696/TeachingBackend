@@ -4,7 +4,7 @@
     <span id="t_welcome">欢迎登陆教学评估小助手后台应用系统</span>
     <input type="text" name="" id="" placeholder='请输入想要查询内容...'>
     <div id="spliter"></div>
-    <button id="avatar" style="float: right;">退出</button>
+    <button id="avatar" style="float: right;" @click="logout">退出</button>
   </div>
 </template>
 
@@ -13,6 +13,12 @@ export default {
   name: 'HeaderBar',
   data () {
     return {
+    }
+  },
+  methods: {
+    logout() {
+      window.localStorage.setItem("isAuthenticated","false")
+      this.$router.push('/loginView')
     }
   }
 }

@@ -40,6 +40,7 @@ module.exports = {
 		'keyword-spacing': 'warn',
 		'no-mixed-spaces-and-tabs': 'warn',
 		'semi-spacing': 'warn',
+		'block-spacing': 'warn',
 		// 结尾符号
 		semi: 'off',
 		quotes: 'off',
