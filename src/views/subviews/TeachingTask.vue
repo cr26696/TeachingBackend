@@ -306,11 +306,13 @@ export default {
 		this.addDataForm = new Array(this.classMetaInfoLength)
 	},
 	beforeRouteLeave(to,from,next) {
-		// eslint-disable-next-line
-		let newQuery = JSON.parse(JSON.stringify(to.query)) // 先拷贝一个一模一样的对象
-		delete newQuery.subMenuIndex //再删除page
-		this.$router.replace({ query: newQuery }) //再把新的替换了
-		next()
+		if (to.path !== from.path) {
+			if (from.path === '/mainview/teachingTask') {
+				const newQuery = JSON.parse(JSON.stringify(to.query)) // 先拷贝一个一模一样的对象
+				delete newQuery.subMenuIndex //再删除page
+				this.$router.replace({ query: newQuery }) //再把新的替换了
+			}
+		}
 	}
 }
 </script>

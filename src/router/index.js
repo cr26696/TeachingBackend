@@ -14,19 +14,19 @@ import Allachi from '@/views/subviews/subpage/Allachi.vue'
 
 let isAuthenticated = false
 
-// 修复重复跳转同一个路由地址报错
-// 获取原型对象push函数
-const originalPush = VueRouter.prototype.push
-// 获取原型对象replace函数
-const originalReplace = VueRouter.prototype.replace
-// 修改原型对象中的push函数
-VueRouter.prototype.push = function push(location) {
-return originalPush.call(this , location).catch(err => err)
-}
-// 修改原型对象中的replace函数
-VueRouter.prototype.replace = function replace(location) {
-return originalReplace.call(this , location).catch(err => err)
-}
+// // 修复重复跳转同一个路由地址报错
+// // 获取原型对象push函数
+// const originalPush = VueRouter.prototype.push
+// // 获取原型对象replace函数
+// const originalReplace = VueRouter.prototype.replace
+// // 修改原型对象中的push函数
+// VueRouter.prototype.push = function push(location) {
+// return originalPush.call(this , location).catch(err => console.log(err))
+// }
+// // 修改原型对象中的replace函数
+// VueRouter.prototype.replace = function replace(location) {
+// return originalReplace.call(this , location).catch(err => console.log(err))
+// }
 
 Vue.use(VueRouter)
 
@@ -97,9 +97,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-	// console.log(from)
-	// console.log(to)
-	// console.log('----------------------------')
+	console.log(from)
+	console.log(to)
+	console.log('----------------------------')
 	isAuthenticated = window.localStorage.isAuthenticated === 'true'
 	if (
 		// 检查用户是否已登录
@@ -108,10 +108,10 @@ router.beforeEach(async (to, from, next) => {
 		to.name !== 'login'
 	) next({ name: 'login' })
 	// 将用户重定向到登录页面
-	else {
-		//if (to.path === from.path) { console.log('不要重复跳转'); return }
-		next() 
+	else if (to.path === from.path) {
+		console.log('不要重复跳转'); 
 	}
+	else next() 
 })
 
 export default router
