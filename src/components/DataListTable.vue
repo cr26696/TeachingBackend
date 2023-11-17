@@ -21,6 +21,17 @@ export default {
 		marginLeft: Number,
 		marginRight: Number
 	},
+	computed: {
+		cssVar() {
+			return {
+				'--scroll-marginLeft': this.marginLeft + 'px',
+				'--scroll-marginRight': this.marginRight + 'px'
+			}
+		}
+	},
+	mounted() {
+		console.log('dataList mounted, marginLeft:' + this.marginLeft + ', marginRight:' + this.marginRight)
+	},
 	methods: {
 		flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
@@ -83,14 +94,6 @@ export default {
 			return flexWidth + 'px'
 		},
 	},
-	computed:{
-		cssVar() {
-			return {
-				'--scroll-marginLeft' : this.marginLeft + 'px',
-				'--scroll-marginRight' : this.marginRight + 'px'
-			}
-		}
-	}
 }
 </script>
 <style scoped lang="less">

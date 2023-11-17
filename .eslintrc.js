@@ -42,6 +42,7 @@ module.exports = {
 		'no-mixed-spaces-and-tabs': 'warn',
 		'semi-spacing': 'warn',
 		'block-spacing': 'warn',
+		'space-infix-ops': 'warn',
 		// 结尾符号
 		semi: 'off',
 		quotes: 'off',
