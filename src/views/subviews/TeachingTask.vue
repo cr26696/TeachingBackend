@@ -34,21 +34,19 @@
 				:itemsToDisplay="displayItems" 
 				:fieldInfos="classMetaInfo" 
 			></DataListTable>
-			<div class="flex-display">
-				<div class="buttons-warper">
-					<button @click="handleUpload">上传</button>
-					<button @click="handleAdd">添加</button>
-					<button @click="handleDownload">下载</button>
-				</div>
-				<el-pagination
-					@current-change="handlePaginationChange"
-					:current-page="currentPage"
-					:page-size="pageSize"
-					:total="totalItem"
-					layout="prev, pager, next">
-					<!-- :pager-count="3"这个属性需要为5-21 -->
-				</el-pagination>
+			<div class="buttons-warper transform-leftcenter">
+				<button @click="handleUpload">上传</button>
+				<button @click="handleAdd">添加</button>
+				<button @click="handleDownload">下载</button>
 			</div>
+			<el-pagination class="transform-leftcenter"
+				@current-change="handlePaginationChange"
+				:current-page="currentPage"
+				:page-size="pageSize"
+				:total="totalItem"
+				layout="prev, pager, next">
+				<!-- :pager-count="3"这个属性需要为5-21 -->
+			</el-pagination>
 			<!-- 两个对话框 -------------------------------->
 			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%">
 				<el-upload class="upload-demo" drag action="" multiple>
@@ -358,7 +356,6 @@ export default {
 					margin-right: 6px;
 				}
 			}
-
 			>.el-submenu{
 				position: relative;
 				background: none;
@@ -467,16 +464,16 @@ export default {
 				}
 			}
 		}
-		>div.flex-display{
-			justify-content: space-between;
-			top: -40px;
-			>div.buttons-warper{
+		div.buttons-warper{
+			position: relative;
+			top: -10px;
+			float: left;
 				button{
 					position: relative;
 				}
-			}
 		}
 		.el-pagination{
+			top: -10px;
 			float: right;
 			position: relative;
 		}
@@ -489,6 +486,15 @@ export default {
 	position: relative;
 	display: flex;
 	align-items: center;
+}
+.transform-center{
+	transform: translate(-50%,-50%);
+}
+.transform-topcenter{
+	transform: translatex(-50%);
+}
+.transform-leftcenter{
+	transform: translateY(-50%);
 }
 /*字体-------------------------------------------*/
 .text-wrap {

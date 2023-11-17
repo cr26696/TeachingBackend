@@ -82,6 +82,7 @@ export default {
 </script>
 <style scoped lang="less">
 .el-table {
+	position: relative;
 	width: 100%;
 	background: none;
 	/deep/.el-table__header {
@@ -126,13 +127,16 @@ export default {
 			background:none;
 			width: 100%;
 		}
+		&::-webkit-scrollbar-track-piece{
+			
+		}
 		&::-webkit-scrollbar-track-piece:start {
 				background: blue;
-				margin-left: 100%;
+				margin-left: 100px;
 		}
 		&::-webkit-scrollbar-track-piece:end {
 				background: white;
-				margin-right: 50px;
+				margin-right: 100px;
 		}
 		&::-webkit-scrollbar-thumb {
 			border-radius: 10px;
