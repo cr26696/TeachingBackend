@@ -8,8 +8,13 @@
         </el-row>
         <el-main class="content-container">
           <div id="rank-form"><span id="form-title">排名表格</span></div>
-          <div class="facultyinfo"></div>
+          <div class="facultyinfo">
+          <div id="info-font1">{{ facultyName }}</div>
+          <div id="info-font2">{{ facultyNumb }}</div>
+          <div id="info-font2">{{ facultyOrg }}</div>
+        </div>
           <el-button id="back-button"><span id="back-font">返回</span></el-button>
+          <div id="rank">全校排名 {{ rank }}</div>
         </el-main>
    </el-container>
 </template>
@@ -22,14 +27,26 @@ export default {
       download: require('@/assets/icon/download-square.png'),
       upload: require('@/assets/icon/upload-icon1.png'),
       download1: require('@/assets/icon/download-icon-grey.png'),
-      facultyInfo: [
-      ]
+      facultyName: '张显飞',
+      facultyNumb: '40285',
+      facultyOrg: '电子信息学院(微电子学院)',
+      rank: '17'
     }
   }
+  // methods: {
+  //   bodyScale (){
+  //     var deviceWidth = document.documentElement.clientWidth;
+  //     var scale = deviceWidth / 1920;
+  //     document.documentElement.style.zoom = scale;
+  //   },
+  //   resize(){
+  //     window.addEventListener("resize",this.bodyScale,false);
+  //   }
+  // }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 #download-button{
     position: absolute;
     top: 115px;
@@ -165,6 +182,38 @@ export default {
     top: 36px;
     width: 182px;
     height: 84px;
-    background-color: black;
+    /* background-color: black; */
+  }
+  #info-font1{
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0px;
+    line-height: 30px;
+    color: rgba(0, 0, 0, 1);
+  }
+  #info-font2{
+    /** 文本3 */
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0px;
+    line-height: 22px;
+    color: rgba(130, 145, 169, 1);
+  }
+  #rank{
+    position: absolute;
+    left: 34px;
+    bottom: 45px;
+    width: 140px;
+    height: 45px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 61, 87, 0.15);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0px;
+    line-height: 20px;
+    color: rgba(255, 0, 0, 1);
+    text-align: center;
+    vertical-align: top;
+    padding: 12px;
   }
 </style>
