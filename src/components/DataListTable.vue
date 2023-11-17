@@ -1,10 +1,9 @@
 <template>
-	<el-table :data="itemsToDisplay" v-if="isDisplayed">
+	<el-table v-if="isDisplayed" :data="itemsToDisplay" :style="cssVar">
 		<el-table-column type="selection" :width="selectWidth"></el-table-column>
 		<el-table-column v-for="(item, index) in fieldInfos" :prop="item[0]" :key="index" :label="item[1]"
 			:width="flexColumnWidth(item[0], itemsToDisplay)">
 		</el-table-column>
-
 	</el-table>
 </template>
 <script>
@@ -14,7 +13,9 @@ export default {
 		isDisplayed: Boolean,
 		selectWidth: Number,
 		itemsToDisplay: Array,
-		fieldInfos: Array
+		fieldInfos: Array,
+		marginLeft: Number,
+		marginRight: Number
 	},
 	methods: {
 		flexColumnWidth(str, arr1, flag = 'max') {
@@ -77,6 +78,14 @@ export default {
 			// }
 			return flexWidth + 'px'
 		},
+	},
+	computed:{
+		cssVar() {
+			return {
+				'--scroll-marginLeft' : this.marginLeft + 'px',
+				'--scroll-marginRight' : this.marginRight + 'px'
+			}
+		}
 	}
 }
 </script>
@@ -128,15 +137,15 @@ export default {
 			width: 100%;
 		}
 		&::-webkit-scrollbar-track-piece{
-			
+			border-radius: 8px;
 		}
 		&::-webkit-scrollbar-track-piece:start {
-				background: blue;
-				margin-left: 100px;
+				background: white;
+				margin-left: var(--scroll-marginLeft);
 		}
 		&::-webkit-scrollbar-track-piece:end {
 				background: white;
-				margin-right: 100px;
+				margin-right: var(--scroll-marginRight);
 		}
 		&::-webkit-scrollbar-thumb {
 			border-radius: 10px;

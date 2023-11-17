@@ -33,13 +33,15 @@
 				:selectWidth="30" 
 				:itemsToDisplay="displayItems" 
 				:fieldInfos="classMetaInfo" 
+				:margin-left="scrollMargin[0]"
+				:margin-right="scrollMargin[1]"
 			></DataListTable>
-			<div class="buttons-warper transform-leftcenter">
+			<div ref="scrollButtons" class="buttons-warper transform-leftcenter">
 				<button @click="handleUpload">上传</button>
 				<button @click="handleAdd">添加</button>
 				<button @click="handleDownload">下载</button>
 			</div>
-			<el-pagination class="transform-leftcenter"
+			<el-pagination ref="scrollPagination" class="transform-leftcenter"
 				@current-change="handlePaginationChange"
 				:current-page="currentPage"
 				:page-size="pageSize"
@@ -235,6 +237,7 @@ export default {
 			showDialogAdd: false,
 			//dialogAdd数据接受
 			addDataForm: [],
+			scrollMargin: [20,20],
 		}
 	},
 	computed: {
@@ -314,6 +317,12 @@ export default {
 		else this.menuIndex = tempIndex 
 		this.updateData()
 		this.addDataForm = new Array(this.classMetaInfoLength)
+	},
+	mounted() {
+		this.scrollMargin[0] = this.$refs.scrollButtons.clientWidth
+		this.scrollMargin[1] = this.$refs.scrollPagination.$el.clientWidth
+		console.log(this.scrollMargin[0])
+		console.log(this.scrollMargin[1])
 	}
 }
 </script>
