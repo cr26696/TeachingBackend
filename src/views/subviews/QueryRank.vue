@@ -1,5 +1,4 @@
 <template>
-<div>
   <el-container>
         <el-aside id="achievement-side">
             <el-menu :default-openeds="['1']">
@@ -9,13 +8,13 @@
                         <el-menu-item index="1-2" @click="com='AcademyRank'"><i id="iconred" class="el-icon-folder" style="color: red;"></i><span>学院排名</span></el-menu-item>
                     </el-submenu>
                 <el-menu-item index="2"><span class="maintitle">教学业绩考核</span></el-menu-item>
+                <el-menu-item index="3"><span class="maintitle">教学工作量统计</span></el-menu-item>
             </el-menu>
         </el-aside>
         <el-main id="achievement-main">
             <component :is="com"></component>
         </el-main>
     </el-container>
-</div>
 </template>
 
 <script>
@@ -82,13 +81,13 @@ export default {
 }
     
 }
-#achievement-main{
-    left: 232px;
-    position: absolute;
-    padding: 0 !important;
-    height: 1000px;
-    width: 1448px;
-}
+// #achievement-main{
+//     left: 232px;
+//     position: absolute;
+//     padding: 0 !important;
+//     height: 1000px;
+//     width: 1448px;
+// }
 // #achievement-side{
 //     width: 15% !important;
 //     min-width: 200px;
