@@ -97,9 +97,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-	console.log(from)
-	console.log(to)
-	console.log('----------------------------')
+	// console.log(from)
+	// console.log(to)
+	// console.log('----------------------------')
 	isAuthenticated = window.localStorage.isAuthenticated === 'true'
 	if (
 		// 检查用户是否已登录

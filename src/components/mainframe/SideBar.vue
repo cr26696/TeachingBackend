@@ -30,9 +30,8 @@ export default {
 	},
 	methods: {
 		routerGo(destinationPath) {
-			if (destinationPath === this.$router.currentRoute.path) {
-				// eslint-disable-next-line
-				return
+			if (destinationPath === this.$route.path) {
+				console.log('sideBar中routerGO已拦截重复跳转');
 			} else if (destinationPath === '/mainview/teachingTask') {
 				this.$router.push({
 					path: destinationPath,
@@ -40,7 +39,7 @@ export default {
 						subMenuIndex: '1'
 					}
 				})
-			} else this.$router.push(destinationPath)
+			} else this.$router.push({path : destinationPath})
 		},
 	},
 	mounted() {

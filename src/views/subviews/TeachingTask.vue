@@ -18,7 +18,7 @@
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
 			<p class="text_class_type" v-if="this.menuIndex !== ''">{{ this.classType[this.menuIndex][1] }}</p>
-			<el-dropdown trigger="click">
+			<el-dropdown name="filterClassName" trigger="click">
 				<span class="el-dropdown-link">下拉菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item v-for="(item, index) in classList" :key="index" @click.native="handleDropdownClick(item)">
@@ -26,8 +26,8 @@
 					</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<el-date-picker v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-			<button class="">确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
+			<el-date-picker name="filterDate" v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+			<button name="confirm" class="">确认</button><input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"><button name="search">🔍</button>
 			<DataListTable 
 				:isDisplayed="this.menuIndex !== ''" 
 				:selectWidth="30" 
@@ -37,9 +37,9 @@
 				:margin-right="scrollMargin[1]"
 			></DataListTable>
 			<div ref="scrollButtons" class="buttons-warper transform-leftcenter">
-				<button @click="handleUpload">上传</button>
-				<button @click="handleAdd">添加</button>
-				<button @click="handleDownload">下载</button>
+				<button name="upload" @click="handleUpload">上传</button>
+				<button name="addLog" @click="handleAdd">添加</button>
+				<button name="download" @click="handleDownload">下载</button>
 			</div>
 			<el-pagination ref="scrollPagination" class="transform-leftcenter"
 				@current-change="handlePaginationChange"
@@ -49,7 +49,8 @@
 				layout="prev, pager, next">
 				<!-- :pager-count="3"这个属性需要为5-21 -->
 			</el-pagination>
-			<!-- 两个对话框 -------------------------------->
+		</el-main>
+		<!-- 两个对话框 -------------------------------->
 			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%">
 				<el-upload class="upload-demo" drag action="" multiple>
 					<i class="el-icon-upload"></i>
@@ -69,8 +70,7 @@
 					</el-col>
 				</el-row>
 			</el-dialog>
-			<!-- 对话框结束 -->
-		</el-main>
+		<!-- 对话框结束 -->
 	</el-container>
 </template>
 <script>
@@ -268,44 +268,54 @@ export default {
 
 	},
 	updated() {
+		console.log('task组件updated')
 		this.scrollMargin[0] = this.$refs.scrollButtons.clientWidth
 		this.scrollMargin[1] = this.$refs.scrollPagination.$el.clientWidth
-		console.log(this.scrollMargin[0])
-		console.log(this.scrollMargin[1])
-		console.log('goning to show')
 	},
 	beforeRouteEnter(to, from, next) {
-		if (from.path !== '/mainview/teachingTask') {
+		/* 此处只是放行，不增加新跳转
+		 * 触发：
+		 * 1：手动刷新，读取query值
+		 * 2：从其他任何地方而来, 给默认值'1'
+		 * 3：兜底防error，现有逻辑下不触发
+		 */
+		if (from.path === '/') { 
+			console.log('应该是点击了网页刷新');
+			next(vm => {
+				vm.menuIndex = to.query.subMenuIndex
+				console.log('已从地址栏读取query值:' + to.query.subMenuIndex)
+			})
+		} else if (from.path !== '/mainview/teachingTask') {
+			console.log('应该是从其他地方跳转到teachingTask');
 			next(vm => {
 				vm.menuIndex = '1'
 			})
-		} else {
-			next(vm => {
-				if (vm.$route.query.subMenuIndex) {
-					vm.menuIndex = vm.$route.query.subMenuIndex
-				}
-			})
+		} else console.log('teachingTask的beforeRouterEnter忽略了重复跳转避免报错')
+	},
+	watch: {
+		menuIndex: function(newVal, oldVal) {
+			//刷新会使menuIndex从无到有变化
+			this.addDataForm = new Array(this.classMetaInfoLength)
+			console.log('menuIndex值 => new: ' + newVal + ', old: ' + oldVal)
+			if (!oldVal) console.log('task组件被创建/刷新,subMenuIndex从无到有,不做任何操作')
+			else {
+				console.log('subMenuIndex被更新,通过replace更改至query')
+				let query = JSON.parse(JSON.stringify(this.$route.query))
+				query.subMenuIndex = this.menuIndex
+				//下面一行...写法很特殊，将对象的属性原封不动复制一份，再在后面追加
+				this.$router.replace({ query: { ...this.$route.query, subMenuIndex: this.menuIndex } })
+			}
 		}
 	},
 	methods: {
 		handleMenuSelect(val) {
-			this.menuIndex = val
-			let query = JSON.parse(JSON.stringify(this.$route.query))
-			query.subMenuIndex = val
-			this.$router.replace({ query: { ...this.$route.query, subMenuIndex: val }})
-			console.log(this.$route.query.subMenuIndex)
-			// if (subMenuIndex !== this.menuIndex) {
-			// 	const {...query} = this.$router.currentRoute.query
-			// 	this.$router.replace({query: {...query, subMenuIndex}})
-			// 	this.menuIndex = this.$route.query.subMenuIndex
-			// }
+			if (this.menuIndex !== val) this.menuIndex = val
 		},
 		handleMenuClose(key, keyPath) {
 			this.$refs.subMenu1.open(keyPath);
 		},
 		updateData() {
-			//要求有menuIndex，进行axios读数据，准备数据
-			
+			//要求有menuIndex，进行axios读数据，准备数据/暂无作用
 		},
 		handleUpload() {
 			this.showDialogUpload = true
@@ -342,12 +352,6 @@ export default {
 		},
 		handlePaginationChange(val) {
 			this.currentPage = val
-		}
-	},
-	watch: {
-		menuIndex() {
-			this.updateData()
-			this.addDataForm = new Array(this.classMetaInfoLength)
 		}
 	},
 	
