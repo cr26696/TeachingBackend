@@ -27,22 +27,28 @@
 				</el-dropdown-menu>
 			</el-dropdown>
 			<el-date-picker v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-			<button>确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
+			<button class="">确认</button><input type="text" placeholder="请输入教师姓名或工号"><button>🔍</button>
 			<DataListTable 
 				:isDisplayed="this.menuIndex !== ''" 
 				:selectWidth="30" 
 				:itemsToDisplay="displayItems" 
 				:fieldInfos="classMetaInfo" 
 			></DataListTable>
-			<button @click="handleUpload">上传</button><button @click="handleAdd">添加</button><button>👇</button>
-			<el-pagination
-				@current-change="handlePaginationChange"
-				:current-page="currentPage"
-				:page-size="pageSize"
-				:total="totalItem"
-				layout="prev, pager, next">
-				<!-- :pager-count="3"这个属性需要为5-21 -->
-			</el-pagination>
+			<div class="flex-display">
+				<div class="buttons-warper">
+					<button @click="handleUpload">上传</button>
+					<button @click="handleAdd">添加</button>
+					<button @click="handleDownload">下载</button>
+				</div>
+				<el-pagination
+					@current-change="handlePaginationChange"
+					:current-page="currentPage"
+					:page-size="pageSize"
+					:total="totalItem"
+					layout="prev, pager, next">
+					<!-- :pager-count="3"这个属性需要为5-21 -->
+				</el-pagination>
+			</div>
 			<!-- 两个对话框 -------------------------------->
 			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%">
 				<el-upload class="upload-demo" drag action="" multiple>
@@ -267,6 +273,9 @@ export default {
 		handleAdd() {
 			this.showDialogAdd = true
 		},
+		handleDownload() {
+			console.log('start download')
+		},
 		getSuggestions(targetArr, field) {
 			return (queryString, cb) => {
 				const tempArr = targetArr.map((obj) => {
@@ -337,23 +346,35 @@ export default {
 			/deep/.el-menu-item, .el-submenu__title {
 				display: flex;
 				align-items: center;
+				padding: 0;
 			}
 			>.el-menu-item {
-				padding: 0px !important;
-				height: 60px !important;
+				padding: 15px 0px;
+				height: auto;
+				line-height: normal;
 				>i {
 					position: relative;
 					margin-left: 40px;
 					margin-right: 6px;
 				}
 			}
+
 			>.el-submenu{
-				background-color: wheat;
+				position: relative;
+				background: none;
+				&.is-active{
+					background-color:  rgba(237, 244, 251, 1);;
+				}
 				/deep/.el-submenu__title{
 					display: flex;
 					align-items: center;
-					padding: 0px !important;
-					height: 60px !important;
+					padding: 15px 0px;
+					height: auto!important;
+					line-height: normal;
+					cursor: default;
+					.el-submenu__icon-arrow::before{
+						content: '';
+					}
 					>i {
 						position: relative;
 						margin-left: 40px;
@@ -365,16 +386,30 @@ export default {
 						left: 0px!important;
 					}
 				}
-					/deep/.el-menu{
+				/deep/.el-menu{
+					position: relative;
 					background: none;
-					background-color: red;
 					>.el-menu-item{
+						position: relative;
 						display: flex;
 						align-items: center;
-						::before{
+						width: 100%;
+						height: 30px;
+						padding: 0 0!important;
+						&.is-active>span{
+								background-color: white;
+								
+						}
+						>span{
+							display: flex;
+							align-items: center;
+							background: none;
+							padding-left: 15px;
+						}
+						&::before{
 							content: "";
 							position: relative;
-							margin-right: 70px;
+							margin-right: 30%;
 						}
 					}
 					span{
@@ -386,9 +421,7 @@ export default {
 					}
 				}
 			}
-			.el-icon-arrow-down::before{
-				content: '';
-			}
+			//选中指示条
 			>.el-menu-item.is-active::before {
 				content: '';
 				position: absolute;
@@ -398,14 +431,15 @@ export default {
 				border-radius: 0px 5px 5px 0px;
 				background: rgba(0, 129, 255, 1);
 			}
-			.el-submenu.is-active.is-opened::before {
-				content: "1";
+			>.el-submenu.is-active.is-opened::before {
+				content: '';
 				position: absolute;
+				z-index: 1;
 				height: 100%;
 				width: 6px;
 				left: 0px;
 				border-radius: 0px 5px 5px 0px;
-				background: rgb(232, 67, 149);
+				background: rgba(0, 129, 255, 1);
 			}
 		}
 	}
@@ -433,15 +467,29 @@ export default {
 				}
 			}
 		}
+		>div.flex-display{
+			justify-content: space-between;
+			top: -40px;
+			>div.buttons-warper{
+				button{
+					position: relative;
+				}
+			}
+		}
 		.el-pagination{
 			float: right;
-			margin-top: 24px!important;
-		
+			position: relative;
 		}
 	}
 
 }
 
+/*样式-------------------------------------------*/
+.flex-display{
+	position: relative;
+	display: flex;
+	align-items: center;
+}
 /*字体-------------------------------------------*/
 .text-wrap {
 	white-space: pre-wrap;
