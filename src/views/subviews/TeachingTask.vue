@@ -1,19 +1,19 @@
 <template>
 	<el-container>
 		<el-aside>
-			<el-menu ref="subMenu1" :default-openeds="['2-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
-				<el-menu-item index="1"><i class="circle circle-orange"></i><span>理论课</span></el-menu-item>
-				<el-submenu index="2-1">
+			<el-menu ref="subMenu1" :default-openeds="['1-1']" :default-active="menuIndex" @select="handleMenuSelect" @close="handleMenuClose">
+				<el-menu-item index="0"><i class="circle circle-orange"></i><span>理论课</span></el-menu-item>
+				<el-submenu index="1-1">
 					<template slot="title"><i class="circle circle-red"></i><span>实验课</span></template>
-				<el-menu-item index="2"><span>A类</span></el-menu-item>
-				<el-menu-item index="3"><span>B类</span></el-menu-item>
+				<el-menu-item index="1"><span>A类</span></el-menu-item>
+				<el-menu-item index="2"><span>B类</span></el-menu-item>
 			</el-submenu>
-				<el-menu-item index="4" style="text-wrap"><i class="circle circle-blue"></i><span
+				<el-menu-item index="3" style="text-wrap"><i class="circle circle-blue"></i><span
 						class="twoline">指导课程设计<br>集中性实习</span></el-menu-item>
-				<el-menu-item index="5"><i class="circle circle-purple"></i><span>指导社会调查</span></el-menu-item>
-				<el-menu-item index="6"><i class="circle circle-green"></i><span
+				<el-menu-item index="4"><i class="circle circle-purple"></i><span>指导社会调查</span></el-menu-item>
+				<el-menu-item index="5"><i class="circle circle-green"></i><span
 				class="twoline">指导分散性实习<br>工程设计训练</span></el-menu-item>
-				<el-menu-item index="7"><i class="circle circle-grey"></i><span>指导毕业设计</span></el-menu-item>
+				<el-menu-item index="6"><i class="circle circle-grey"></i><span>指导毕业设计</span></el-menu-item>
 			</el-menu>
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
@@ -253,13 +253,52 @@ export default {
 		totalItem() { return this.classListExperimentA.length },
 		
 	},
+	created() {
+	},
+	beforeMount() {
+
+	},
+	mounted() {
+		// const tempIndex = this.$router.currentRoute.query.subMenuIndex
+		// if (tempIndex === undefined) this.menuIndex = '1'
+		// else this.menuIndex = tempIndex 
+		this.updateData()
+		//this.addDataForm = new Array(this.classMetaInfoLength)
+		this.addDataForm = new Array(15)
+
+	},
+	updated() {
+		this.scrollMargin[0] = this.$refs.scrollButtons.clientWidth
+		this.scrollMargin[1] = this.$refs.scrollPagination.$el.clientWidth
+		console.log(this.scrollMargin[0])
+		console.log(this.scrollMargin[1])
+		console.log('goning to show')
+	},
+	beforeRouteEnter(to, from, next) {
+		if (from.path !== '/mainview/teachingTask') {
+			next(vm => {
+				vm.menuIndex = '1'
+			})
+		} else {
+			next(vm => {
+				if (vm.$route.query.subMenuIndex) {
+					vm.menuIndex = vm.$route.query.subMenuIndex
+				}
+			})
+		}
+	},
 	methods: {
-		handleMenuSelect(subMenuIndex) {
-			if (subMenuIndex !== this.menuIndex) {
-				const {...query} = this.$router.currentRoute.query
-				this.$router.replace({query: {...query, subMenuIndex}})
-				this.menuIndex = this.$route.query.subMenuIndex
-			}
+		handleMenuSelect(val) {
+			this.menuIndex = val
+			let query = JSON.parse(JSON.stringify(this.$route.query))
+			query.subMenuIndex = val
+			this.$router.replace({ query: { ...this.$route.query, subMenuIndex: val }})
+			console.log(this.$route.query.subMenuIndex)
+			// if (subMenuIndex !== this.menuIndex) {
+			// 	const {...query} = this.$router.currentRoute.query
+			// 	this.$router.replace({query: {...query, subMenuIndex}})
+			// 	this.menuIndex = this.$route.query.subMenuIndex
+			// }
 		},
 		handleMenuClose(key, keyPath) {
 			this.$refs.subMenu1.open(keyPath);
@@ -311,19 +350,7 @@ export default {
 			this.addDataForm = new Array(this.classMetaInfoLength)
 		}
 	},
-	created() {
-		const tempIndex = this.$router.currentRoute.query.subMenuIndex
-		if (tempIndex === undefined) this.menuIndex = '1'
-		else this.menuIndex = tempIndex 
-		this.updateData()
-		this.addDataForm = new Array(this.classMetaInfoLength)
-	},
-	mounted() {
-		this.scrollMargin[0] = this.$refs.scrollButtons.clientWidth
-		this.scrollMargin[1] = this.$refs.scrollPagination.$el.clientWidth
-		console.log(this.scrollMargin[0])
-		console.log(this.scrollMargin[1])
-	}
+	
 }
 </script>
 

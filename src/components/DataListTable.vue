@@ -134,7 +134,7 @@ export default {
 		&::-webkit-scrollbar-track {
 			position: relative;
 			background:none;
-			width: 100%;
+			width: 50px;
 		}
 		&::-webkit-scrollbar-track-piece{
 			border-radius: 8px;
