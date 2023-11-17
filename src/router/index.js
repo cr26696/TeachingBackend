@@ -14,19 +14,19 @@ import Allachi from '@/views/subviews/subpage/Allachi.vue'
 
 let isAuthenticated = false
 
-// // 修复重复跳转同一个路由地址报错
-// // 获取原型对象push函数
-// const originalPush = VueRouter.prototype.push
-// // 获取原型对象replace函数
-// const originalReplace = VueRouter.prototype.replace
-// // 修改原型对象中的push函数
-// VueRouter.prototype.push = function push(location) {
-// return originalPush.call(this , location).catch(err => console.log(err))
-// }
-// // 修改原型对象中的replace函数
-// VueRouter.prototype.replace = function replace(location) {
-// return originalReplace.call(this , location).catch(err => console.log(err))
-// }
+// 修复重复跳转同一个路由地址报错
+// 获取原型对象push函数
+const originalPush = VueRouter.prototype.push
+// 获取原型对象replace函数
+const originalReplace = VueRouter.prototype.replace
+// 修改原型对象中的push函数
+VueRouter.prototype.push = function push(location) {
+return originalPush.call(this , location).catch(err => console.log(err))
+}
+// 修改原型对象中的replace函数
+VueRouter.prototype.replace = function replace(location) {
+return originalReplace.call(this , location).catch(err => console.log(err))
+}
 
 Vue.use(VueRouter)
 

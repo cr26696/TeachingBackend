@@ -1,8 +1,12 @@
 <template>
 	<el-table v-if="isDisplayed" :data="itemsToDisplay" :style="cssVar">
 		<el-table-column type="selection" :width="selectWidth"></el-table-column>
-		<el-table-column v-for="(item, index) in fieldInfos" :prop="item[0]" :key="index" :label="item[1]"
-			:width="flexColumnWidth(item[0], itemsToDisplay)">
+		<el-table-column 
+			v-for="(item, index) in fieldInfos" :prop="item[0]" 
+			:key="index" 
+			:label="item[1]"
+			:min-width="flexColumnWidth(item[0], itemsToDisplay)"
+			:max-width="80">
 		</el-table-column>
 	</el-table>
 </template>
