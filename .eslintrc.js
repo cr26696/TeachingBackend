@@ -22,6 +22,7 @@ module.exports = {
 		'vue/no-unused-components': 'warn',
 		'no-undef': 'warn',
 		'prefer-const': 'warn',
+		'no-useless-return': 'warn',
 		// 空格格式
 		indent: ['off','tab'],
 		'no-tabs': 'off',

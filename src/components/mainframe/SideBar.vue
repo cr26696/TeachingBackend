@@ -30,12 +30,17 @@ export default {
 	},
 	methods: {
 		routerGo(destinationPath) {
-			this.$router.push({
-				path: destinationPath,
-				query: {
-					subMenuIndex: '1'
-				}
-			})
+			if (destinationPath === this.$router.currentRoute.path) {
+				// eslint-disable-next-line
+				return
+			} else if (destinationPath === '/mainview/teachingTask') {
+				this.$router.push({
+					path: destinationPath,
+					query: {
+						subMenuIndex: '1'
+					}
+				})
+			} else this.$router.push(destinationPath)
 		},
 	},
 	mounted() {

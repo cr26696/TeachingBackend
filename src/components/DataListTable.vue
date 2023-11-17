@@ -4,6 +4,7 @@
 		<el-table-column v-for="(item, index) in fieldInfos" :prop="item[0]" :key="index" :label="item[1]"
 			:width="flexColumnWidth(item[0], itemsToDisplay)">
 		</el-table-column>
+
 	</el-table>
 </template>
 <script>
@@ -82,6 +83,7 @@ export default {
 <style scoped lang="less">
 .el-table {
 	width: 100%;
+	background: none;
 	/deep/.el-table__header {
 		height: 30px !important;
 		div.cell {
@@ -89,6 +91,7 @@ export default {
 		}
 	}
 	/deep/.el-table__body-wrapper {
+		padding-bottom: 34px;
 		.el-table__body {
 			/* 滚动条整体高 必须项 */
 			border-right: none;
@@ -115,21 +118,21 @@ export default {
 		&::-webkit-scrollbar {
 			width: 5px;
 			/* 滚动条的宽高 必须项 */
-			height: 20px;
+			height: 18px;
 			top: 50px;
 		}
 		&::-webkit-scrollbar-track {
-			background-color: #409eff;
+			position: relative;
+			background:none;
+			width: 100%;
 		}
-		&::-webkit-scrollbar-track-piece {
-			&:start {
-				background: orange;
-				margin-left: 40px;
-			}
-			&:end {
-				background: orange;
-				margin-right: 40px;
-			}
+		&::-webkit-scrollbar-track-piece:start {
+				background: blue;
+				margin-left: 100%;
+		}
+		&::-webkit-scrollbar-track-piece:end {
+				background: white;
+				margin-right: 50px;
 		}
 		&::-webkit-scrollbar-thumb {
 			border-radius: 10px;
