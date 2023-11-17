@@ -33,8 +33,8 @@
 				:selectWidth="30" 
 				:itemsToDisplay="displayItems" 
 				:fieldInfos="classMetaInfo" 
-				:margin-left="scrollMargin[0]"
-				:margin-right="scrollMargin[1]"
+				:margin-left="scrollMarginL"
+				:margin-right="scrollMarginR"
 			></DataListTable>
 			<div ref="scrollButtons" class="buttons-warper transform-leftcenter">
 				<button name="upload" @click="handleUpload">上传</button>
@@ -237,7 +237,12 @@ export default {
 			showDialogAdd: false,
 			//dialogAdd数据接受
 			addDataForm: [],
-			scrollMargin: [20,20],
+			/*
+			给子组件传的值如果使用数组，可能不会自动更新，
+			使用this.$refs.childComponent.$forceUpdate();来强制更新子组件也同样可以解决
+			*/
+			scrollMarginL: 20,
+			scrollMarginR: 20,
 		}
 	},
 	computed: {
@@ -254,9 +259,9 @@ export default {
 		
 	},
 	created() {
+		console.log('task created, 给子组件传值scrollMargin:' + this.scrollMarginL + ',' + this.scrollMarginR)
 	},
 	beforeMount() {
-
 	},
 	mounted() {
 		// const tempIndex = this.$router.currentRoute.query.subMenuIndex
@@ -265,12 +270,15 @@ export default {
 		this.updateData()
 		//this.addDataForm = new Array(this.classMetaInfoLength)
 		this.addDataForm = new Array(15)
-
+		this.$nextTick(() => {
+			//console.log(this.$refs)
+			this.scrollMarginL = this.$refs.scrollButtons.offsetWidth
+			this.scrollMarginR = this.$refs.scrollPagination.$el.clientWidth
+			console.log('task mounted的nextTick, 给子组件传值scrollMargin:' + this.scrollMarginL + ',' + this.scrollMarginR)
+		});
 	},
 	updated() {
 		console.log('task组件updated')
-		this.scrollMargin[0] = this.$refs.scrollButtons.clientWidth
-		this.scrollMargin[1] = this.$refs.scrollPagination.$el.clientWidth
 	},
 	beforeRouteEnter(to, from, next) {
 		/* 此处只是放行，不增加新跳转
