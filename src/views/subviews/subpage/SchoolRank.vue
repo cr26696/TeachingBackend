@@ -241,13 +241,13 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
-      this.getDisplayItems()
-    },
-    getDisplayItems() {
-      const start = (this.currentPage - 1) * this.pageSize
-      const end = start + this.pageSize
-      this.displayItems = this.items.slice(start, end)
+      // this.getDisplayItems()
     }
+    // getDisplayItems() {
+    //   const start = (this.currentPage - 1) * this.pageSize
+    //   const end = start + this.pageSize
+    //   this.displayItems = this.items.slice(start, end)
+    // }
   }
 
 }
