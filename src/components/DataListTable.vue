@@ -1,6 +1,6 @@
 <template>
-	<el-table v-if="isDisplayed" :data="itemsToDisplay" :style="cssVar">
-		<el-table-column type="selection" :width="selectWidth"></el-table-column>
+	<el-table :data="itemsToDisplay" :style="cssVar">
+		<el-table-column type="selection" :width="selectorWidth"></el-table-column>
 		<el-table-column 
 			v-for="(item, index) in fieldInfos" :prop="item[0]" 
 			:key="index" 
@@ -14,8 +14,7 @@
 export default {
 	name: 'DataListTable',
 	props: {
-		isDisplayed: Boolean,
-		selectWidth: Number,
+		selectorWidth: Number,
 		itemsToDisplay: Array,
 		fieldInfos: Array,
 		marginLeft: Number,
