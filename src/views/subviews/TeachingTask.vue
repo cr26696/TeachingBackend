@@ -18,36 +18,48 @@
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
 			<p class="text_class_type" v-if="this.menuIndex !== ''">{{ this.classType[this.menuIndex][1] }}</p>
-			<el-dropdown name="filterClassName" trigger="click">
-				<span class="el-dropdown-link">下拉菜单<i class="el-icon-arrow-down el-icon--right"></i></span>
-				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item v-for="(item, index) in classList" :key="index" @click.native="handleDropdownClick(item)">
-							{{ item }}
-					</el-dropdown-item>
-				</el-dropdown-menu>
-			</el-dropdown>
-			<el-date-picker name="filterDate" v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-			<button name="confirm" class="">确认</button><input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"><button name="search">🔍</button>
-			<DataListTable v-if="this.menuIndex !== ''"
-				:selectorWidth="30" 
-				:itemsToDisplay="displayItems" 
-				:fieldInfos="classMetaInfo" 
-				:margin-left="scrollMarginL"
-				:margin-right="scrollMarginR"
-			></DataListTable>
-			<div ref="scrollButtons" class="buttons-warper transform-leftcenter">
-				<button name="upload" @click="handleUpload">上传</button>
-				<button name="addLog" @click="handleAdd">添加</button>
-				<button name="download" @click="handleDownload">下载</button>
+			<div class="flex-space-between" style="margin-bottom: 23px;">
+				<span class="left">
+					<span class="_filterSelect">课程名称</span>
+					<el-select v-model="filterName" placeholder="请选择">
+						<el-option v-for="item in classList" :key="item.value" :label="item.label" :value="item.value">
+						</el-option>
+					</el-select>
+					<span class="_filterSelect">上传日期</span>
+					<el-date-picker v-model="filterDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+					<el-button type="primary" class="_button-blue">确认</el-button>
+				</span>
+				<span class="right">
+					<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
+					<el-button type="primary" name="search" class="_button-blue">🔍</el-button>
+				</span>
 			</div>
-			<el-pagination ref="scrollPagination" class="transform-leftcenter"
-				@current-change="handlePaginationChange"
-				:current-page="currentPage"
-				:page-size="pageSize"
-				:total="totalItem"
-				layout="prev, pager, next">
-				<!-- :pager-count="3"这个属性需要为5-21 -->
-			</el-pagination>
+			<el-table v-if="this.menuIndex !== ''" :data="displayItems" :style="cssVar">
+				<el-table-column type="selection" :width="30"></el-table-column>
+				<el-table-column 
+					v-for="(item, index) in classMetaInfo" :prop="item[0]" 
+					:key="index" 
+					:label="item[1]"
+					:min-width="flexColumnWidth(item[0], displayItems)"
+					:max-width="80"
+				>
+				</el-table-column>
+			</el-table>
+			<div class="flex-space-between">
+				<span ref="scrollButtons" class="buttons-warper transform-leftcenter">
+					<el-button name="upload" class="_button-blue _text-button-white" @click="handleUpload">上传</el-button>
+					<el-button name="addLog" class="_button-grey _text-button-grey" @click="handleAdd">添加</el-button>
+					<el-button name="download" class="_button-grey _text-button-grey" @click="handleDownload">下载</el-button>
+				</span>
+				<el-pagination ref="scrollPagination" class="transform-leftcenter"
+					@current-change="handlePaginationChange"
+					:current-page="currentPage"
+					:page-size="pageSize"
+					:total="totalItem"
+					layout="prev, pager, next">
+					<!-- :pager-count="3"这个属性需要为5-21 -->
+				</el-pagination>
+			</div>
 		</el-main>
 		<!-- 两个对话框 -------------------------------->
 			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%">
@@ -73,11 +85,9 @@
 	</el-container>
 </template>
 <script>
-import DataListTable from '@/components/DataListTable.vue'
 export default {
 	name: 'TeachingTask',
 	components:{
-		DataListTable
 	},
 	data() {
 		return {
@@ -103,9 +113,9 @@ export default {
 				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']]
 			],
 			//筛选条件
-			filterDate: '',
 			filterName: '',
-			classList: ['嵌入式', '数集', '模集'],
+			filterDate: '',
+			classList: [{value:'嵌入式',label:'嵌入式'}, {value:'数集',label:'嵌入式'}, {value:'模集',label:'模集'}],
 			//原始数据，分页
 			classListExperimentA: [
 				{
@@ -255,7 +265,12 @@ export default {
 		},
 		classMetaInfoLength() { return this.classMetaInfo.length },
 		totalItem() { return this.classListExperimentA.length },
-		
+		cssVar() {
+			return {
+				'--scroll-marginLeft': this.scrollMarginL + 'px',
+				'--scroll-marginRight': this.scrollMarginR + 'px'
+			}
+		}
 	},
 	created() {
 		console.log('task created, 给子组件传值scrollMargin:' + this.scrollMarginL + ',' + this.scrollMarginR)
@@ -359,13 +374,77 @@ export default {
 		},
 		handlePaginationChange(val) {
 			this.currentPage = val
-		}
-	},
-	
+		},
+		flexColumnWidth(str, arr1, flag = 'max') {
+			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
+			// flag为可选值，可不传该参数,传参时可选'max'或'equal',默认为'max'
+			// flag为'max'则设置列宽适配该列中最长的内容,flag为'equal'则设置列宽适配该列中第一行内容的长度。
+			str = str + ''
+			let columnContent = ''
+			if (!arr1 || !arr1.length || arr1.length === 0 || arr1 === undefined) return
+			if (!str || !str.length || str.length === 0 || str === undefined) return
+			if (flag === 'equal') {
+				// 获取该列中第一个不为空的数据(内容)
+				for (let i = 0; i < arr1.length; i++) {
+					if (arr1[i][str].length > 0) {
+						// console.log('该列数据[0]:', arr1[0][str])
+						columnContent = arr1[i][str]
+						break
+					}
+				}
+			} else {
+				// 获取该列中最长的数据(内容)
+				let index = 0
+				for (let i = 0; i < arr1.length; i++) {
+					if (arr1[i][str] === null) {
+						return
+					}
+					// eslint-disable-next-line
+					const now_temp = arr1[i][str] + ''
+					// eslint-disable-next-line
+					const max_temp = arr1[index][str] + ''
+					// eslint-disable-next-line
+					if (now_temp.length > max_temp.length) {
+						index = i
+					}
+				}
+				columnContent = arr1[index][str]
+			}
+			// console.log('该列数据[i]:', columnContent)
+			// 以下分配的单位长度可根据实际需求进行调整
+			let flexWidth = 0
+			for (const char of columnContent) {
+				if ((char >= 'A' && char <= 'Z') || (char >= 'a' && char <= 'z')) {
+					// 如果是英文字符，为字符分配8个单位宽度
+					flexWidth += 8
+				} else if (char >= '\u4e00' && char <= '\u9fa5') {
+					// 如果是中文字符，为字符分配15个单位宽度
+					flexWidth += 15
+				} else {
+					// 其他种类字符，为字符分配8个单位宽度
+					flexWidth += 8
+				}
+			}
+			if (flexWidth < 80) {
+				// 设置最小宽度
+				flexWidth = 80
+			}
+			// if (flexWidth > 250) {
+			//   // 设置最大宽度
+			//   flexWidth = 250
+			// }
+			return flexWidth + 'px'
+		},
+	}
 }
 </script>
 
 <style scoped lang="less">
+/*全局生效样式-------------------------------------------*/
+.el-button{border-radius: 6px;}
+/deep/span.el-input__inner{border-radius: 6px}
+/deep/input.el-input__inner{border-radius: 6px}
+
 .el-container {
 	position: relative;
 	height: 100%;
@@ -377,29 +456,24 @@ export default {
 		min-height: 500px;
 		background-color: white;
 		>.el-menu{
-			//最外层menu
-			span{
-				//字体，不含位置
-				font-size: 14px;
-				font-weight: 500;
-				color: rgba(130, 145, 169, 1);
-			}
-			.twoline{
-				line-height: 1;
-			}
+			//侧栏菜单
+			span{font-size: 14px;font-weight: 500;color: rgba(130, 145, 169, 1);}
+			.twoline{line-height: 1.5em;}
 			//菜单项,子菜单内容项自适应flex排列
-			/deep/.el-menu-item, .el-submenu__title {
+			/deep/.el-menu-item, /deep/.el-submenu__title {
 				display: flex;
 				align-items: center;
-				padding: 0;
+				justify-content: start;
+				padding-left: 0!important;
 			}
+			@iconLeftMargin: 14%;
 			>.el-menu-item {
 				padding: 15px 0px;
 				height: auto;
 				line-height: normal;
 				>i {
 					position: relative;
-					margin-left: 40px;
+					margin-left: @iconLeftMargin;
 					margin-right: 6px;
 				}
 			}
@@ -421,7 +495,7 @@ export default {
 					}
 					>i {
 						position: relative;
-						margin-left: 40px;
+						margin-left: @iconLeftMargin;
 						margin-right: 6px;
 					}
 					>span{
@@ -430,6 +504,7 @@ export default {
 						left: 0px!important;
 					}
 				}
+				//二级子菜单
 				/deep/.el-menu{
 					position: relative;
 					background: none;
@@ -453,7 +528,8 @@ export default {
 						&::before{
 							content: "";
 							position: relative;
-							margin-right: 30%;
+							margin-left: @iconLeftMargin;
+							margin-right: 20px;
 						}
 					}
 					span{
@@ -488,47 +564,117 @@ export default {
 		}
 	}
 	.subMainContainer {
-		>span {
-			margin-top: 36px;
-			margin-left: 40px;
-		}
-		.el-dropdown {
-			box-sizing: content-box;
-			position: relative;
-			transform: translateX(-50%);
-			margin-left: 120px;
-			border-radius: 6px;
-			background: rgba(255, 255, 255, 1);
-			.el-dropdown-selfdefine {
+		overflow: auto;
+		min-width: 1000px;
+		padding: 0 2.75%;
+		>p{margin-top: 36px;margin-bottom: 27px;}
+		span.left{
 				display: flex;
-				align-items: center;
-				width: 130px;
-				height: 40px;
-				padding-left: 8px;
-				i:first-child {
+				span{display: flex;align-items: center;white-space: nowrap;}
+				span:nth-of-type(1){margin:0 13px 0 3px;}
+				span:nth-of-type(2){margin:0 13px 0 35px;}
+				input::placeholder{
+					text-align: center;
+					font-size: 13px;
+					font-weight: 400;
+					letter-spacing: 0px;
+					line-height: 20px;
+					color: rgba(0, 0, 0, 1);}
+				button{margin-left:51px;width: 120px;background: rgba(0, 129, 255, 1);}
+				.el-select:first-of-type{
+						width: 100px;
+				}
+		}
+		span.right{display: flex;}
+		.el-table {
+			position: relative;
+			width: 100%;
+			background: none;
+			&::before{content: unset;}
+			/deep/.el-table__header {
+				height: 60px;
+				div.cell {display: flex;justify-content: center;height: 20px;}
+			}
+			/deep/.el-table__body-wrapper {
+				padding-bottom: 34px;
+				.el-table__body {
+					/* 滚动条整体高 必须项 */
+					border-right: none;
+					overflow-x: scroll;
+					overflow-x: overlay;
+					overflow-y: scroll;
+					/* overflow-y为了不出现水平滚动条*/
+					border: 1px solid #ddd;
+					//padding-bottom: 150px;
+					.el-table__row{height: 60px;}
+					div.cell {display: flex;justify-content: center;height: 20px;}
+				}
+				&::-webkit-scrollbar {
+					width: 5px;
+					/* 滚动条的宽高 必须项 */
+					height: 18px;
+					top: 50px;
+				}
+				&::-webkit-scrollbar-track {
 					position: relative;
-					left: 30px;
+					background:none;
+					width: 50px;
+				}
+				&::-webkit-scrollbar-track-piece{
+					border-radius: 8px;
+				}
+				&::-webkit-scrollbar-track-piece:start {
+						background: white;
+						margin-left: var(--scroll-marginLeft);
+				}
+				&::-webkit-scrollbar-track-piece:end {
+						background: white;
+						margin-right: var(--scroll-marginRight);
+				}
+				&::-webkit-scrollbar-thumb {
+					border-radius: 10px;
+					/*滚动条的圆角*/
+					-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+					background-color: #409eff;
+					/*滚动条的背景颜色*/
 				}
 			}
 		}
-		div.buttons-warper{
+		span.buttons-warper{
+			display: flex;
 			position: relative;
 			top: -10px;
-			float: left;
-				button{
+				.el-button{
 					position: relative;
 				}
+				.el-button:nth-of-type(1){width: 140px;margin-right: 20px;}
+				.el-button:nth-of-type(2){width: 140px;margin-left: 0px;}
+				.el-button:nth-of-type(3){
+					display:flex;
+					justify-content: center;
+					width: 40px;
+					margin-left: 14px;
+					margin-right: 40px;}
 		}
 		.el-pagination{
-			top: -10px;
-			float: right;
+			display: flex;
 			position: relative;
+			align-items: center;
+			top: -10px;
+			padding-left: 40px;
+			border-radius: 6px;
+			/deep/.btn-prev{
+				border-radius: 6px 0 0 6px;
+			}
+			/deep/.btn-next{
+				border-radius: 0 6px 6px 0;
+			}
 		}
 	}
 
 }
 
-/*样式-------------------------------------------*/
+/*特定样式-------------------------------------------*/
 .flex-display{
 	position: relative;
 	display: flex;
@@ -543,6 +689,10 @@ export default {
 .transform-leftcenter{
 	transform: translateY(-50%);
 }
+.flex-space-between{
+	display: flex;
+	justify-content: space-between;
+}
 /*字体-------------------------------------------*/
 .text-wrap {
 	white-space: pre-wrap;
@@ -554,8 +704,18 @@ export default {
 	line-height: 43.44px;
 	color: rgba(0, 0, 0, 1);
 }
+._text-button-white{
+	font-size: 16px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 1);
+}
+._text-button-grey{
+	font-size: 16px;
+	font-weight: 700;
+	color: rgba(130, 145, 169, 1);
 
-/*图标-------------------------------------------*/
+}
+/*图标、颜色-------------------------------------------*/
 .circle {
 	display: block;
 	width: 10px;
@@ -568,4 +728,6 @@ export default {
 .circle-purple {background: rgba(240, 12, 225, 1);}
 .circle-green {background: rgba(9, 182, 109, 1);}
 .circle-grey {background: rgba(130, 145, 169, 1);}
+._button-blue{background: rgba(0, 129, 255, 1);}
+._button-grey{background: rgba(255, 255, 255, 1);}
 </style>

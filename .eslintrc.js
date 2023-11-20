@@ -23,6 +23,7 @@ module.exports = {
 		'no-undef': 'warn',
 		'prefer-const': 'warn',
 		'no-useless-return': 'warn',
+		'vue/no-use-v-if-with-v-for': 'warn',
 		// 空格格式
 		indent: ['off','tab'],
 		'no-tabs': 'off',
