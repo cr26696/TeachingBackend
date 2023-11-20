@@ -28,9 +28,8 @@
 			</el-dropdown>
 			<el-date-picker name="filterDate" v-model="filterDate" type="datarange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
 			<button name="confirm" class="">确认</button><input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"><button name="search">🔍</button>
-			<DataListTable 
-				:isDisplayed="this.menuIndex !== ''" 
-				:selectWidth="30" 
+			<DataListTable v-if="this.menuIndex !== ''"
+				:selectorWidth="30" 
 				:itemsToDisplay="displayItems" 
 				:fieldInfos="classMetaInfo" 
 				:margin-left="scrollMarginL"
@@ -282,7 +281,7 @@ export default {
 	},
 	beforeRouteEnter(to, from, next) {
 		/* 此处只是放行，不增加新跳转
-		 * 触发：
+		 * 逻辑条件：
 		 * 1：手动刷新，读取query值
 		 * 2：从其他任何地方而来, 给默认值'1'
 		 * 3：兜底防error，现有逻辑下不触发
