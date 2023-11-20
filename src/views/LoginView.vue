@@ -53,7 +53,7 @@ export default {
 #containerLoginView {
   position: absolute;
   width: 100%;
-  height: 1080px;
+  height: 100%;
   background-color: rgba(219, 231, 238, 1);
   background-repeat: no-repeat;
   background-size: cover;
