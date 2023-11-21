@@ -4,7 +4,7 @@
             <el-menu :default-openeds="['1']">
                 <el-submenu index="1">
                         <template slot="title"><span>学评教排名</span></template>
-                        <el-menu-item index="1-1" @click="com='SchoolRank'"><i id="iconblue" class="el-icon-folder" style="color: blue;"></i><span style="font-weight: 500;">学校排名</span></el-menu-item>
+                        <el-menu-item index="1-1" @click="com='SchoolRankuser'"><i id="iconblue" class="el-icon-folder" style="color: blue;"></i><span style="font-weight: 500;">学校排名</span></el-menu-item>
                         <el-menu-item index="1-2" @click="com='AcademyRank'"><i id="iconred" class="el-icon-folder" style="color: red;"></i><span style="font-weight: 500;">学院排名</span></el-menu-item>
                     </el-submenu>
                 <el-menu-item index="2"><span class="maintitle">教学业绩考核</span></el-menu-item>
@@ -19,7 +19,10 @@
 
 <script>
 import AcademyRank from './subpage/AcademyRank.vue';
-import SchoolRank from './subpage/SchoolRank.vue'
+import SchoolRank from './subpage/SchoolRank.vue';
+import SchoolRankuser from './subpage/SchoolRankuser.vue';
+import AcademyRankuser from './subpage/AcademyRankuser.vue'
+
 export default {
   name: 'QueryRank',
   data() {
@@ -29,7 +32,9 @@ export default {
   },
   components: {
     AcademyRank,
-    SchoolRank
+    SchoolRank,
+    SchoolRankuser,
+    AcademyRankuser
   }
 }
 </script>
