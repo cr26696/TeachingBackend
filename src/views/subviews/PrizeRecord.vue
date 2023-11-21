@@ -12,11 +12,11 @@
 			</el-menu>
 		</el-aside>
 		<el-main>
-			<div v-if="menuIndex === '1'" class="form">
+			<div v-if="menuIndex === '1'" class="wrapform">
 				<p>成果填写</p>
 			</div>
-			<!-- 上面为填写div.form，下面为查看dvi.table -->
-			<div v-if="menuIndex === '2' || isAdmin" class="table">
+			<!-- 上面为填写分页div.wform，下面为查看分页div.wraptable -->
+			<div v-if="menuIndex === '2' || isAdmin" class="wraptable">
 				<p v-if="isAdmin" class="contentTitle _title">成果申请表</p>
 				<p v-if="!isAdmin" class="contentTitle _title">全部成果</p>
 				<div class="flexInLine" style="margin-bottom: 23px;">
@@ -60,7 +60,7 @@
 					<el-table-column label="操作"><button>2</button></el-table-column>
 				</el-table>
 				<div class="flexInLine" style="margin-top: 28px;">
-					<el-button type="primary">下载</el-button>
+					<button><img :src=imgDownload><span>下载</span></button>
 					<el-pagination></el-pagination>
 				</div>
 			</div>
@@ -161,7 +161,8 @@ export default {
 					submitDate: '2023.11.6 15:33',
 					state: 'pass'
 				},
-			]
+			],
+			imgDownload: require('@/assets/icon/download-icon-grey.png'),
 		}
 	},
 	components: {
@@ -245,6 +246,15 @@ export default {
 </script>
 
 <style scoped lang="less">
+//样式------------------------------------------------------
+.flexInLine{
+	display: flex;
+	justify-content: space-between;
+}
+button{
+	border: none;
+	border-radius: 6px;
+}
 .el-container {
 	position: relative;
 	height: 100%;
@@ -278,10 +288,11 @@ export default {
 		min-width: 1000px;
 		padding: 0 2.75%;
 		
-		div.form{
+		div.wrapform{
 			padding: 0;
 		}
-		div.table{
+		//
+		div.wraptable{
 			p.contentTitle{
 				margin-top: 25px;
 				margin-bottom: 40px;
@@ -309,13 +320,12 @@ export default {
 			}
 			>div.el-table{
 				/deep/.el-table__header {
-					height: 30px !important;
-					div.cell {
+					height: 60px ;
+					/deep/div.cell {
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						height: 60px;
-						padding: 0px;
+						padding: 0px!important;
 					}
 				}
 				/deep/.el-table__body-wrapper {
@@ -332,6 +342,16 @@ export default {
 						}
 					}
 
+				}
+			}
+			.flexInLine:nth-last-of-type(1){
+				button{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 140px;
+					background: rgba(0, 129, 255, 1);
+					img{margin: 0 20px;}
 				}
 			}
 		}
@@ -352,9 +372,5 @@ export default {
 	font-size: 13px;
 	font-weight: 400;
 }
-//复用
-.flexInLine{
-	display: flex;
-	justify-content: space-between;
-}
+
 </style>

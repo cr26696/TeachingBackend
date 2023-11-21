@@ -212,14 +212,16 @@ export default {
 
 <style scoped lang="less">
 #ContainerFacultyInfo{
-  height: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
   min-width: 1680px;
-  background-color: rgba(235, 236, 237, 1);
+  background:none;
   #title{
     position: relative;
     margin-left: calc((100% - 1610px) / 2)!important;
     margin-right: calc((100% - 1610px) / 2)!important;
     margin-top: 35px;
+    left: 0px;
     font-size: 30px;
     font-weight: 700;
     line-height: 43.44px;
@@ -400,9 +402,11 @@ export default {
     }
   }
   .el-pagination{
-    float: right;
+    display: flex;
+    justify-content: end;
     margin-top: 24px!important;
     margin-right: calc((100% - 1610px) / 2)!important;
+    margin-bottom: 30px;
   }
 }
 

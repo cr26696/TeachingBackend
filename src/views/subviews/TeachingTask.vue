@@ -49,6 +49,7 @@
 				<span ref="scrollButtons" class="buttons-warper transform-leftcenter">
 					<el-button name="upload" class="_button-blue _text-button-white" @click="handleUpload">上传</el-button>
 					<el-button name="addLog" class="_button-grey _text-button-grey" @click="handleAdd">添加</el-button>
+					<el-button name="delete" class="_button-black _text-button-black" @click="handleAdd">删除账号</el-button>
 					<el-button name="download" class="_button-grey _text-button-grey" @click="handleDownload">下载</el-button>
 				</span>
 				<el-pagination ref="scrollPagination" class="transform-leftcenter"
@@ -240,7 +241,7 @@ export default {
 				},
 			],
 			currentPage: 1,
-			pageSize: 5,
+			pageSize: 10,
 			//dialog显示控制
 			showDialogUpload: false,
 			showDialogAdd: false,
@@ -564,9 +565,14 @@ export default {
 		}
 	}
 	.subMainContainer {
-		overflow: auto;
+		box-sizing: content-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+		padding: 20px 40px;
 		min-width: 1000px;
-		padding: 0 2.75%;
+    color: #333;
+    background-color: rgba(219, 231, 238, 1);
 		>p{margin-top: 36px;margin-bottom: 27px;}
 		span.left{
 				display: flex;
@@ -596,21 +602,14 @@ export default {
 				div.cell {display: flex;justify-content: center;height: 20px;}
 			}
 			/deep/.el-table__body-wrapper {
+				overflow: scroll;
 				padding-bottom: 34px;
 				.el-table__body {
-					/* 滚动条整体高 必须项 */
-					border-right: none;
-					overflow-x: scroll;
-					overflow-x: overlay;
-					overflow-y: scroll;
-					/* overflow-y为了不出现水平滚动条*/
-					border: 1px solid #ddd;
-					//padding-bottom: 150px;
 					.el-table__row{height: 60px;}
 					div.cell {display: flex;justify-content: center;height: 20px;}
 				}
 				&::-webkit-scrollbar {
-					width: 5px;
+					width: 0;
 					/* 滚动条的宽高 必须项 */
 					height: 18px;
 					top: 50px;
@@ -648,12 +647,12 @@ export default {
 					position: relative;
 				}
 				.el-button:nth-of-type(1){width: 140px;margin-right: 20px;}
-				.el-button:nth-of-type(2){width: 140px;margin-left: 0px;}
-				.el-button:nth-of-type(3){
+				.el-button:nth-of-type(2){width: 140px;margin-right: 20px;}
+				.el-button:nth-of-type(3){width: 120px;margin-right: 20px;}
+				.el-button:nth-of-type(4){
 					display:flex;
 					justify-content: center;
 					width: 40px;
-					margin-left: 14px;
 					margin-right: 40px;}
 		}
 		.el-pagination{
@@ -704,17 +703,9 @@ export default {
 	line-height: 43.44px;
 	color: rgba(0, 0, 0, 1);
 }
-._text-button-white{
-	font-size: 16px;
-	font-weight: 700;
-	color: rgba(255, 255, 255, 1);
-}
-._text-button-grey{
-	font-size: 16px;
-	font-weight: 700;
-	color: rgba(130, 145, 169, 1);
-
-}
+._text-button-white{color: rgba(255, 255, 255, 1);font-size: 16px;font-weight: 700;}
+._text-button-grey{color: rgba(130, 145, 169, 1);font-size: 16px;font-weight: 700;}
+._text-button-black{color: white;font-size: 16px;font-weight: 700;}
 /*图标、颜色-------------------------------------------*/
 .circle {
 	display: block;
@@ -730,4 +721,5 @@ export default {
 .circle-grey {background: rgba(130, 145, 169, 1);}
 ._button-blue{background: rgba(0, 129, 255, 1);}
 ._button-grey{background: rgba(255, 255, 255, 1);}
+._button-black{background: rgba(31, 41, 53, 1);}
 </style>
