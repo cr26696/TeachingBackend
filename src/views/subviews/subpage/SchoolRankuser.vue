@@ -487,3 +487,8 @@ export default {
   border-radius: 6px;
 }
 </style>
+<style>
+.el-input--prefix .el-input__inner {
+  padding: 15px;
+}
+</style>

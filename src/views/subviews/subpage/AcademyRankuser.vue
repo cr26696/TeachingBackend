@@ -3,8 +3,8 @@
         <span id="title-font">学院总计</span>
         <!-- <el-row><el-button id="download-button" type="primary"><img id="download" :src=download><span id="download-font">下载</span></el-button></el-row> -->
         <el-row>
-          <el-button id="upload-button" type="primary" @click="uploadfile"><img id="upload" :src=upload><span id="download-font">上传</span></el-button>
-          <el-button id="download-button1" type="info" plain @click="downloadfile"><img id="download1" :src=download1></el-button>
+          <el-button id="upload-button" type="primary" @click="downloadfile"><img id="download1" :src=download><span id="download-font">下载</span></el-button>
+          <!-- <el-button id="download-button1" type="info" plain @click="downloadfile"><img id="download1" :src=download1></el-button> -->
         </el-row>
         <el-main class="content-container">
           <div id="rank-form"><span id="form-title">排名表格</span></div>
@@ -13,7 +13,7 @@
           <div id="info-font2">{{ facultyNumb }}</div>
           <div id="info-font2">{{ facultyOrg }}</div>
         </div>
-          <el-button id="back-button" @click="goback"><span id="back-font">返回</span></el-button>
+          <!-- <el-button id="back-button" @click="goback"><span id="back-font">返回</span></el-button> -->
           <el-table
           :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
           header-align="center"
@@ -230,14 +230,15 @@
     }
   },
   methods:{
-    goback(){
-      //返回上一页
-    },
-    uploadfile(){
-      //上传内容
-    },
+    // goback(){
+    //   //返回上一页
+    // },
+    // uploadfile(){
+    //   //上传内容
+    // },
     downloadfile(){
       //下载内容
+      console.log('download complete')
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -305,7 +306,7 @@
   }
   #download1{
     position: absolute;
-    left: 13px;
+    left: 22px;
     top: 13px;
     width: 14px;
     height: 14px;

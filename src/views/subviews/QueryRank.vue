@@ -4,12 +4,13 @@
             <el-menu :default-openeds="['1']">
                 <el-submenu index="1">
                         <template slot="title"><span>学评教排名</span></template>
-                        <el-menu-item index="1-1" @click="com='SchoolRankuser'"><i id="iconblue" class="el-icon-folder" style="color: blue;"></i><span style="font-weight: 500;">学校排名</span></el-menu-item>
-                        <el-menu-item index="1-2" @click="com='AcademyRank'"><i id="iconred" class="el-icon-folder" style="color: red;"></i><span style="font-weight: 500;">学院排名</span></el-menu-item>
+                        <el-menu-item index="1-1" @click="goComponentSchool"><i id="iconblue" class="el-icon-folder" style="color: blue;"></i><span style="font-weight: 500;">学校排名</span></el-menu-item>
+                        <el-menu-item index="1-2" @click="goComponentAcademy"><i id="iconred" class="el-icon-folder" style="color: red;"></i><span style="font-weight: 500;">学院排名</span></el-menu-item>
                     </el-submenu>
                 <el-menu-item index="2"><span class="maintitle">教学业绩考核</span></el-menu-item>
                 <el-menu-item index="3"><span class="maintitle">教学工作量统计</span></el-menu-item>
             </el-menu>
+            <el-button @click="changeComponent">switch</el-button>
         </el-aside>
         <el-main id="achievement-main">
             <component :is="com"></component>
@@ -27,7 +28,8 @@ export default {
   name: 'QueryRank',
   data() {
     return {
-      com: ''
+      com: '',
+      admin:true
     }
   },
   components: {
@@ -35,6 +37,26 @@ export default {
     SchoolRank,
     SchoolRankuser,
     AcademyRankuser
+  },
+  methods:{
+    changeComponent(){
+        this.admin=!this.admin
+        console.log(this.admin)
+    },
+    goComponentSchool(){
+        if(this.admin){
+            this.com=SchoolRank
+        }else{
+            this.com=SchoolRankuser
+        }
+    },
+    goComponentAcademy(){
+        if(this.admin){
+            this.com=AcademyRank
+        }else{
+            this.com=AcademyRankuser
+        }
+    }
   }
 }
 </script>
