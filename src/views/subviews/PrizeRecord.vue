@@ -345,10 +345,9 @@ export default {
 		}
 	}
 	.el-main{
-		overflow: auto;
 		min-width: 1000px;
 		padding: 0 2.75%;
-		
+		overflow: unset;
 		div.vif-form{
 			padding: 0;
 		}

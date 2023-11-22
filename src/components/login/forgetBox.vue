@@ -33,9 +33,6 @@ export default {
   flex-direction: column;
   align-items: center;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   width: 1260px;
   height: 782px;
   margin-bottom: 141px;

@@ -64,13 +64,10 @@ export default {
 <style scoped lang="less">
 .containerLoginBox {
   display: flex;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin: 0 20px 0 20px;
   width: 1260px;
   height: 782px;
-  margin-bottom: 141px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 10px 20px rgba(219, 231, 238, 1);

@@ -51,8 +51,12 @@ export default {
 <style scoped lang="less">
 
 #containerLoginView {
-  position: absolute;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: scroll;
+  min-width: 100%;
   height: 100%;
   background-color: rgba(219, 231, 238, 1);
   background-repeat: no-repeat;

@@ -47,7 +47,6 @@ export default {
   width: 100%;
   min-width:unset;
   >.el-aside{
-    overflow: hidden;
     min-width: 188px;
     max-width: 250px;
   }
@@ -58,7 +57,6 @@ export default {
     padding: 0 !important;
   }
   .el-main {
-    overflow: hidden;
     background-color: rgba(219, 231, 238, 1);
     color: #333;
     position: relative;

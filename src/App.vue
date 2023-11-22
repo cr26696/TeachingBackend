@@ -36,6 +36,7 @@ export default {
 #app {
   position: relative;
   height: 100%;
-  width: 100%;
+  min-width: 100%;
+  overflow-x: auto;
 }
 </style>
