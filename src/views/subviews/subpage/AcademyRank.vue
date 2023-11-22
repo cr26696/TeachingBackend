@@ -230,13 +230,13 @@ data () {
   }
 },
 methods:{
-  goback(){
+  goback() {
     //返回上一页
   },
-  uploadfile(){
+  uploadfile() {
     //上传内容
   },
-  downloadfile(){
+  downloadfile() {
     //下载内容
   },
   handleCurrentChange (val) {

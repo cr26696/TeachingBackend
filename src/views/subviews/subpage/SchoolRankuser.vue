@@ -252,10 +252,10 @@ export default {
     // uploadfile(){
     //   //上传内容
     // },
-    plus(){
+    plus() {
       console.log('search complete')
     },
-    downloadfile(){
+    downloadfile() {
       //下载内容
       console.log('开始下载')
     },

@@ -43,7 +43,7 @@
 				<el-table v-if="isAdmin" :data="adminTestData">
 					<el-table-column type="selection" :width="30"></el-table-column>
 					<el-table-column v-for="(i,n) in 4" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-					<el-table-column v-for="(i,n) in 13" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+					<el-table-column v-for="(i,n) in 13" v-if="i>=6" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
 					<el-table-column prop="submitDate" label="提交日期">
 						<template slot-scope="scope">
 							<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>

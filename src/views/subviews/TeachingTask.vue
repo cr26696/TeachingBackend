@@ -17,7 +17,7 @@
 			</el-menu>
 		</el-aside>
 		<el-main class="subMainContainer" v-if="menuIndex">
-			<p class="text_class_type" v-if="this.menuIndex !== ''">{{ this.classType[this.menuIndex][1] }}</p>
+			<p class="_text-classtype" v-if="this.menuIndex !== ''">{{ this.classType[this.menuIndex][1] }}</p>
 			<div class="flex-space-between" style="margin-bottom: 23px;">
 				<span class="left">
 					<span class="_filterSelect">课程名称</span>
@@ -26,16 +26,25 @@
 						</el-option>
 					</el-select>
 					<span class="_filterSelect">上传日期</span>
-					<el-date-picker v-model="filterDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-					<el-button type="primary" class="_button-blue">确认</el-button>
+					<el-date-picker
+						v-model="filterDate" 
+						type="daterange" 
+						range-separator="-" 
+						start-placeholder="开始" 
+						end-placeholder="结束"
+						clearable=''
+						format="yyyy/M/d">
+						<img slot="suffix" src=imgDownload>
+				</el-date-picker>
+					<button class="_button1 _button-blue _text-button-white">确认</button>
 				</span>
 				<span class="right">
 					<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
-					<el-button type="primary" name="search" class="_button-blue">🔍</el-button>
+					<button name="search" class="_button1 _button-blue"><img :src=imgSearch></button>
 				</span>
 			</div>
 			<el-table v-if="this.menuIndex !== ''" :data="displayItems" :style="cssVar">
-				<el-table-column type="selection" :width="30"></el-table-column>
+				<el-table-column type="selection" fixed :width="40"></el-table-column>
 				<el-table-column 
 					v-for="(item, index) in classMetaInfo" :prop="item[0]" 
 					:key="index" 
@@ -44,13 +53,14 @@
 					:max-width="80"
 				>
 				</el-table-column>
+				<el-table-column label="操作" :width="90"><img :src=imgFile style="cursor: pointer;" @click="handleControl"></el-table-column>
 			</el-table>
 			<div class="flex-space-between">
 				<span ref="scrollButtons" class="buttons-warper transform-leftcenter">
-					<el-button name="upload" class="_button-blue _text-button-white" @click="handleUpload">上传</el-button>
-					<el-button name="addLog" class="_button-grey _text-button-grey" @click="handleAdd">添加</el-button>
-					<el-button name="delete" class="_button-black _text-button-black" @click="handleAdd">删除账号</el-button>
-					<el-button name="download" class="_button-grey _text-button-grey" @click="handleDownload">下载</el-button>
+					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
+					<button name="addLog" class="_button1 _button-grey _text-button-grey" @click="handleAdd"><img :src=imgAdd><span>添加</span></button>
+					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleAdd"><span>删除账号</span></button>
+					<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownload></button>
 				</span>
 				<el-pagination ref="scrollPagination" class="transform-leftcenter"
 					@current-change="handlePaginationChange"
@@ -253,6 +263,11 @@ export default {
 			*/
 			scrollMarginL: 20,
 			scrollMarginR: 20,
+			imgUpload: require('@/assets/icon/upload-icon1.png'),
+			imgAdd: require('@/assets/icon/plus-grey.png'),
+			imgDownload: require('@/assets/icon/download-icon-grey.png'),
+			imgSearch: require('@/assets/icon/search.png'),
+			imgFile: require('@/assets/icon/file.png'),
 		}
 	},
 	computed: {
@@ -275,8 +290,6 @@ export default {
 	},
 	created() {
 		console.log('task created, 给子组件传值scrollMargin:' + this.scrollMarginL + ',' + this.scrollMarginR)
-	},
-	beforeMount() {
 	},
 	mounted() {
 		// const tempIndex = this.$router.currentRoute.query.subMenuIndex
@@ -323,7 +336,7 @@ export default {
 			if (!oldVal) console.log('task组件被创建/刷新,subMenuIndex从无到有,不做任何操作')
 			else {
 				console.log('subMenuIndex被更新,通过replace更改至query')
-				let query = JSON.parse(JSON.stringify(this.$route.query))
+				const query = JSON.parse(JSON.stringify(this.$route.query))
 				query.subMenuIndex = this.menuIndex
 				//下面一行...写法很特殊，将对象的属性原封不动复制一份，再在后面追加
 				this.$router.replace({ query: { ...this.$route.query, subMenuIndex: this.menuIndex } })
@@ -348,6 +361,9 @@ export default {
 		},
 		handleDownload() {
 			console.log('start download')
+		},
+		handleControl(val) {
+			console.log('操作' + val)
 		},
 		getSuggestions(targetArr, field) {
 			return (queryString, cb) => {
@@ -441,11 +457,39 @@ export default {
 </script>
 
 <style scoped lang="less">
-/*全局生效样式-------------------------------------------*/
-.el-button{border-radius: 6px;}
+/*全局 按钮、输入框等 -------------------------------------------*/
+._button1{
+	position: relative;
+	display:flex; 
+	justify-content: center; 
+	align-items: center;
+	height: 40px;
+	border: none;
+	border-radius: 6px;
+	cursor:pointer;
+}
 /deep/span.el-input__inner{border-radius: 6px}
 /deep/input.el-input__inner{border-radius: 6px}
-
+/*类样式-------------------------------------------*/
+.flex-display{
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.flex-space-between{
+	display: flex;
+	justify-content: space-between;
+}
+.transform-center{
+	transform: translate(-50%,-50%);
+}
+.transform-topcenter{
+	transform: translatex(-50%);
+}
+.transform-leftcenter{
+	transform: translateY(-50%);
+}
+/*html嵌套样式-------------------------------------------*/
 .el-container {
 	position: relative;
 	height: 100%;
@@ -574,7 +618,8 @@ export default {
     color: #333;
     background-color: rgba(219, 231, 238, 1);
 		>p{margin-top: 36px;margin-bottom: 27px;}
-		span.left{
+		div.flex-space-between:nth-of-type(1){
+			span.left{
 				display: flex;
 				span{display: flex;align-items: center;white-space: nowrap;}
 				span:nth-of-type(1){margin:0 13px 0 3px;}
@@ -585,13 +630,18 @@ export default {
 					font-weight: 400;
 					letter-spacing: 0px;
 					line-height: 20px;
-					color: rgba(0, 0, 0, 1);}
-				button{margin-left:51px;width: 120px;background: rgba(0, 129, 255, 1);}
-				.el-select:first-of-type{
-						width: 100px;
+					color: rgba(0, 0, 0, 1);
 				}
+				>button{margin-left:51px;width: 120px;}
+				.el-date-editor{width: 200px;}
+				.el-select:first-of-type{width: 200px;}
+			}
+			span.right{
+				display: flex;
+				/deep/.el-input{width: 280px;}
+				button{width: 40px;margin-left: 10px;}
+			}
 		}
-		span.right{display: flex;}
 		.el-table {
 			position: relative;
 			width: 100%;
@@ -638,74 +688,59 @@ export default {
 					/*滚动条的背景颜色*/
 				}
 			}
-		}
-		span.buttons-warper{
-			display: flex;
-			position: relative;
-			top: -10px;
-				.el-button{
-					position: relative;
+			/deep/.el-table__fixed{
+				&::before{content: unset;}
+				box-shadow: none;
+				.el-table__fixed-header-wrapper{
+					.cell{display: none;}
 				}
-				.el-button:nth-of-type(1){width: 140px;margin-right: 20px;}
-				.el-button:nth-of-type(2){width: 140px;margin-right: 20px;}
-				.el-button:nth-of-type(3){width: 120px;margin-right: 20px;}
-				.el-button:nth-of-type(4){
-					display:flex;
-					justify-content: center;
-					width: 40px;
-					margin-right: 40px;}
-		}
-		.el-pagination{
-			display: flex;
-			position: relative;
-			align-items: center;
-			top: -10px;
-			padding-left: 40px;
-			border-radius: 6px;
-			/deep/.btn-prev{
-				border-radius: 6px 0 0 6px;
+				.el-table__fixed-body-wrapper{	
+					.el-table__row{height: 60px;color: rebeccapurple!important;}
+					.el-checkbox__input{line-height: 0;}
+					.cell{
+						display: flex;
+						justify-content: center;
+						line-height: 0;
+						padding: 0;
+						.el-checkbox__inner{height:20px;width:20px;border-radius: 6px;}
+						.el-checkbox__inner::after{height: 10.5px;width: 4.5px;left: 6px;top:1.5px;border: 2px solid #FFF;border-left: none;border-top: none;}
+					}
+				}
 			}
-			/deep/.btn-next{
-				border-radius: 0 6px 6px 0;
+		}
+		div.flex-space-between:nth-last-of-type(1){
+			span.buttons-warper{
+				display: flex;
+				position: relative;
+				top: -10px;
+				button{span{margin: 0 22px;}}
+				button:nth-of-type(1){width: 140px;margin-right: 20px;}
+				button:nth-of-type(2){width: 140px;margin-right: 20px;}
+				button:nth-of-type(3){width: 120px;margin-right: 20px;}
+				button:nth-of-type(4){width: 40px;margin-right: 40px;}
+			}
+			.el-pagination{
+				display: flex;
+				position: relative;
+				align-items: center;
+				top: -10px;
+				padding-left: 40px;
+				border-radius: 6px;
+				/deep/.btn-prev{
+					border-radius: 6px 0 0 6px;
+				}
+				/deep/.btn-next{
+					border-radius: 0 6px 6px 0;
+				}
 			}
 		}
 	}
 
 }
-
-/*特定样式-------------------------------------------*/
-.flex-display{
-	position: relative;
-	display: flex;
-	align-items: center;
-}
-.transform-center{
-	transform: translate(-50%,-50%);
-}
-.transform-topcenter{
-	transform: translatex(-50%);
-}
-.transform-leftcenter{
-	transform: translateY(-50%);
-}
-.flex-space-between{
-	display: flex;
-	justify-content: space-between;
-}
 /*字体-------------------------------------------*/
-.text-wrap {
-	white-space: pre-wrap;
-}
-
-.text_class_type {
-	font-size: 30px;
-	font-weight: 700;
-	line-height: 43.44px;
-	color: rgba(0, 0, 0, 1);
-}
-._text-button-white{color: rgba(255, 255, 255, 1);font-size: 16px;font-weight: 700;}
+._text-classtype {color: rgb(0, 0, 0);font-size: 30px;font-weight: 700;line-height: 43.44px;}
+._text-button-white{color: white;font-size: 16px;font-weight: 700;}
 ._text-button-grey{color: rgba(130, 145, 169, 1);font-size: 16px;font-weight: 700;}
-._text-button-black{color: white;font-size: 16px;font-weight: 700;}
 /*图标、颜色-------------------------------------------*/
 .circle {
 	display: block;
@@ -719,7 +754,7 @@ export default {
 .circle-purple {background: rgba(240, 12, 225, 1);}
 .circle-green {background: rgba(9, 182, 109, 1);}
 .circle-grey {background: rgba(130, 145, 169, 1);}
-._button-blue{background: rgba(0, 129, 255, 1);}
-._button-grey{background: rgba(255, 255, 255, 1);}
-._button-black{background: rgba(31, 41, 53, 1);}
+._button-blue{background: rgb(0, 129, 255);}
+._button-grey{background: rgb(237, 243, 247);}
+._button-black{background: rgb(31, 41, 53);}
 </style>

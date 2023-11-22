@@ -236,7 +236,7 @@
     // uploadfile(){
     //   //上传内容
     // },
-    downloadfile(){
+    downloadfile() {
       //下载内容
       console.log('download complete')
     },
