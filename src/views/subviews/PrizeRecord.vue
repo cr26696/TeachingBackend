@@ -12,14 +12,14 @@
 			</el-menu>
 		</el-aside>
 		<el-main>
-			<div v-if="menuIndex === '1'" class="wrapform">
+			<div v-if="menuIndex === '1'" class="vif-form">
 				<p>成果填写</p>
 			</div>
-			<!-- 上面为填写分页div.wform，下面为查看分页div.wraptable -->
-			<div v-if="menuIndex === '2' || isAdmin" class="wraptable">
+			<!-- 上面为填写分页div.form，下面为查看分页div.table -->
+			<div v-if="menuIndex === '2' || isAdmin" class="vif-table">
 				<p v-if="isAdmin" class="contentTitle _title">成果申请表</p>
 				<p v-if="!isAdmin" class="contentTitle _title">全部成果</p>
-				<div class="flexInLine" style="margin-bottom: 23px;">
+				<div class="flex-space-between" style="margin-bottom: 23px;">
 				<span class="left">
 					<span class="_filterSelect">审核状态</span>
 					<el-select v-model="filterState" placeholder="请选择">
@@ -32,15 +32,23 @@
 						</el-option>
 					</el-select>
 					<span class="_filterSelect">申请日期</span>
-					<el-date-picker v-model="filterDate" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-					<el-button type="primary">确认</el-button>
+					<el-date-picker
+						v-model="filterDate" 
+						type="daterange" 
+						range-separator="-" 
+						start-placeholder="开始" 
+						end-placeholder="结束"
+						clearable=''
+						format="yyyy/M/d">
+					</el-date-picker>
+					<button class="_button1 _button-blue _text-button-white">确认</button>
 				</span>
 				<span class="right">
 					<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
-					<el-button type="primary" name="search">🔍</el-button>
+					<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
 				</span>
 				</div>
-				<el-table v-if="isAdmin" :data="adminTestData">
+				<el-table v-if="isAdmin" :data="testData">
 					<el-table-column type="selection" :width="30"></el-table-column>
 					<el-table-column v-for="(i,n) in 4" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
 					<el-table-column v-for="(i,n) in 13" v-if="i>=6" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
@@ -49,19 +57,45 @@
 							<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="pass" label="状态"></el-table-column>
-					<el-table-column label="操作"><button>1</button></el-table-column>
+					<el-table-column prop="state" label="状态">
+						<template slot-scope="scope">
+							<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
+							<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
+							<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
+						</template>
+					</el-table-column>
+					<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
 				</el-table>
 				<el-table v-if="!isAdmin" :data="testData">
 					<el-table-column type="selection" :width="30"></el-table-column>
-					<el-table-column v-for="(item, index) in recordTableMeta" :prop="item[0]" :key="index" :label="item[1]" :min-width="flexColumnWidth(item[0], testData)" :max-width="30">
+					<el-table-column :prop="recordTableMeta[0][0]" :key="0" :label="recordTableMeta[0][1]"></el-table-column>
+					<el-table-column v-for="(i,n) in 13" v-if="i>=5" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+					<el-table-column prop="submitDate" label="提交日期">
+						<template slot-scope="scope">
+							<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
+						</template>
 					</el-table-column>
-					<el-table-column prop="pass" label="状态"></el-table-column>
-					<el-table-column label="操作"><button>2</button></el-table-column>
+					<el-table-column prop="state" label="状态">
+						<template slot-scope="scope">
+							<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
+							<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
+							<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
+						</template>
+					</el-table-column>
+					<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
 				</el-table>
-				<div class="flexInLine" style="margin-top: 28px;">
-					<button><img :src=imgDownload><span>下载</span></button>
-					<el-pagination></el-pagination>
+				<div class="flex-space-between" style="margin-top: 28px;">
+					<span class="buttons-warper">
+						<button class="_button1 _button-blue _text-button-white"><img :src=imgDownload><span>下载</span></button>
+						<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
+					</span>
+					<el-pagination
+						@current-change="handlePaginationChange"
+						:current-page="currentPage"
+						:page-size="pageSize"
+						:total="totalItem"
+						layout="prev, pager, next">
+					</el-pagination>
 				</div>
 			</div>
 		</el-main>
@@ -71,6 +105,7 @@
 <script>
 export default {
 	name: 'PrizeRecord',
+	components: {},
 	data() {
 		return {
 			menuIndex: '2',
@@ -98,7 +133,7 @@ export default {
 				['submitDate', '提交日期'],
 				['state', '状态']
 			],
-			adminTestData: [
+			testData: [
 				{
 					aimIndex: 'J.4.11',
 					name: '张三',
@@ -129,12 +164,12 @@ export default {
 					recordProperty: '其他类',
 					noneStandardScore: '0.6',
 					submitDate: '2023.11.6 15:33',
-					state: 'pass'
+					state: 'reject'
 				},
-			],
-			testData: [
 				{
 					aimIndex: 'J.4.11',
+					name: '李四',
+					workerId: '40761',
 					catagory: '教学业绩',
 					assesment: '国家级大学生创新创业项目/省新苗计划项目',
 					recordName: '基于边缘计算神经网络的压力',
@@ -145,10 +180,12 @@ export default {
 					recordProperty: '其他类',
 					noneStandardScore: '0.6',
 					submitDate: '2023.11.6 15:33',
-					state: 'pass'
+					state: 'waiting'
 				},
 				{
 					aimIndex: 'J.4.11',
+					name: '李四',
+					workerId: '40761',
 					catagory: '教学业绩',
 					assesment: '国家级大学生创新创业项目/省新苗计划项目',
 					recordName: '基于边缘计算神经网络的压力',
@@ -159,13 +196,17 @@ export default {
 					recordProperty: '其他类',
 					noneStandardScore: '0.6',
 					submitDate: '2023.11.6 15:33',
-					state: 'pass'
+					state: 'waiting'
 				},
 			],
+			currentPage: 1,
+			pageSize: 5,
 			imgDownload: require('@/assets/icon/download-icon-grey.png'),
+			imgSearch: require('@/assets/icon/search.png'),
 		}
 	},
-	components: {
+	computed:{
+		totalItem() { return this.testData.length }
 	},
 	mounted() {
 		if (this.isAdmin === false) {
@@ -178,8 +219,14 @@ export default {
 		handleMenuSelect(val) {
 			this.menuIndex = val
 		},
+		handleDel() {
+			console.log('item deleted')
+		},
 		addRecord() {
 			console.log('record added')
+		},
+		handlePaginationChange(val) {
+			this.currentPage = val
 		},
 		flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
@@ -246,15 +293,29 @@ export default {
 </script>
 
 <style scoped lang="less">
-//样式------------------------------------------------------
+/*全局 按钮、输入框等 -------------------------------------------*/
+._button1{
+	position: relative;
+	display:flex; 
+	justify-content: center; 
+	align-items: center;
+	height: 40px;
+	border: none;
+	border-radius: 6px;
+	cursor:pointer;
+}
+/deep/span.el-input__inner{border-radius: 6px}
+/deep/input.el-input__inner{border-radius: 6px}
+/*类样式-------------------------------------------*/
 .flexInLine{
 	display: flex;
 	justify-content: space-between;
 }
-button{
-	border: none;
-	border-radius: 6px;
+.flex-space-between{
+	display: flex;
+	justify-content: space-between;
 }
+/*html嵌套样式-------------------------------------------*/
 .el-container {
 	position: relative;
 	height: 100%;
@@ -288,35 +349,38 @@ button{
 		min-width: 1000px;
 		padding: 0 2.75%;
 		
-		div.wrapform{
+		div.vif-form{
 			padding: 0;
 		}
 		//
-		div.wraptable{
+		div.vif-table{
 			p.contentTitle{
 				margin-top: 25px;
 				margin-bottom: 40px;
 			}
-			span.left{
-				display: flex;
-				span{display: flex;align-items: center;white-space: nowrap;}
-				span:nth-of-type(1){margin:0 14px 0 13px;}
-				span:nth-of-type(2){margin:0 42px 0 13px;}
-				span:nth-of-type(3){margin:0 22px 0 13px;}
-				input::placeholder{
-					text-align: center;
-					font-size: 13px;
-					font-weight: 400;
-					letter-spacing: 0px;
-					line-height: 20px;
-					color: rgba(0, 0, 0, 1);}
-				button{margin-left:18px;}
-				.el-select:first-of-type{
-						width: 100px;
+			div.flex-space-between:nth-of-type(1){
+				span.left{
+					display: flex;
+					span{display: flex;align-items: center;white-space: nowrap;}
+					span:nth-of-type(1){margin:0 14px 0 13px;}
+					span:nth-of-type(2){margin:0 13px 0 42px;}
+					span:nth-of-type(3){margin:0 13px 0 22px;}
+					/deep/input::placeholder{
+						text-align: start;
+						font-size: 13px;
+						font-weight: 400;
+						color: rgba(0, 0, 0, 1);
+					}
+					>button{margin-left:18px;width: 120px;}
+					.el-date-editor{width: 200px;}
+					.el-select:nth-of-type(1){/deep/.el-input{width: 100px;}}
+					.el-select:nth-of-type(2){/deep/.el-input{width: 120px;}}
 				}
-			}
-			span.right{
-				display: flex;
+				span.right{
+					display: flex;
+					/deep/.el-input{width: 280px;}
+					button{width: 40px;margin-left: 10px;}
+				}
 			}
 			>div.el-table{
 				/deep/.el-table__header {
@@ -344,15 +408,15 @@ button{
 
 				}
 			}
-			.flexInLine:nth-last-of-type(1){
-				button{
+			.flex-space-between:nth-last-of-type(1){
+				span.buttons-warper{
 					display: flex;
-					justify-content: center;
-					align-items: center;
-					width: 140px;
-					background: rgba(0, 129, 255, 1);
-					img{margin: 0 20px;}
-				}
+					position: relative;
+					flex-direction: row;
+					button{span{margin: 0 22px;}}
+					button:nth-of-type(1){width: 140px;margin-right: 20px;}
+					button:nth-of-type(2){width: 140px;margin-right: 20px;}
+				}	
 			}
 		}
 	}
@@ -363,14 +427,22 @@ button{
 	font-weight: 700;
 	color: rgba(0, 0, 0, 1);
 }
-._table-item-grey{
-	font-size: 14px;
-	font-weight: 500;
-	color: rgba(130, 145, 169, 1);
-}
-._filterSelect{
-	font-size: 13px;
-	font-weight: 400;
-}
+._filterSelect{	font-size: 13px;	font-weight: 400;}
+._table-item-grey{color: rgba(130, 145, 169, 1); font-size: 14px;	font-weight: 500;	}
+._text-button-white{color: white;font-size: 16px;font-weight: 700;}
+._text-button-grey{color: rgba(130, 145, 169, 1);font-size: 16px;font-weight: 700;}
 
+/*图标、颜色-------------------------------------------*/
+.circle {
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+}
+.circle-green {background: rgba(9, 182, 109, 1);}
+.circle-orange {background: rgba(255, 138, 72, 1);}
+.circle-red {background: rgba(255, 61, 87, 1);}
+._button-blue{background: rgb(0, 129, 255);}
+._button-grey{background: rgb(237, 243, 247);}
+._button-black{background: rgb(31, 41, 53);}
 </style>

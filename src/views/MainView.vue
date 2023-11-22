@@ -41,9 +41,11 @@ export default {
 
 <style scoped lang="less">
 #containerMainView {
-  position: absolute;
+  position: fixed;
+  overflow-x: auto;
   height: 100%;
   width: 100%;
+  min-width:unset;
   >.el-aside{
     overflow: hidden;
     min-width: 188px;

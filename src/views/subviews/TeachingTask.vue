@@ -35,7 +35,7 @@
 						clearable=''
 						format="yyyy/M/d">
 						<img slot="suffix" src=imgDownload>
-				</el-date-picker>
+					</el-date-picker>
 					<button class="_button1 _button-blue _text-button-white">确认</button>
 				</span>
 				<span class="right">
@@ -624,17 +624,15 @@ export default {
 				span{display: flex;align-items: center;white-space: nowrap;}
 				span:nth-of-type(1){margin:0 13px 0 3px;}
 				span:nth-of-type(2){margin:0 13px 0 35px;}
-				input::placeholder{
-					text-align: center;
+				/deep/input::placeholder{
+					text-align: start;
 					font-size: 13px;
 					font-weight: 400;
-					letter-spacing: 0px;
-					line-height: 20px;
 					color: rgba(0, 0, 0, 1);
 				}
 				>button{margin-left:51px;width: 120px;}
 				.el-date-editor{width: 200px;}
-				.el-select:first-of-type{width: 200px;}
+				.el-select{width: 200px;}
 			}
 			span.right{
 				display: flex;
