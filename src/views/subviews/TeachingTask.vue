@@ -265,7 +265,7 @@ export default {
 			scrollMarginR: 20,
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgAdd: require('@/assets/icon/plus-grey.png'),
-			imgDownload: require('@/assets/icon/download-icon-grey.png'),
+			imgDownload: require('@/assets/icon/download-grey.png'),
 			imgSearch: require('@/assets/icon/search.png'),
 			imgFile: require('@/assets/icon/file.png'),
 		}

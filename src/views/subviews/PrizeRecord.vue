@@ -66,7 +66,7 @@
 					</el-table-column>
 					<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
 				</el-table>
-				<el-table v-if="!isAdmin" :data="testData">
+				<el-table v-else-if="!isAdmin" :data="testData">
 					<el-table-column type="selection" :width="30"></el-table-column>
 					<el-table-column :prop="recordTableMeta[0][0]" :key="0" :label="recordTableMeta[0][1]"></el-table-column>
 					<el-table-column v-for="(i,n) in 13" v-if="i>=5" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
@@ -85,9 +85,13 @@
 					<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
 				</el-table>
 				<div class="flex-space-between" style="margin-top: 28px;">
-					<span class="buttons-warper">
-						<button class="_button1 _button-blue _text-button-white"><img :src=imgDownload><span>下载</span></button>
+					<span v-if="isAdmin" class="buttons-warper">
+						<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
 						<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
+						<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownload></button>
+					</span>
+					<span v-else-if="!isAdmin" class="buttons-warper">
+						<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgDownload><span>下载</span></button>
 					</span>
 					<el-pagination
 						@current-change="handlePaginationChange"
@@ -201,7 +205,8 @@ export default {
 			],
 			currentPage: 1,
 			pageSize: 5,
-			imgDownload: require('@/assets/icon/download-icon-grey.png'),
+			imgUpload: require('@/assets/icon/upload-icon1.png'),
+			imgDownload: require('@/assets/icon/download-white.png'),
 			imgSearch: require('@/assets/icon/search.png'),
 		}
 	},
@@ -219,8 +224,14 @@ export default {
 		handleMenuSelect(val) {
 			this.menuIndex = val
 		},
+		handleUpload() {
+			console.log('item uploaded')
+		},
 		handleDel() {
 			console.log('item deleted')
+		},
+		handleDownload() {
+			console.log('item downloaded')
 		},
 		addRecord() {
 			console.log('record added')
@@ -415,6 +426,7 @@ export default {
 					button{span{margin: 0 22px;}}
 					button:nth-of-type(1){width: 140px;margin-right: 20px;}
 					button:nth-of-type(2){width: 140px;margin-right: 20px;}
+					button:nth-of-type(3){width: 40px;margin-right: 40px;}
 				}	
 			}
 		}

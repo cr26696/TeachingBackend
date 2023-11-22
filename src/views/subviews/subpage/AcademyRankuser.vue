@@ -93,9 +93,9 @@
   name: 'AcademyRankuser',
   data () {
     return {
-      download: require('@/assets/icon/download-square.png'),
+      download: require('@/assets/icon/download-white.png'),
       upload: require('@/assets/icon/upload-icon1.png'),
-      download1: require('@/assets/icon/download-icon-grey.png'),
+      download1: require('@/assets/icon/download-grey.png'),
       facultyName: '张显飞',
       facultyNumb: '40285',
       facultyOrg: '电子信息学院(微电子学院)',
