@@ -22,7 +22,8 @@
 import AcademyRank from './subpage/AcademyRank.vue';
 import SchoolRank from './subpage/SchoolRank.vue';
 import SchoolRankuser from './subpage/SchoolRankuser.vue';
-import AcademyRankuser from './subpage/AcademyRankuser.vue'
+import AcademyRankuser from './subpage/AcademyRankuser.vue';
+import experimentClassA from './subpage/experimentClassA.vue';
 
 export default {
   name: 'QueryRank',
@@ -36,7 +37,9 @@ export default {
     AcademyRank,
     SchoolRank,
     SchoolRankuser,
-    AcademyRankuser
+    AcademyRankuser,
+    experimentClassA
+
   },
   methods:{
     changeComponent(){
@@ -45,7 +48,7 @@ export default {
     },
     goComponentSchool(){
         if(this.admin){
-            this.com=SchoolRank
+            this.com=experimentClassA
         }else{
             this.com=SchoolRankuser
         }
