@@ -23,7 +23,7 @@
 			<p v-if="isAdmin" class="contentTitle _title">成果申请表</p>
 			<p v-else-if="!isAdmin&&(menuIndex === '2')" class="contentTitle _title">成果填写</p>
 			<p v-else-if="!isAdmin&&(menuIndex === '1')" class="contentTitle _title">全部成果</p>
-			<div class="flex-space-between" style="margin-bottom: 23px;">
+			<div class="flex-space-between">
 			<span class="left">
 				<span class="_filterSelect">审核状态</span>
 				<el-select v-model="filterState" placeholder="请选择">
@@ -88,7 +88,7 @@
 				</el-table-column>
 				<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
 			</el-table>
-			<div class="flex-space-between" style="margin-top: 28px;">
+			<div class="flex-space-between">
 				<span v-if="isAdmin" class="buttons-warper">
 					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
 					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
@@ -359,7 +359,7 @@ export default {
 			}
 		}
 	}
-	.el-main{
+	>.el-main{
 		min-width: 1000px;
 		padding: 0 2.75%;
 		overflow: unset;
@@ -367,31 +367,7 @@ export default {
 			margin-top: 25px;
 			margin-bottom: 40px;
 		}
-		.flex-space-between:nth-of-type(1){
-			background-color: red;
-			span.left{
-				display: flex;
-				span{display: flex;align-items: center;white-space: nowrap;}
-				span:nth-of-type(1){margin:0 14px 0 13px;}
-				span:nth-of-type(2){margin:0 13px 0 42px;}
-				span:nth-of-type(3){margin:0 13px 0 22px;}
-				/deep/input::placeholder{
-					text-align: start;
-					font-size: 13px;
-					font-weight: 400;
-					color: rgba(0, 0, 0, 1);
-				}
-				>button{margin-left:18px;width: 120px;}
-				.el-date-editor{width: 200px;}
-				.el-select:nth-of-type(1){/deep/.el-input{width: 100px;}}
-				.el-select:nth-of-type(2){/deep/.el-input{width: 120px;}}
-			}
-			span.right{
-				display: flex;
-				/deep/.el-input{width: 280px;}
-				button{width: 40px;margin-left: 10px;}
-			}
-		}
+
 		>div.el-table{
 			/deep/.el-table__header {
 				height: 60px ;
@@ -418,7 +394,9 @@ export default {
 
 				}
 			}
-		.flex-space-between:nth-last-of-type(1){
+		div.flex-space-between:nth-last-of-type(1){
+			margin-bottom: 28px;
+			background-color: red;
 			span.buttons-warper{
 				display: flex;
 				position: relative;
