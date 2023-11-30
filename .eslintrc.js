@@ -55,6 +55,7 @@ module.exports = {
 		// 命名规范
 		camelcase: "warn",
 		'vue/multi-word-component-names': 'warn',
-		'quote-props': 'off'
+		'quote-props': 'off',
+		'dot-notation': 'off'
 	}
 }
