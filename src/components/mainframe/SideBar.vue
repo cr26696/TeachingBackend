@@ -15,6 +15,9 @@
 		<el-menu-item index="4" @click="routerGo('/mainview/queryRank')">
 			<div><i class="el-icon-message"></i><span>结果查询</span></div>
 		</el-menu-item>
+		<el-menu-item index="5" @click="routerGo('/mainview/userManage')">
+			<div><i class="el-icon-user"></i><span>用户管理</span></div>
+		</el-menu-item>
 	</el-menu>
 </template>
 

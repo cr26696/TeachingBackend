@@ -7,6 +7,7 @@ import TeachingTask from '@/views/subviews/TeachingTask.vue'
 import PrizeRecord from '@/views/subviews/PrizeRecord.vue'
 import FacultyInfo from '@/views/subviews/FacultyInfo.vue'
 import QueryRank from '@/views/subviews/QueryRank.vue'
+import UserManage from '@/views/subviews/UserManage.vue'
 // eslint-disable-next-line
 import Inputachi from '@/views/subviews/subpage/Inputachi.vue'
 // eslint-disable-next-line
@@ -80,6 +81,12 @@ const routes = [
 				path: 'queryRank',
 				component: QueryRank,
 				meta:{ menuIndex: '4' }
+			},
+			{
+				name: 'userManage',
+				path: 'userManage',
+				component: UserManage,
+				meta:{ menuIndex: '5' }
 			}
 		]
 	},
