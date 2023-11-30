@@ -12,96 +12,93 @@
 			</el-menu>
 		</el-aside>
 		<el-main>
-			<div v-if="menuIndex === '1'" class="vif-form">
-				<p>成果填写</p>
+			<p v-if="isAdmin" class="contentTitle _title">成果申请表</p>
+			<p v-else-if="!isAdmin&&(menuIndex === '2')" class="contentTitle _title">成果填写</p>
+			<p v-else-if="!isAdmin&&(menuIndex === '1')" class="contentTitle _title">全部成果</p>
+			<div class="flex-space-between" style="margin-bottom: 23px;">
+			<span class="left">
+				<span class="_filterSelect">审核状态</span>
+				<el-select v-model="filterState" placeholder="请选择">
+					<el-option v-for="item in censorStates" :key="item.value" :label="item.label" :value="item.value">
+					</el-option>
+				</el-select>
+				<span class="_filterSelect">分类</span>
+				<el-select v-model="filterCategory" placeholder="请选择">
+					<el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
+					</el-option>
+				</el-select>
+				<span class="_filterSelect">申请日期</span>
+				<el-date-picker
+					v-model="filterDate" 
+					type="daterange" 
+					range-separator="-" 
+					start-placeholder="开始" 
+					end-placeholder="结束"
+					clearable=''
+					format="yyyy/M/d">
+				</el-date-picker>
+				<button class="_button1 _button-blue _text-button-white">确认</button>
+			</span>
+			<span class="right">
+				<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
+				<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
+			</span>
 			</div>
-			<!-- 上面为填写分页div.form，下面为查看分页div.table -->
-			<div v-if="menuIndex === '2' || isAdmin" class="vif-table">
-				<p v-if="isAdmin" class="contentTitle _title">成果申请表</p>
-				<p v-if="!isAdmin" class="contentTitle _title">全部成果</p>
-				<div class="flex-space-between" style="margin-bottom: 23px;">
-				<span class="left">
-					<span class="_filterSelect">审核状态</span>
-					<el-select v-model="filterState" placeholder="请选择">
-						<el-option v-for="item in censorStates" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<span class="_filterSelect">分类</span>
-					<el-select v-model="filterCategory" placeholder="请选择">
-						<el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<span class="_filterSelect">申请日期</span>
-					<el-date-picker
-						v-model="filterDate" 
-						type="daterange" 
-						range-separator="-" 
-						start-placeholder="开始" 
-						end-placeholder="结束"
-						clearable=''
-						format="yyyy/M/d">
-					</el-date-picker>
-					<button class="_button1 _button-blue _text-button-white">确认</button>
+			<el-table v-if="isAdmin" :data="testData">
+				<el-table-column type="selection" :width="30"></el-table-column>
+				<el-table-column v-for="(i,n) in 4" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+				<el-table-column v-for="(i,n) in 13" v-if="i>=6" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+				<el-table-column prop="submitDate" label="提交日期">
+					<template slot-scope="scope">
+						<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="state" label="状态">
+					<template slot-scope="scope">
+						<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
+						<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
+						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
+					</template>
+				</el-table-column>
+				<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
+			</el-table>
+			<el-table v-else-if="!isAdmin" :data="testData">
+				<el-table-column type="selection" :width="30"></el-table-column>
+				<el-table-column :prop="recordTableMeta[0][0]" :key="0" :label="recordTableMeta[0][1]"></el-table-column>
+				<el-table-column v-for="(i,n) in 13" v-if="i>=5" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+				<el-table-column prop="submitDate" label="提交日期">
+					<template slot-scope="scope">
+						<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="state" label="状态">
+					<template slot-scope="scope">
+						<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
+						<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
+						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
+					</template>
+				</el-table-column>
+				<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
+			</el-table>
+			<div class="flex-space-between" style="margin-top: 28px;">
+				<span v-if="isAdmin" class="buttons-warper">
+					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
+					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
+					<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownload></button>
 				</span>
-				<span class="right">
-					<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
-					<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
+				<span v-else-if="!isAdmin" class="buttons-warper">
+					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgDownload><span>下载</span></button>
 				</span>
-				</div>
-				<el-table v-if="isAdmin" :data="testData">
-					<el-table-column type="selection" :width="30"></el-table-column>
-					<el-table-column v-for="(i,n) in 4" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-					<el-table-column v-for="(i,n) in 13" v-if="i>=6" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-					<el-table-column prop="submitDate" label="提交日期">
-						<template slot-scope="scope">
-							<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="state" label="状态">
-						<template slot-scope="scope">
-							<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
-							<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
-							<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
-						</template>
-					</el-table-column>
-					<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
-				</el-table>
-				<el-table v-else-if="!isAdmin" :data="testData">
-					<el-table-column type="selection" :width="30"></el-table-column>
-					<el-table-column :prop="recordTableMeta[0][0]" :key="0" :label="recordTableMeta[0][1]"></el-table-column>
-					<el-table-column v-for="(i,n) in 13" v-if="i>=5" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-					<el-table-column prop="submitDate" label="提交日期">
-						<template slot-scope="scope">
-							<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="state" label="状态">
-						<template slot-scope="scope">
-							<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
-							<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
-							<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
-						</template>
-					</el-table-column>
-					<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
-				</el-table>
-				<div class="flex-space-between" style="margin-top: 28px;">
-					<span v-if="isAdmin" class="buttons-warper">
-						<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
-						<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
-						<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownload></button>
-					</span>
-					<span v-else-if="!isAdmin" class="buttons-warper">
-						<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgDownload><span>下载</span></button>
-					</span>
-					<el-pagination
-						@current-change="handlePaginationChange"
-						:current-page="currentPage"
-						:page-size="pageSize"
-						:total="totalItem"
-						layout="prev, pager, next">
-					</el-pagination>
-				</div>
+				<el-pagination
+					@current-change="handlePaginationChange"
+					:current-page="currentPage"
+					:page-size="pageSize"
+					:total="totalItem"
+					layout="prev, pager, next">
+				</el-pagination>
 			</div>
+			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
+			</el-dialog>
 		</el-main>
 	</el-container>
 </template>
@@ -113,7 +110,7 @@ export default {
 	data() {
 		return {
 			menuIndex: '2',
-			isAdmin: true,
+			isAdmin: false,
 			displayItems: '',
 			filterState: '',
 			filterCategory: '',
@@ -208,10 +205,11 @@ export default {
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-white.png'),
 			imgSearch: require('@/assets/icon/search.png'),
+			showDialogUpload:false,
 		}
 	},
 	computed:{
-		totalItem() { return this.testData.length }
+		totalItem() { return this.testData.length },
 	},
 	mounted() {
 		if (this.isAdmin === false) {
@@ -234,7 +232,7 @@ export default {
 			console.log('item downloaded')
 		},
 		addRecord() {
-			console.log('record added')
+			this.showDialogUpload = true
 		},
 		handlePaginationChange(val) {
 			this.currentPage = val
@@ -331,7 +329,6 @@ export default {
 	position: relative;
 	height: 100%;
 	width: 100%;
-
 	.el-aside {
 		width: 15% !important;
 		min-width: 200px;
@@ -342,7 +339,6 @@ export default {
 		.el-menu {
 			.el-menu-item {
 				height: 60px !important;
-
 				&.is-active::before {
 					content: '';
 					height: 100%;
@@ -359,11 +355,6 @@ export default {
 		min-width: 1000px;
 		padding: 0 2.75%;
 		overflow: unset;
-		div.vif-form{
-			padding: 0;
-		}
-		//
-		div.vif-table{
 			p.contentTitle{
 				margin-top: 25px;
 				margin-bottom: 40px;
@@ -405,20 +396,21 @@ export default {
 				/deep/.el-table__body-wrapper {
 					padding-bottom: 34px;
 
-					.el-table__body {
-						border: 1px solid #ddd;
-						div.cell {
-							display: flex;
-							align-items: center;
-							justify-content: center;
-							height: 60px;
-							padding: 0px;
-						}
+				.el-table__body {
+					border: 1px solid #ddd;
+					div.cell {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						height: 60px;
+						padding: 0px;
 					}
+				}
 
 				}
 			}
-			.flex-space-between:nth-last-of-type(1){
+			div.flex-space-between:nth-last-of-type(1){
+				background-color: rebeccapurple;
 				span.buttons-warper{
 					display: flex;
 					position: relative;
@@ -429,7 +421,7 @@ export default {
 					button:nth-of-type(3){width: 40px;margin-right: 40px;}
 				}	
 			}
-		}
+		
 	}
 }
 //字体------------------------------------
