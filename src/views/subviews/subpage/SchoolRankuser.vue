@@ -105,9 +105,9 @@ export default {
   name: 'SchoolRankuser',
   data () {
     return {
-      download: require('@/assets/icon/download-square.png'),
+      download: require('@/assets/icon/download-white.png'),
       upload: require('@/assets/icon/upload-icon1.png'),
-      download1: require('@/assets/icon/download-icon-grey.png'),
+      download1: require('@/assets/icon/download-grey.png'),
       logo: require('@/assets/icon/logo-assistance.png'),
       plusicon: require('@/assets/icon/plus.png'),
       facultyName: '张显飞',
