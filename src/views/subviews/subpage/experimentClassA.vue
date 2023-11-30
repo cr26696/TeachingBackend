@@ -30,15 +30,13 @@
   
   <script>
 import Workloaduser from './Workloaduser.vue';
-
-  
   export default {
     name: 'SchoolRank',
     data() {
         return {
-            download: require('@/assets/icon/download-square.png'),
+            download: require('@/assets/icon/download-white.png'),
             upload: require('@/assets/icon/upload-icon1.png'),
-            download1: require('@/assets/icon/download-icon-grey.png'),
+            download1: require('@/assets/icon/download-grey.png'),
             displayItems: [],
             dataList:[
                 {
