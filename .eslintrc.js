@@ -23,7 +23,7 @@ module.exports = {
 		'no-undef': 'warn',
 		'prefer-const': 'warn',
 		'no-useless-return': 'warn',
-		'vue/no-use-v-if-with-v-for': 'warn',
+		'vue/no-use-v-if-with-v-for': 'off',
 		// 空格格式
 		indent: ['off','tab'],
 		'no-tabs': 'off',
@@ -55,6 +55,6 @@ module.exports = {
 		// 命名规范
 		camelcase: "warn",
 		'vue/multi-word-component-names': 'warn',
-		'quote-props': 'warn'
+		'quote-props': 'off'
 	}
 }

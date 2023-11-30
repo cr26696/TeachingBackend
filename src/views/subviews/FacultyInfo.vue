@@ -60,127 +60,6 @@ export default {
       infoFields: ['初级', '中级', '副高', '高级'],
       listMetaFields:["id","staffNum","name","department","jobTitle","email","telephone","category","avatarPath"],
       listMetaLabels:["id","工号","姓名","部门","职称","邮箱","电话","人员类别","头像路径"],
-      items: [{
-        name: '张三',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '王五',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      },{
-        name: '赵四',
-        position: '院长',
-        number: '1234',
-        phone: '13811112222',
-        mail: 'zhangsan@hdu.edu'
-      }],
       filterJob:null,
       filterName:null,
       filterNumber:null,
@@ -215,22 +94,23 @@ export default {
     getDisplayItems() {
       const start = (this.currentPage - 1) * this.pageSize
       const end = start + this.pageSize
-      this.displayItems = this.items.slice(start, end)
+      this.displayItems = this.facultyList.slice(start, end)
     },
     async initFacultyList () {
+      // eslint-disable-next-line
       const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/staff/list', {'curPage': this.currentPage,'pageSize':'12'})
       if (res.code === 200) {
         this.facultyList = res.data
         this.total = res.totalRows
       }
-      console.log(this.facultyList)
+      console.log(res)
     },
     async getFacultyList (page,job,name) {
-      const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/staff/list', {'curPage': page,'pageSize':'12','jobTitle':job,'name':name})
+      // eslint-disable-next-line
+      const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/staff/list', {'curPage': page,'pageSize':this.pageSize,'jobTitle':job,'name':name})
       if (res.code === 200) {
         this.facultyList = res.data
       }
-      console.log(this.facultyList)
     },
     openDialogInfo(index) {
       //this.ShowDialogInfo = true
@@ -239,9 +119,9 @@ export default {
     }
   },
   mounted () {
-    this.total = this.items.length
-    this.getDisplayItems()
     this.initFacultyList()
+    //this.getDisplayItems()
+    //this.total = this.items.length
   }
 }
 </script>
