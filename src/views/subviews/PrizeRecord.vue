@@ -351,7 +351,7 @@ export default {
 			}
 		}
 	}
-	.el-main{
+	>.el-main{
 		min-width: 1000px;
 		padding: 0 2.75%;
 		overflow: unset;
