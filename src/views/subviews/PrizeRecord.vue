@@ -97,9 +97,10 @@
 					layout="prev, pager, next">
 				</el-pagination>
 			</div>
-			<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
-			</el-dialog>
+
 		</el-main>
+		<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
+		</el-dialog>
 	</el-container>
 </template>
 
@@ -410,7 +411,6 @@ export default {
 				}
 			}
 			div.flex-space-between:nth-last-of-type(1){
-				background-color: rebeccapurple;
 				span.buttons-warper{
 					display: flex;
 					position: relative;
