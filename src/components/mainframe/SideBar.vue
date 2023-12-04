@@ -3,19 +3,16 @@
 		<div style="height: 80px;display: flex;align-items: center;">
 			<img id="logo" :src=logo><span id="logo_text">评估助手</span><img id="logo_three_line" :src=logo_three_line>
 		</div>
-		<el-menu-item index="1" @click="routerGo('/mainview/facultyInfo')">
-			<div><i class="el-icon-menu"></i><span>教职工信息</span></div>
-		</el-menu-item>
-		<el-menu-item index="2" @click="routerGo('/mainview/teachingTask')">
+		<el-menu-item index="1" @click="routerGo('/mainview/teachingTask')">
 			<div><i class="el-icon-folder"></i><span>教师工作量核算</span></div>
 		</el-menu-item>
-		<el-menu-item index="3" @click="routerGo('/mainview/prizeRecord')">
+		<el-menu-item index="2" @click="routerGo('/mainview/prizeRecord')">
 			<div><i class="el-icon-date"></i><span>奖项录入</span></div>
 		</el-menu-item>
-		<el-menu-item index="4" @click="routerGo('/mainview/queryRank')">
+		<el-menu-item index="3" @click="routerGo('/mainview/queryRank')">
 			<div><i class="el-icon-message"></i><span>结果查询</span></div>
 		</el-menu-item>
-		<el-menu-item index="5" @click="routerGo('/mainview/userManage')">
+		<el-menu-item index="4" @click="routerGo('/mainview/userManage')">
 			<div><i class="el-icon-user"></i><span>用户管理</span></div>
 		</el-menu-item>
 	</el-menu>
@@ -28,7 +25,7 @@ export default {
 		return {
 			logo: require('@/assets/icon/Meher_icon.png'),
 			logo_three_line: require('@/assets/icon/Three_line.png'),
-			activedMenu: '0'
+			activedMenu: '1'
 		}
 	},
 	methods: {

@@ -42,25 +42,25 @@ const routes = [
 		children: [
 			{
 				path: '/',
-				redirect: 'facultyInfo'
+				redirect: 'teachingTask'
 			},
-			{
-				name: 'facultyInfo',
-				path: 'facultyInfo',
-				component: FacultyInfo,
-				meta:{ menuIndex: '1' }
-			},
+			// {
+			// 	name: 'facultyInfo',
+			// 	path: 'facultyInfo',
+			// 	component: FacultyInfo,
+			// 	meta:{ menuIndex: '1' }
+			// },
 			{
 				name: 'teachingTask',
 				path: 'teachingTask',
 				component: TeachingTask,
-				meta:{ menuIndex: '2' }
+				meta:{ menuIndex: '1' }
 			},
 			{
 				name: 'prizeRecord',
 				path: 'prizeRecord',
 				component: PrizeRecord,
-				meta:{ menuIndex: '3' }
+				meta:{ menuIndex: '2' }
 				// children: [
 				//   {
 				//     path: '/',
@@ -80,13 +80,13 @@ const routes = [
 				name: 'queryRank',
 				path: 'queryRank',
 				component: QueryRank,
-				meta:{ menuIndex: '4' }
+				meta:{ menuIndex: '3' }
 			},
 			{
 				name: 'userManage',
 				path: 'userManage',
 				component: UserManage,
-				meta:{ menuIndex: '5' }
+				meta:{ menuIndex: '4' }
 			}
 		]
 	},
