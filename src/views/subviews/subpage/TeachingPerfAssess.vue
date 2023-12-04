@@ -28,7 +28,7 @@
 			<el-table :data="displayItems">
 				<el-table-column type="selection" fixed :width="40"></el-table-column>
 				<el-table-column 
-					v-for="(item, index) in MetaRankInfo" :prop="item[0]" 
+					v-for="(item, index) in MetaTableInfo" :prop="item[0]" 
 					:key="index" 
 					:label="item[1]"
 					
@@ -81,19 +81,16 @@ export default {
           "2",
         ]
       },
-      MetaRankInfo:[
-        ["id","id"],
-        ["schoolYear","学年"],
-        ["semester","学期"],
-        ["department","教师部门"],
+      MetaTableInfo:[
         ["staffNum","教师工号"],
         ["name","教师姓名"],
-        ["evaluatorCount","参评人数"],
-        ["totalScore","总得分"],
-        ["schoolRank","学校排名"],
-        ["schoolRankRatio","学校排名比"],
+        ["jobTitle","职称"],
+        ["lectureHoursNotLessThan64","承担主讲课程学时数是否不低于64学时"],
+        ["teachingAccidentOccurrence","是否出现教学事故"],
+        ["assessmentScore","考核分数"],
+        ["assessmentLevel","考核等级"],
+        ["remark","备注"],
         ["uploadTime","上传时间"],
-        ["collegeRank","学院排名"],
       ],
       rankList:[],
       displayItems:[],

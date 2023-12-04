@@ -26,6 +26,7 @@ import AcademyRankAdmin from './subpage/AcademyRankAdmin.vue';
 import AcademyRank from './subpage/AcademyRank.vue';
 import AcademyRankuser from './subpage/AcademyRankuser.vue';
 import TeachingPerfAssess from './subpage/TeachingPerfAssess.vue';
+import TeachingTaskAssess from './subpage/TeachingTaskAssess.vue';
 import experimentClassA from './subpage/experimentClassA.vue';
 
 export default {
@@ -44,6 +45,7 @@ export default {
 		AcademyRank,
 		AcademyRankuser,
 		TeachingPerfAssess,
+		TeachingTaskAssess,
 		experimentClassA
 
 	},
@@ -58,7 +60,7 @@ export default {
 				case 'School': { this.com = this.$options.components['SchoolRank' + suffix]; break; }
 				case 'Academy': { this.com = this.$options.components['AcademyRank' + suffix]; break; }
 				case 'Assess': { this.com = this.$options.components['TeachingPerfAssess']; break; }
-				case 'Statistic': { this.com = this.$options.components['staticsic']; break; }
+				case 'Statistic': { this.com = this.$options.components['TeachingTaskAssess']; break; }
 			}
 		},
 	}

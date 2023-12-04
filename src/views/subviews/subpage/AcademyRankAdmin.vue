@@ -152,7 +152,7 @@ export default {
 			"schoolYear":year,
 			"semester":semester,
 			"name":name,
-			"stuffNum":"22005"
+			"staffNum":num
 			})
       if (res.code === 200) {
         this.rankList = res.data
