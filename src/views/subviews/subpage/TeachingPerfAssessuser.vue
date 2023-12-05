@@ -7,6 +7,7 @@
           <el-date-picker
             v-model="value0"
             type="year"
+            value-format="yyyy"
             @change="showchange">
           </el-date-picker>
         </el-container>
