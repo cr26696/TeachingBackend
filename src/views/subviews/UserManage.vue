@@ -16,7 +16,7 @@
 			</span>
 		</div>
 		<el-table :data="displayItems" :style="cssVar">
-			<el-table-column type="selection" fixed :width="40"></el-table-column>
+			<!-- <el-table-column type="selection" fixed :width="40"></el-table-column> -->
 			<el-table-column 
 				v-for="(item, index) in classMetaInfo" :prop="item[0]" 
 				:key="index" 
@@ -25,7 +25,12 @@
 				:max-width="80"
 			>
 			</el-table-column>
-			<el-table-column label="操作" :width="90"><img :src=imgFile style="cursor: pointer;" @click="handleControl"></el-table-column>
+			<el-table-column label="操作" :width="90">
+				<template slot-scope="scope">
+			<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+			<el-button type="text" size="small">编辑</el-button>
+      </template>
+			</el-table-column>
 		</el-table>
 		<div class="flex-space-between">
 			<span ref="scrollButtons" class="buttons-warper">
@@ -53,23 +58,23 @@ export default {
 			//侧栏显示、选中
 			menuIndex: '',
 			pagerBackground: true,
-			classType: [
-				['classTheory', '理论课'],
-				['classExperimentA', '实验课 A类'],
-				['classExperimentB', '实验课 B类'],
-				['classGathered', '集中实习'],
-				['classInvestigate', '社会调查'],
-				['classSeparated', '分散实习'],
-				['classGraduate', '毕业设计指导']
-			],
+			// classType: [
+			// 	['classTheory', '理论课'],
+			// 	['classExperimentA', '实验课 A类'],
+			// 	['classExperimentB', '实验课 B类'],
+			// 	['classGathered', '集中实习'],
+			// 	['classInvestigate', '社会调查'],
+			// 	['classSeparated', '分散实习'],
+			// 	['classGraduate', '毕业设计指导']
+			// ],
 			classMetaInfos:[
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']],
-				[['classCode', '教学班'], ['className', '课程名称'], ['teacher', '教师名称'], ['teacherCode', '教师工号'], ['classSize', '班级人数'], ['note1', '备注1'], ['ratio1', '系数1'], ['ratio2', '系数2'], ['catagoryRatio', '类别系数'], ['classScaleRatio', '班级规模系数'], ['credits', '学分'], ['classHours', '课程总学时'], ['standardClassHours', '标准课时'], ['note2', '备注2'], ['goodCoursePay', '优课优酬'], ['personInCharge', '负责人'], ['date', '日期']]
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			[['department', '教师部门'], ['number', '教师工号'], ['name', '教师名称'], ['title', '职称'], ['account', '账号'], ['password', '密码'], ['email', '邮箱'], ['telephone', '联系电话'], ['authority', '权限'], ['entryTime', '入职时间']],
+			
 			],
 			//筛选条件
 			filterName: '',
@@ -78,125 +83,78 @@ export default {
 			//原始数据，分页
 			classListExperimentA: [
 				{
-					classCode: '(2021-2022-2)-S0418053-3', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '管理员', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-4', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-5', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-6', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-7', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-8', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-9', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-10', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-13', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-23', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-33', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-43', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-53', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-63', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-73', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-83', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-93', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
 				{
-					classCode: '(2021-2022-2)-S0418053-113', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
+					department: '电子信息学院（微电子学院）', number: '40193', name: '刘国华', title: '正高', account: '13455xxx648', password: 'jshadjas45a', email: '46155846.@qq.com', telephone: '16433497542',
+					authority: '教师', entryTime: '2023年11月29日'
 				},
-				{
-					classCode: '(2021-2022-2)-S0418053-123', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-133', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-143', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-153', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-163', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-173', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-183', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-193', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-203', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-213', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-223', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
-				{
-					classCode: '(2021-2022-2)-S0418053-233', className: '创新实践3', teacher: '张正民', teacherCode: '54xxxx5241', classSize: '14', note1: '无', ratio1: '0.3', ratio2: '0.4',
-					catagoryRatio: '1.3', classScaleRatio: '1.1', credits: '1', classHours: '16', standardClassHours: '14.4', note2: '无', goodCoursePay: '无', personInCharge: 'XXX', date: '2023.11.6 15:33'
-				},
+				
 			],
 			currentPage: 1,
 			pageSize: 10,
