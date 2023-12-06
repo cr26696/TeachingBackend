@@ -48,7 +48,8 @@ import PerformanceTable from './PerformanceTable.vue';
               accident:'0',
               score:'316.123417721519',
               rank:'A',
-              note:'S1封顶100,S3封顶'
+              note:'S1封顶100,S3封顶',
+              title:'S1封顶100,S3封顶'
             }],
             value: true,
             options: [{

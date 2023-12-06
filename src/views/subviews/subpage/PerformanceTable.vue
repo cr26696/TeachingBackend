@@ -22,11 +22,13 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="8"><span class="title-font">考核等级</span></el-col>
-            <el-col :span="16"><span class="title-font">备注</span></el-col>
+            <el-col :span="8"><span class="title-font">备注</span></el-col>
+            <el-col :span="8"><span class="title-font">职称</span></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px;">
             <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.rank }}</span></div></el-col>
-            <el-col :span="16"><div class="content-style"><span class="content-font">{{ data.note }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.note }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.title }}</span></div></el-col>
         </el-row>
     </div>
 </template>
