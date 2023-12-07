@@ -20,14 +20,13 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(
   (config) => {
-    const token = window.sessionStorage.getItem("token");
+    const token = window.sessionStorage.getItem("satoken");
     // 定义允许无需 token 的接口路径（根据你的需求自定义）
-    const allowedPaths = ['/auth/login',];
-
+    const allowedPaths = ['/auth/login','/test'];
     if (token || allowedPaths.includes(config.url)) {
       // 如果 token 存在或者请求的路径在允许列表中，将 token 添加到请求头中
       if (token) {
-        config.headers.token = token;
+        config.headers.satoken = token;
         console.log(config)
       }
       return config; // 继续请求

@@ -64,20 +64,22 @@ export default {
     async handleLogin() {
       try {
         const {data} = await login(this.form)
-        if (data.code !== 200) {
-          this.$message.error(data.msg)
-        } else {
-          console.log("returned data:")
-          console.log(data.data)
-          window.localStorage[data.data.tokenName] = data.data.tokenValue;
+        if (data.code === 200){
+          // console.log("returned data:")
+          // console.log(data.data)
+          this.$message.success('登陆成功')
+          window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
+          window.localStorage.isAuthenticated = true
           router.push('/')
+        } else {
+          this.$message.error(data.msg)
         }
       } catch (err) {console.log(err)}
 
       // const { data: res } = await axios.post('http://localhost:8080/apis/auth/login', {
       // "accountNo": "superAdmin",
       // "password": "123456"
-      // },{headers:{"satoken":'f6b17510-f630-4233-9e8b-864b149b9e1e'}})   
+      // },{headers:{"satoken":'f6b17510-f630-4233-9e8b-864b149b9e1e'}})
       // console.log("已登录");
       // console.log(res)
       // window.localStorage.isAuthenticated = true;

@@ -4,11 +4,12 @@
     <span id="t_welcome">欢迎登陆教学评估小助手后台应用系统</span>
     <input type="text" name="" id="" placeholder='请输入想要查询内容...'>
     <div id="spliter"></div>
-    <button id="avatar" style="float: right;" @click="logout">退出</button>
+    <button id="avatar" style="float: right;" @click="handleLogout">退出</button>
   </div>
 </template>
 
 <script>
+import {logout} from "@/services/login.js"
 export default {
   name: 'HeaderBar',
   data () {
@@ -16,9 +17,19 @@ export default {
     }
   },
   methods: {
-    logout() {
-      window.localStorage.setItem("isAuthenticated","false")
-      this.$router.push('/loginView')
+    async handleLogout() {
+      try {
+        const { data } = await logout()
+        console.log(data)
+        if (data.code === 200){
+          this.$message.success("退出成功");
+          this.$router.push('/loginview')
+          console.log(this.$route.path,"退出成功")
+        } else {
+          this.$message.error('error：',data.code)
+          this.$router.push('/loginview')
+        }
+      } catch (err) {console.log(err)}
     }
   }
 }
