@@ -5,7 +5,6 @@ import MainView from '@/views/MainView.vue'
 import LoginView from '@/views/LoginView.vue'
 import TeachingTask from '@/views/subviews/TeachingTask.vue'
 import PrizeRecord from '@/views/subviews/PrizeRecord.vue'
-import FacultyInfo from '@/views/subviews/FacultyInfo.vue'
 import QueryRank from '@/views/subviews/QueryRank.vue'
 import UserManage from '@/views/subviews/UserManage.vue'
 // eslint-disable-next-line

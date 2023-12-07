@@ -21,9 +21,8 @@
         Login screen
       </p>
       <div class="divInput">
-        <input type="text" placeholder="请输入工号" />
-        <input type="text" placeholder="请输入账号" />
-        <input type="text" placeholder="请输入密码" />
+        <input v-model="form.accountNo" type="text" placeholder="请输入账号" />
+        <input v-model="form.password" type="text" placeholder="请输入密码" />
         <div>
           <input type="checkbox" />
           <span>记住密码</span>
@@ -39,24 +38,65 @@
 // @ is an alias to /src
 import imgIconWhite from "@/assets/icon/icon_white.png";
 import router from "@/router";
+import axios from 'axios'
+import {login} from '@/services/login.js'
 export default {
   name: "loginBox",
   components: {},
   data() {
     return {
-      iconWhite: imgIconWhite
+      iconWhite: imgIconWhite,
+      token:'',
+      form:{
+        accountNo:'',
+        password:'',
+      }
     };
   },
   methods: {
     emitChangeTo(type) {
       this.$emit('subButtonClicked', type);
     },
-    handleLogin() {
-      console.log("本地值以设置");
+    login() {
       window.localStorage.isAuthenticated = true;
       router.push('/')
-    }
+    },
+    async handleLogin() {
+      try {
+        const {data} = await login(this.form)
+        if (data.code !== 200) {
+          this.$message.error(data.msg)
+        } else {
+          console.log("returned data:")
+          console.log(data.data)
+          window.localStorage[data.data.tokenName] = data.data.tokenValue;
+          router.push('/')
+        }
+      } catch (err) {console.log(err)}
 
+      // const { data: res } = await axios.post('http://localhost:8080/apis/auth/login', {
+      // "accountNo": "superAdmin",
+      // "password": "123456"
+      // },{headers:{"satoken":'f6b17510-f630-4233-9e8b-864b149b9e1e'}})   
+      // console.log("已登录");
+      // console.log(res)
+      // window.localStorage.isAuthenticated = true;
+      // this.token = res.data.tokenValue;
+      // //router.push('/')
+    },
+    async handleQuery() {
+      const { data: res } = await axios.get('http://localhost:8080/apis/auth/user_token_info',{
+        headers:{
+          "satoken":this.token
+        }
+      })
+      console.log("已查询");
+      console.log(res)
+    }
+  },
+  mounted() {
+      this.form.accountNo = 'superAdmin';
+      this.form.password = '123456'
   }
 };
 </script>

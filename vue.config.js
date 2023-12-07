@@ -7,12 +7,10 @@ module.exports = defineConfig({
   devServer:{
     proxy:{
       '/apis':{
-        target: 'http://49.235.106.165:8088/',
-        secure: false,
-        changeOrigin: true,
-        pathRewrite:{
-          '^/apis':''
-        }
+        target: 'http://49.235.106.165:8088/teaching-evaluation-system',
+        pathRewrite:{'^/apis':''},
+        ws: true,
+        changeOrigin: true
       }
     }
   }
