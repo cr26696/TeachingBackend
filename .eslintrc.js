@@ -53,6 +53,7 @@ module.exports = {
 		'object-property-newline': 'off',
 		'object-curly-newline': 'off',
 		'brace-style': 'off',
+		'eol-last': 'off',
 		// 命名规范
 		camelcase: "warn",
 		'vue/multi-word-component-names': 'off',

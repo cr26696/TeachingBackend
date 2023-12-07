@@ -2,8 +2,13 @@
   <div class="containerLoginBox">
     <div class="loginLeft">
       <div class="divIcon"><img :src="iconWhite" /><span>评估助手</span></div>
-      <button class="b_register" @click="emitChangeTo('registerBox')">注册</button>
-      <p class="welcomeText">
+      <div style="position: relative;display: flex;">
+        <button @click="form.accountNo = 'Unicorn';form.password = 'liyueyue123'">预设Teacher</button>
+        <button @click="form.accountNo = 'admin';form.password = '123456'">预设Admin</button>
+        <button @click="form.accountNo = 'superAdmin';form.password = '123456'">预设SU</button>
+      </div>
+      <button @click="form.accountNo = 'Bear';form.password = 'wangdandan123'">预设Teacher2</button>
+        <p class="welcomeText">
         <span>欢迎登陆</span><br />
         <span>教学评估小助手</span><br />
         <span>后台应用系统!</span>
@@ -69,6 +74,8 @@ export default {
           // console.log(data.data)
           this.$message.success('登陆成功')
           window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
+          window.sessionStorage.role = data.data.role;
+          window.sessionStorage.staffNum = data.data.staffNum;
           window.localStorage.isAuthenticated = true
           router.push('/')
         } else {
@@ -95,10 +102,6 @@ export default {
       console.log("已查询");
       console.log(res)
     }
-  },
-  mounted() {
-      this.form.accountNo = 'superAdmin';
-      this.form.password = '123456'
   }
 };
 </script>

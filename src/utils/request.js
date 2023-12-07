@@ -1,7 +1,7 @@
 import router from "@/router";
 import axios from "axios";
 import JSONbig from "json-bigint";
-import { Message } from 'element-ui';
+//import { Message } from 'element-ui';
 
 const instance = axios.create({
 	//baseURL: "http://49.235.106.165:8088/teaching-evaluation-system",
@@ -27,7 +27,7 @@ instance.interceptors.request.use(
       // 如果 token 存在或者请求的路径在允许列表中，将 token 添加到请求头中
       if (token) {
         config.headers.satoken = token;
-        console.log(config)
+        // console.log(config)
       }
       return config; // 继续请求
     } else {

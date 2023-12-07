@@ -37,35 +37,48 @@
 					clearable=''
 					format="yyyy/M/d">
 				</el-date-picker>
-				<button class="_button1 _button-blue _text-button-white">确认</button>
+				<button class="_button1 _button-blue _text-button-white" @click="handleQuery">确认</button>
 			</span>
 			<span class="right">
 				<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
 				<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
 			</span>
 			</div>
-			<el-table v-if="isAdmin" :data="testData">
+			<el-table v-if="isAdmin" :data="displayItems">
 				<el-table-column type="selection" :width="30"></el-table-column>
-				<el-table-column v-for="(i,n) in 4" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-				<el-table-column v-for="(i,n) in 13" v-if="i>=6" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
-				<el-table-column prop="submitDate" label="提交日期">
+				<el-table-column 
+					v-for="(item,index) in recordTableMetaAdmin" 
+					:prop="item[0]" 
+					:key=index 
+					:label="item[1]"
+				></el-table-column>
+				<el-table-column prop="uploadTime" label="提交日期">
 					<template slot-scope="scope">
-						<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
+						<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.uploadTime }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column prop="state" label="状态">
 					<template slot-scope="scope">
-						<span v-if="scope.row.state === 'pass'"><i class="circle circle-green"></i><span>通过</span></span>
-						<span v-else-if="scope.row.state === 'waiting'"><i class="circle circle-orange"></i><span>驳回</span></span>
-						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
+						<span style="display: flex;">
+							<span style="position: relative;">
+								<i v-if="scope.row.state === '通过'" class="circle circle-green"></i>
+								<i v-else-if="scope.row.state === '驳回'" class="circle circle-orange"></i>
+								<i v-else-if="scope.row.state === '未审核'" class="circle circle-red"></i>
+							</span>
+							<span style="position: relative;">{{scope.row.state}}</span>
+						</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
 			</el-table>
-			<el-table v-else-if="!isAdmin" :data="testData">
+			<el-table v-else-if="!isAdmin" :data="displayItems">
 				<el-table-column type="selection" :width="30"></el-table-column>
-				<el-table-column :prop="recordTableMeta[0][0]" :key="0" :label="recordTableMeta[0][1]"></el-table-column>
-				<el-table-column v-for="(i,n) in 13" v-if="i>=5" :prop="recordTableMeta[n][0]" :key="n" :label="recordTableMeta[n][1]"></el-table-column>
+				<el-table-column 
+					v-for="(item,index) in recordTableMeta" 
+					:prop="item[0]" 
+					:key=index 
+					:label="item[1]"
+				></el-table-column>
 				<el-table-column prop="submitDate" label="提交日期">
 					<template slot-scope="scope">
 						<span :style="{'font-size': '14px', 'font-weight': '500', 'color': 'rgba(130, 145, 169, 1)'}">{{ scope.row.submitDate }}</span>
@@ -105,6 +118,8 @@
 </template>
 
 <script>
+import {getAchieveList} from "@/services/request.js"
+//import {getDict} from "@/services/dict.js"
 export default {
 	name: 'PrizeRecord',
 	components: {},
@@ -112,29 +127,54 @@ export default {
 		return {
 			menuIndex: '2',
 			isAdmin: false,
-			displayItems: '',
+			displayItems: [],
 			filterState: '',
 			filterCategory: '',
 			filterDate: '',
 			censorStates: [{ value: 'pass', label: '通过' }, { value: 'waiting', label: '待审核' }, { value: 'reject', label: '驳回' }],
 			categories: [{ value: 'nonStandard', label: '学校非标分' },{ value: 'standard', label: '学校标分' }] ,
-			recordTableMeta: [
-				['aimIndex', '指标'],
+			recordTableMetaAdmin: [
+				['index', '指标'],
 				['name', '姓名'],
-				['workerId', '工号'],
-				['catagory', '级别'],
-				['catagory', '类别'],
-				['assesment', '考核项'],
-				['recordName', '成果名称'],
-				['level', '获奖等级'],
+				['staffNum', '教师工号'],
+				['achievementCategory', '类别'],
+				['assessmentItem', '考核项'],
+				['achievementName', '成果名称'],
+				['awardGrade', '获奖等级'],
 				['score', '得分'],
-				['isSignal', '标志性成果'],
-				['personelType', '人员类别'],
-				['recordProperty', '成果属性'],
-				['noneStandardScore', '下拨大盘非标分'],
-				['submitDate', '提交日期'],
+				['isLandmark', '标志性成果'],
+				['staffCategory', '人员类别'],
+				['achievementAttribute', '成果属性'],
+				['isLandmarkScores', '下拨大盘非标分'],
+				// ['uploadTime', '提交日期'],
+				// ['state', '状态']
+			],
+			recordTableMeta: [
+				['index', '指标'],
+				['name', '姓名'],
+				['staffNum', '教师工号'],
+				['achievementCategory', '类别'],
+				['assessmentItem', '考核项'],
+				['achievementName', '成果名称'],
+				['awardGrade', '获奖等级'],
+				['score', '得分'],
+				['isLandmark', '标志性成果'],
+				['staffCategory', '人员类别'],
+				['achievementAttribute', '成果属性'],
+				['isLandmarkScores', '下拨大盘非标分'],
+				['uploadTime', '提交日期'],
 				['state', '状态']
 			],
+			queryParams:{
+				"curPage": 1,
+				"pageSize": 10,
+				"startTime": null,
+				"endTime": null,
+				"state": null,
+				"isLandmark": null,
+				"input": null,
+				"currentStaffNum": null
+			},
 			testData: [
 				{
 					aimIndex: 'J.4.11',
@@ -202,7 +242,7 @@ export default {
 				},
 			],
 			currentPage: 1,
-			pageSize: 5,
+			pageSize: 10,
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-white.png'),
 			imgSearch: require('@/assets/icon/search.png'),
@@ -213,11 +253,18 @@ export default {
 		totalItem() { return this.testData.length },
 	},
 	mounted() {
+		this.isAdmin = window.sessionStorage.role === 'super_admin' || window.sessionStorage.role === 'admin'
 		if (this.isAdmin === false) {
+			this.queryParams.currentStaffNum = window.sessionStorage.staffNum
 			this.$nextTick(() => {
 				this.menuIndex = this.$refs.menu.activeIndex
 			});
+		} else {
+			this.queryParams.currentStaffNum = null
 		}
+
+		this.getList(this.queryParams)
+		console.log(this.displayItems)
 	},
 	methods: {
 		handleMenuSelect(val) {
@@ -232,11 +279,35 @@ export default {
 		handleDownload() {
 			console.log('item downloaded')
 		},
+		handleQuery() {
+			this.getList(this.queryParams)
+		},	
 		addRecord() {
 			this.showDialogUpload = true
 		},
 		handlePaginationChange(val) {
 			this.currentPage = val
+			this.queryParams.curPage = val
+			this.getList(this.queryParams)
+		},
+		async getList(queryParams){
+			try {
+        const {data} = await getAchieveList(queryParams)
+				console.log('成果列表返回值：')
+				console.log(data)
+        // if (data.code === 200){
+        //   this.$message.success('登陆成功')
+        //   window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
+        //   window.sessionStorage.role = data.data.role;
+        //   window.sessionStorage.staffNum = data.data.staffNum;
+        //   window.localStorage.isAuthenticated = true
+        // } else {
+        //   this.$message.error(data.msg)
+        // }
+				console.log(data.data)
+				this.displayItems = data.data
+      } catch (err) {console.log(err)}
+			
 		},
 		flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
