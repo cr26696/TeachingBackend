@@ -48,7 +48,7 @@
 </template>
 
 <script>
-export default{
+export default {
     name:'Workloaduser',
     props: {
     data: Object, // 接收父组件传递的数据

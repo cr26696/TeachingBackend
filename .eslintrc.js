@@ -19,6 +19,7 @@ module.exports = {
 		'no-empty-function': 'warn',
 		'no-multiple-empty-lines': 'warn',
 		'no-unused-vars': 'warn',
+		'no-unused-expressions': 'off',
 		'vue/no-unused-components': 'warn',
 		'no-undef': 'warn',
 		'prefer-const': 'warn',
@@ -34,7 +35,7 @@ module.exports = {
 		'no-multi-spaces': 'warn',
 		'key-spacing': 'off',
 		'spaced-comment': 'off',
-		'space-before-blocks': 'warn',
+		'space-before-blocks': 'off',
 		'object-curly-spacing': 'off',
 		'padded-blocks': 'off',
 		'space-in-parens': 'warn',
@@ -42,7 +43,7 @@ module.exports = {
 		'keyword-spacing': 'warn',
 		'no-mixed-spaces-and-tabs': 'warn',
 		'semi-spacing': 'warn',
-		'block-spacing': 'warn',
+		'block-spacing': 'off',
 		'space-infix-ops': 'warn',
 		// 结尾符号
 		semi: 'off',
@@ -54,8 +55,9 @@ module.exports = {
 		'brace-style': 'off',
 		// 命名规范
 		camelcase: "warn",
-		'vue/multi-word-component-names': 'warn',
+		'vue/multi-word-component-names': 'off',
 		'quote-props': 'off',
-		'dot-notation': 'off'
+		'dot-notation': 'off',
+		'object-shorthand': 'off'
 	}
 }

@@ -122,6 +122,10 @@ export default {
       const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
         "schoolYear":this.filterYear,
         "semester":this.filterSemester
+      },{
+        headers: {
+          "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
+        }
       })
       if (res.code === 200) {
         this.rankList = res.data
@@ -143,7 +147,11 @@ export default {
 			"semester":semester,
 			"name":name,
 			"staffNum":num
-			})
+			},{
+        headers: {
+          "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
+        }
+      })
       if (res.code === 200) {
         this.rankList = res.data
         this.totalItem = res.totalRows
