@@ -1,26 +1,66 @@
 import request from '@/utils/request';
 
-//登录接口 传入form
+//获取成果列表 传入form Object data
 export const getAchieveList = data => {
 	return request({
 		method: 'post',
 		url: '/achievement/list',
-		data: {
-			"curPage": data.curPage,
-			"pageSize": data.pageSize,
-			"startTime": data.startTime,
-			"endTime": data.endTime,
-			"state": data.state,
-			"isLandmark": data.isLandmark,
-			"input": data.input,
-			"currentStaffNum": data.currentStaffNum
+		data
+		// data: {
+		// 	"curPage": data.curPage,
+		// 	"pageSize": data.pageSize,
+		// 	"startTime": data.startTime,
+		// 	"endTime": data.endTime,
+		// 	"state": data.state,
+		// 	"isLandmark": data.isLandmark,
+		// 	"input": data.input,
+		// 	"currentStaffNum": data.currentStaffNum
+		// }
+	})
+}
+//获取成果单项 传入 num id
+export const getAchieveByID = id => {
+	return request({
+		method: 'get',
+		url: '/achievement/get_achievement',
+		params: {
+			id
 		}
 	})
 }
-//登出接口
-export const logout = data => {
+//管理员打分 传入form Object data
+export const achieveJudge = data => {
 	return request({
 		method: 'post',
-		url: '/auth/logout',
+		url: '/achievement/score',
+		data
+		// data: {
+		// 	"id": 0,
+		// 	"achievementAttribute": "string",
+		// 	"awardGrade": 0,
+		// 	"isLandmark": "string",
+		// 	"isLandmarkScores": 0,
+		// 	"score": 0,
+		// 	"callBackReason": "string",
+		// 	"state": "string"
+		// }
+	})
+}
+//删除成果 传入目标数组 Array ids
+export const achieveDelete = ids => {
+	return request({
+		method: 'post',
+		url: '/achievement/delete',
+		data:{
+			ids
+		}
+		// {
+		// 	"ids": [
+		// 		0
+		// 	],
+		// 	"uuids": [
+		// 		"string"
+		// 	]
+		// }
 	})
 }

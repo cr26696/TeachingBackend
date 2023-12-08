@@ -2,7 +2,15 @@
 	<el-container>
 		<el-aside id="achievement-side">
 			<el-menu v-if="isAdmin" default-active="1">
-				<el-menu-item index="1"><i class="el-icon-files"></i><span>成果录入申请</span></el-menu-item>
+				<el-menu-item index="1"><i class="el-icon-files"></i>
+					<span>成果录入申请</span>
+					<span style="
+					margin-left: 14px;
+					padding: 1px 8px;
+					border-radius: 8px;
+					background: rgb(255, 61, 87);
+					color: white;">{{ this.unhandleCount }}</span>
+				</el-menu-item>
 				<button @click="isAdmin=false">去教师界面</button>
 			</el-menu>
 			<el-menu v-if="!isAdmin" ref="menu" default-active="2" @select="handleMenuSelect">
@@ -19,13 +27,13 @@
 			<span class="left">
 				<span class="_filterSelect">审核状态</span>
 				<el-select v-model="filterState" placeholder="请选择">
-					<el-option v-for="item in censorStates" :key="item.value" :label="item.label" :value="item.value">
-					</el-option>
+					<el-option label="全部" value=''></el-option>
+					<el-option v-for="item in metaInfo.state" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
 				</el-select>
 				<span class="_filterSelect">分类</span>
 				<el-select v-model="filterCategory" placeholder="请选择">
-					<el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
-					</el-option>
+					<el-option label="全部" value=''></el-option>
+					<el-option v-for="item in metaInfo.achievement_category" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
 				</el-select>
 				<span class="_filterSelect">申请日期</span>
 				<el-date-picker
@@ -35,16 +43,18 @@
 					start-placeholder="开始" 
 					end-placeholder="结束"
 					clearable=''
-					format="yyyy/M/d">
+					format="yyyy/M/d"
+					value-format="yyyy-MM-dd HH:mm:ss"
+					:default-time="['00:00:00', '23:59:59']">
 				</el-date-picker>
 				<button class="_button1 _button-blue _text-button-white" @click="handleQuery">确认</button>
 			</span>
 			<span class="right">
-				<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
-				<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
+				<el-input v-model="filterSearch" name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
+				<button class="_button1 _button-blue _text-button-white" name="search" @click="handleSearch"><img :src=imgSearch></button>
 			</span>
 			</div>
-			<el-table v-if="isAdmin" :data="displayItems">
+			<el-table ref="table_admin" v-if="isAdmin" :data="displayItems">
 				<el-table-column type="selection" :width="30"></el-table-column>
 				<el-table-column 
 					v-for="(item,index) in recordTableMetaAdmin" 
@@ -69,9 +79,13 @@
 						</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
+				<el-table-column label="操作">
+					<template slot-scope="scope">
+						<img :src=imgFile style="cursor: pointer;" @click="handleControl(scope.row)">
+					</template>
+				</el-table-column>
 			</el-table>
-			<el-table v-else-if="!isAdmin" :data="displayItems">
+			<el-table ref="table_teacher" v-else-if="!isAdmin" :data="displayItems">
 				<el-table-column type="selection" :width="30"></el-table-column>
 				<el-table-column 
 					v-for="(item,index) in recordTableMeta" 
@@ -91,16 +105,17 @@
 						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
 					</template>
 				</el-table-column>
-				<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
+				<el-table-column label="操作"><img :src=imgFile style="cursor: pointer;" @click="handleControl(scope.row)"></el-table-column>
 			</el-table>
 			<div class="flex-space-between" style="margin-top: 28px;">
 				<span v-if="isAdmin" class="buttons-warper">
 					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgUpload><span>上传</span></button>
-					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除账号</span></button>
-					<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownload></button>
+					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除信息</span></button>
+					<button name="download" class="_button1 _button-grey _text-button-grey" @click="handleDownload"><img :src=imgDownloadGrey></button>
 				</span>
 				<span v-else-if="!isAdmin" class="buttons-warper">
-					<button name="upload" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgDownload><span>下载</span></button>
+					<button name="download" class="_button1 _button-blue _text-button-white" @click="handleUpload"><img :src=imgDownload><span>下载</span></button>
+					<button name="delete" class="_button1 _button-black _text-button-white" @click="handleDel"><span>删除信息</span></button>
 				</span>
 				<el-pagination
 					@current-change="handlePaginationChange"
@@ -112,27 +127,143 @@
 			</div>
 
 		</el-main>
-		<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
+		<el-dialog class="dialog_upload" title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
+		</el-dialog>
+		<el-dialog class="dialogItemjudge" :visible.sync="showDialogItemJudge" width="70%" append-to-body>
+			<span style="display:flex">
+				<span><p>教师部门</p><el-input v-model="dialogControlItem.department" :disabled="true"></el-input></span>
+				<span><p>教师名称</p><el-input v-model="dialogControlItem.name" :disabled="true"></el-input></span>
+				<span><p>教师工号</p><el-input v-model="dialogControlItem.staffNum" :disabled="true"></el-input></span>
+				<span><p>指标</p><el-input v-model="dialogControlItem.index" :disabled="true"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>人员类型</p><el-input v-model="dialogControlItem.staffCategory" :disabled="true"></el-input></span>
+				<span><p>类别</p>
+					<el-select v-model="dialogControlItem.achievementCategory">
+						<el-option v-for="item in metaInfo.achievement_category" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>考核项</p>
+					<el-select v-model="dialogControlItem.assessmentItems">
+						<el-option v-for="item in metaInfo.assessment_item" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>成果名称</p><el-input v-model="dialogControlItem.achievementName"></el-input></span>
+			</span>
+			<hr style="margin:20px 30px;background-color:rgba(220, 220, 220, 1);">
+			<span style="display:flex">
+				<span><p>成果属性</p>
+					<el-select v-model="dialogControlItem.achievementAttribute">
+						<el-option v-for="item in metaInfo.achievement_attribute" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>获奖等级</p>
+					<el-select v-model="dialogControlItem.awardGrade">
+						<el-option :label="'一等奖'" :value="1"></el-option>
+						<el-option :label="'二等奖'" :value="2"></el-option>
+					</el-select>
+				</span>
+				<span><p>是否标志性成果</p>
+					<el-select v-model="dialogControlItem.isLandmark">
+						<el-option v-for="item in metaInfo.is_landmark" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>备注</p><el-input v-model="dialogControlItem.remark"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>输入标分</p><el-input v-model="dialogControlItem.isLandmarkScores"></el-input></span>
+				<span><p>输入得分</p><el-input v-model="dialogControlItem.score"></el-input></span>
+			</span>
+			<span>打回原因</span><el-input v-model="dialogJudgeForm.callBackReason" placeholder="若驳回，请输入驳回原因"></el-input>
+			<div style="display: flex;justify-content: space-between;">
+				<span style="display: flex;align-items: center;"><img :src="imgDownloadCloud"><span>下载  （注意：管理员下载附件的时候，文件自动命名为教师工号+成果名称） </span></span>
+				<span><el-button @click="handleJudge('驳回')">驳回</el-button><el-button @click="handleJudge('通过')">通过</el-button></span>
+			</div>
+		</el-dialog>
+		<el-dialog class="dialogItemUpdate" :visible.sync="showDialogItemUpdate" width="70%" append-to-body>
+			<span style="display:flex">
+				<span><p>部门</p><el-input v-model="dialogControlItem.department" :disabled="true"></el-input></span>
+				<span><p>姓名</p><el-input v-model="dialogControlItem.name" :disabled="true"></el-input></span>
+				<span><p>工号</p><el-input v-model="dialogControlItem.staffNum" :disabled="true"></el-input></span>
+				<span><p>人员类别</p><el-input v-model="dialogControlItem.staffCategory" :disabled="true"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>指标</p><el-input v-model="dialogControlItem.index" :disabled="true"></el-input></span>
+				<span><p>类别</p>
+					<el-select v-model="dialogControlItem.achievementCategory">
+						<el-option v-for="item in metaInfo.achievement_category" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>考核项</p>
+					<el-select v-model="dialogControlItem.assessmentItems">
+						<el-option v-for="item in metaInfo.assessment_item" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>成果名称</p><el-input v-model="dialogControlItem.achievementName"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>备注</p><el-input v-model="dialogControlItem.remark"></el-input></span>
+			</span>
+			<el-upload class="upload-demo" drag action="" multiple>
+				<i class="el-icon-upload"></i>
+				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+				<el-progress :percentage="50"></el-progress>
+			</el-upload>
+			<span>打回原因</span><el-input v-model="dialogJudgeForm.callBackReason" placeholder="若驳回，请输入驳回原因"></el-input>
+			<div style="display: flex;justify-content: space-between;">
+				<span style="display: flex;align-items: center;"><img :src="imgDownloadCloud"><span>下载  （注意：管理员下载附件的时候，文件自动命名为教师工号+成果名称） </span></span>
+			</div>
+		</el-dialog>
+		<el-dialog class="dialog_view" :visible.sync="showDialogItemView" width="70%" append-to-body>
+			<span style="display:flex">
+				<span><p>教师部门</p><el-input v-model="dialogControlItem.department" :disabled="true"></el-input></span>
+				<span><p>教师名称</p><el-input v-model="dialogControlItem.name" :disabled="true"></el-input></span>
+				<span><p>教师工号</p><el-input v-model="dialogControlItem.staffNum" :disabled="true"></el-input></span>
+				<span><p>指标</p><el-input v-model="dialogControlItem.index" :disabled="true"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>人员类型</p><el-input v-model="dialogControlItem.staffCategory" :disabled="true"></el-input></span>
+				<span><p>类别</p><el-input v-model="dialogControlItem.achievementCategory" :disabled="true"></el-input></span>
+				<span><p>考核项</p><el-input v-model="dialogControlItem.assessmentItems" :disabled="true"></el-input></span>
+				<span><p>成果名称</p><el-input v-model="dialogControlItem.achievementName" :disabled="true"></el-input></span>
+			</span>
+			<hr style="margin:20px 30px;background-color:rgba(220, 220, 220, 1);">
+			<span style="display:flex">
+				<span><p>成果属性</p><el-input v-model="dialogControlItem.achievementAttribute" :disabled="true"></el-input></span>
+				<span><p>获奖等级</p><el-input v-model="dialogControlItem.awardGrade" :disabled="true"></el-input></span>
+				<span><p>是否标志性成果</p><el-input v-model="dialogControlItem.isLandmark" :disabled="true"></el-input></span>
+				<span><p>备注</p><el-input v-model="dialogControlItem.remark"  :disabled="true"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>输入标分</p><el-input v-model="dialogControlItem.isLandmarkScores" :disabled="true"></el-input></span>
+				<span><p>输入得分</p><el-input v-model="dialogControlItem.score" :disabled="true"></el-input></span>
+			</span>
+			<div style="">
+				<span style="display: flex;align-items: center;"><img :src="imgDownloadCloud"><span>下载  （注意：管理员下载附件的时候，文件自动命名为教师工号+成果名称） </span></span>
+			</div>
 		</el-dialog>
 	</el-container>
 </template>
 
 <script>
-import {getAchieveList} from "@/services/request.js"
-//import {getDict} from "@/services/dict.js"
+import {getDict,getAllDict} from "@/services/dict.js"
+import {
+	getAchieveList,
+	getAchieveByID,
+	achieveJudge,
+	achieveDelete,
+} from "@/services/request.js"
 export default {
 	name: 'PrizeRecord',
 	components: {},
 	data() {
 		return {
-			menuIndex: '2',
-			isAdmin: false,
-			displayItems: [],
-			filterState: '',
-			filterCategory: '',
-			filterDate: '',
-			censorStates: [{ value: 'pass', label: '通过' }, { value: 'waiting', label: '待审核' }, { value: 'reject', label: '驳回' }],
-			categories: [{ value: 'nonStandard', label: '学校非标分' },{ value: 'standard', label: '学校标分' }] ,
+			imgFile: require('@/assets/icon/file.png'),
+			imgUpload: require('@/assets/icon/upload-icon1.png'),
+			imgDownload: require('@/assets/icon/download-white.png'),
+			imgDownloadGrey: require('@/assets/icon/download-grey.png'),
+			imgDownloadCloud: require('@/assets/icon/download-cloud.png'),
+			imgSearch: require('@/assets/icon/search.png'),
 			recordTableMetaAdmin: [
 				['index', '指标'],
 				['name', '姓名'],
@@ -165,7 +296,21 @@ export default {
 				['uploadTime', '提交日期'],
 				['state', '状态']
 			],
-			queryParams:{
+			metaInfo:{
+				state:[],
+				category:[],
+				achievement_category:[],
+				assessment_item:[],
+				achievement_attribute:[],
+				is_landmark:[],
+			},
+			menuIndex: '2',
+			isAdmin: false,
+			filterState: '',
+			filterCategory: '',
+			filterDate: '',
+			filterSearch:'',
+			ItemsQueryParams:{
 				"curPage": 1,
 				"pageSize": 10,
 				"startTime": null,
@@ -175,96 +320,39 @@ export default {
 				"input": null,
 				"currentStaffNum": null
 			},
-			testData: [
-				{
-					aimIndex: 'J.4.11',
-					name: '张三',
-					workerId: '40768',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'pass'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'reject'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'waiting'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'waiting'
-				},
-			],
+			displayItems: [],
+			dialogControlItem:{},
+			dialogJudgeForm:{
+				callBackReason:''
+			},
 			currentPage: 1,
 			pageSize: 10,
-			imgUpload: require('@/assets/icon/upload-icon1.png'),
-			imgDownload: require('@/assets/icon/download-white.png'),
-			imgSearch: require('@/assets/icon/search.png'),
+			totalItem: 0,
+			unhandleCount: 0,
+			showDialogItemJudge:false,
+			showDialogItemUpdate:false,
+			showDialogItemView:false,
 			showDialogUpload:false,
 		}
 	},
 	computed:{
-		totalItem() { return this.testData.length },
 	},
 	mounted() {
 		this.isAdmin = window.sessionStorage.role === 'super_admin' || window.sessionStorage.role === 'admin'
 		if (this.isAdmin === false) {
-			this.queryParams.currentStaffNum = window.sessionStorage.staffNum
+			this.ItemsQueryParams.currentStaffNum = window.sessionStorage.staffNum
 			this.$nextTick(() => {
 				this.menuIndex = this.$refs.menu.activeIndex
 			});
 		} else {
-			this.queryParams.currentStaffNum = null
+			this.ItemsQueryParams.currentStaffNum = null
 		}
 
-		this.getList(this.queryParams)
+		this.getRelatedDict()
+		this.getUnhandleCount()
+		this.getList(this.ItemsQueryParams)
 		console.log(this.displayItems)
+
 	},
 	methods: {
 		handleMenuSelect(val) {
@@ -273,41 +361,119 @@ export default {
 		handleUpload() {
 			console.log('item uploaded')
 		},
-		handleDel() {
-			console.log('item deleted')
+		async handleDel() {
+			const selectedItems = this.$refs.table_admin.selection
+			//console.log(selectedItems)
+			const ids = []
+			for (const item of selectedItems){
+				ids.push(item.id)
+			}
+			try {
+				console.log(ids)
+				const { data } = await achieveDelete(ids)
+				if (data.code === 200){console.log("已删除以下id项：",ids);this.refreshList()}
+			} catch (err){console.log(err)}
 		},
 		handleDownload() {
 			console.log('item downloaded')
 		},
 		handleQuery() {
-			this.getList(this.queryParams)
+			this.ItemsQueryParams.state = this.filterState
+			this.ItemsQueryParams.isLandmark = this.filterCategory
+			this.ItemsQueryParams.startTime = this.filterDate[0]
+			this.ItemsQueryParams.endTime = this.filterDate[1]
+
+			this.getList(this.ItemsQueryParams)
 		},	
+		handleSearch() {
+			this.ItemsQueryParams.input = this.filterSearch
+
+			this.getList(this.ItemsQueryParams)
+		},
+		async handleControl(row){
+			// console.log("row:",row)
+			this.dialogControlItem = row
+			try {
+				const { data } = await getAchieveByID(row.id)
+				//row中已有部分数据，这里获取一些缺少的数据
+				this.dialogControlItem.department = data.data.department
+				this.dialogControlItem.assessmentItems = data.data.assessmentItems[0]
+			} catch (err){console.log(err)}
+			// console.log(data.data)
+			// console.log(this.dialogControlItem)
+			//console.log(data.data.savePaths)
+			if (this.dialogControlItem.state === '通过'){
+				this.showDialogItemView = true
+			} else {
+				if (this.isAdmin){this.showDialogItemJudge = true} 
+				else {this.showDialogItemUpdate = true }
+			}
+		},
 		addRecord() {
 			this.showDialogUpload = true
 		},
+		async handleJudge(decide){
+			try {
+				this.dialogJudgeForm.id = this.dialogControlItem.id
+				this.dialogJudgeForm.achievementAttribute = this.dialogControlItem.achievementAttribute
+				this.dialogJudgeForm.awardGrade = this.dialogControlItem.awardGrade
+				this.dialogJudgeForm.isLandmark = this.dialogControlItem.isLandmark
+				this.dialogJudgeForm.isLandmarkScores = this.dialogControlItem.isLandmarkScores
+				this.dialogJudgeForm.score = this.dialogControlItem.score
+				this.dialogJudgeForm.callBackReason = this.dialogControlItem.callBackReason
+				this.dialogJudgeForm.state = decide
+				const {data} = await achieveJudge(this.dialogJudgeForm)
+				console.log("judge result:",data)
+				if (data.code === 200){
+					this.refreshList()
+					this.dialogCloseAll()
+					this.unhandleCount--
+				}
+			} catch (err) {console.log(err)}
+		},
 		handlePaginationChange(val) {
 			this.currentPage = val
-			this.queryParams.curPage = val
-			this.getList(this.queryParams)
+			this.ItemsQueryParams.curPage = val
+			this.getList(this.ItemsQueryParams)
 		},
 		async getList(queryParams){
 			try {
-        const {data} = await getAchieveList(queryParams)
-				console.log('成果列表返回值：')
-				console.log(data)
-        // if (data.code === 200){
-        //   this.$message.success('登陆成功')
-        //   window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
-        //   window.sessionStorage.role = data.data.role;
-        //   window.sessionStorage.staffNum = data.data.staffNum;
-        //   window.localStorage.isAuthenticated = true
-        // } else {
-        //   this.$message.error(data.msg)
-        // }
-				console.log(data.data)
+				const {data} = await getAchieveList(queryParams)
+				console.log('成果列表返回值：',data)
+				// console.log(data)
 				this.displayItems = data.data
-      } catch (err) {console.log(err)}
-			
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
+		},
+		async getRelatedDict(){
+			try {
+				const {data} = await getAllDict()
+				//this.metaInfo = data.data
+				this.metaInfo.state = data.data.state
+				this.metaInfo.category = data.data.category
+				this.metaInfo.achievement_category = data.data.achievement_category
+				this.metaInfo.assessment_item = data.data.assessment_item
+				this.metaInfo.achievement_attribute = data.data.achievement_attribute
+				this.metaInfo.is_landmark = data.data.is_landmark
+			} catch (err) {console.log(err)}
+		},
+		async getUnhandleCount(){
+			try {
+				const form = {} 
+				form.state = '未审核'
+				const {data} = await getAchieveList(form)
+				console.log("data:",data)
+				this.unhandleCount = data.totalRows
+			} catch (err) {console.log(err)}
+		},
+		refreshList(){
+			this.getList(this.ItemsQueryParams);
+		},
+		dialogCloseAll(){
+			this.showDialogItemJudge = false
+			this.showDialogItemUpdate = false
+			this.showDialogItemView = false
+			this.showDialogUpload = false
 		},
 		flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
@@ -395,6 +561,12 @@ export default {
 .flex-space-between{
 	display: flex;
 	justify-content: space-between;
+}
+.dialog_upload{
+	
+}
+.dialogItemjudge{
+
 }
 /*html嵌套样式-------------------------------------------*/
 .el-container {

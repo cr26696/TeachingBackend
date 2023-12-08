@@ -45,8 +45,8 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     console.log("状态响应:",response)
-    console.log("状态响应message:",response.data.msg)
-    console.log("状态响应code:",response.data.code)
+    // console.log("状态响应message:",response.data.msg)
+    // console.log("状态响应code:",response.data.code)
     // 如果响应状态码为 401（或者其他表示 token 失效的状态码），执行跳转到登录页面
     // if (response.status === 200) {
     // if (response.data.code === 2001) {
