@@ -17,6 +17,15 @@ export const getAchieveList = data => {
 		}
 	})
 }
+export const getAchieveByID = id => {
+	return request({
+		method: 'get',
+		url: '/achievement/get_achievement',
+		params: {
+			id
+		}
+	})
+}
 //登出接口
 export const logout = data => {
 	return request({

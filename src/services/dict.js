@@ -5,8 +5,8 @@ export const getDict = dictType => {
 	return request({
 		method: 'get',
 		url: '/dict/query',
-		params:{ 
-			dictType
+		params: {
+			dictType: dictType
 		}
 	})
 }

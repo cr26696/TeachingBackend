@@ -19,13 +19,13 @@
 			<span class="left">
 				<span class="_filterSelect">审核状态</span>
 				<el-select v-model="filterState" placeholder="请选择">
-					<el-option v-for="item in censorStates" :key="item.value" :label="item.label" :value="item.value">
-					</el-option>
+					<el-option label="全部" value=''></el-option>
+					<el-option v-for="item in metaInfo.state" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
 				</el-select>
 				<span class="_filterSelect">分类</span>
 				<el-select v-model="filterCategory" placeholder="请选择">
-					<el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
-					</el-option>
+					<el-option label="全部" value=''></el-option>
+					<el-option v-for="item in metaInfo.category" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
 				</el-select>
 				<span class="_filterSelect">申请日期</span>
 				<el-date-picker
@@ -35,13 +35,15 @@
 					start-placeholder="开始" 
 					end-placeholder="结束"
 					clearable=''
-					format="yyyy/M/d">
+					format="yyyy/M/d"
+					value-format="yyyy-MM-dd HH:mm:ss"
+					:default-time="['00:00:00', '23:59:59']">
 				</el-date-picker>
 				<button class="_button1 _button-blue _text-button-white" @click="handleQuery">确认</button>
 			</span>
 			<span class="right">
-				<el-input name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
-				<button class="_button1 _button-blue _text-button-white" name="search"><img :src=imgSearch></button>
+				<el-input v-model="filterSearch" name="filterTeacher" type="text" placeholder="请输入教师姓名或工号"></el-input>
+				<button class="_button1 _button-blue _text-button-white" name="search" @click="handleSearch"><img :src=imgSearch></button>
 			</span>
 			</div>
 			<el-table v-if="isAdmin" :data="displayItems">
@@ -69,7 +71,11 @@
 						</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="操作"><button class="_button1">1</button></el-table-column>
+				<el-table-column label="操作">
+					<template slot-scope="scope">
+						<img :src=imgFile style="cursor: pointer;" @click="handleControl(scope.row)">
+					</template>
+				</el-table-column>
 			</el-table>
 			<el-table v-else-if="!isAdmin" :data="displayItems">
 				<el-table-column type="selection" :width="30"></el-table-column>
@@ -91,7 +97,7 @@
 						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
 					</template>
 				</el-table-column>
-				<el-table-column label="查看"><button class="_button1">1</button></el-table-column>
+				<el-table-column label="操作"><img :src=imgFile style="cursor: pointer;" @click="handleControl"></el-table-column>
 			</el-table>
 			<div class="flex-space-between" style="margin-top: 28px;">
 				<span v-if="isAdmin" class="buttons-warper">
@@ -114,25 +120,67 @@
 		</el-main>
 		<el-dialog title="表格上传" :visible.sync="showDialogUpload" width="30%" append-to-body>
 		</el-dialog>
+		<el-dialog :visible.sync="showDialogControl" width="70%" append-to-body>
+			<span style="display:flex">
+				<span><p>教师部门</p><el-input v-model="dialogControlItem.department"></el-input></span>
+				<span><p>教师名称</p><el-input v-model="dialogControlItem.name"></el-input></span>
+				<span><p>教师工号</p><el-input v-model="dialogControlItem.staffNum"></el-input></span>
+				<span><p>指标</p><el-input v-model="dialogControlItem.index"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>人员类型</p><el-input v-model="dialogControlItem.achievementCategory"></el-input></span>
+				<span><p>类别</p>
+					<el-select v-model="dialogControlItem.achievementCategory">
+						<el-option v-for="item in metaInfo.achievement_category" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>考核项</p>
+					<el-select v-model="dialogControlItem.assessmentItems">
+						<el-option v-for="item in metaInfo.assessment_item" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>成果名称</p><el-input v-model="dialogControlItem.awardGrade"></el-input></span>
+			</span>
+			<hr style="margin:20px 30px;background-color:rgba(220, 220, 220, 1);">
+			<span style="display:flex">
+				<span><p>成果属性</p>
+					<el-select v-model="dialogControlItem.achievementAttribute">
+						<el-option v-for="item in metaInfo.achievement_attribute" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>获奖等级</p>
+					<el-select v-model="dialogControlItem.awardGrade">
+						<el-option :label="'一等奖'" :value="1"></el-option>
+						<el-option :label="'二等奖'" :value="2"></el-option>
+					</el-select>
+				</span>
+				<span><p>是否标志性成果</p>
+					<el-select v-model="dialogControlItem.isLandmark">
+						<el-option v-for="item in metaInfo.is_landmark" :key="item.id" :label="item.dictValue" :value="item.dictValue"></el-option>
+					</el-select>
+				</span>
+				<span><p>备注</p><el-input v-model="dialogControlItem.remark"></el-input></span>
+			</span>
+			<span style="display:flex">
+				<span><p>输入标分</p><el-input v-model="dialogControlItem.isLandmarkScores"></el-input></span>
+				<span><p>输入得分</p><el-input v-model="dialogControlItem.score"></el-input></span>
+			</span>
+		</el-dialog>
 	</el-container>
 </template>
 
 <script>
-import {getAchieveList} from "@/services/request.js"
-//import {getDict} from "@/services/dict.js"
+import {getAchieveList,getAchieveByID} from "@/services/request.js"
+import {getDict} from "@/services/dict.js"
 export default {
 	name: 'PrizeRecord',
 	components: {},
 	data() {
 		return {
-			menuIndex: '2',
-			isAdmin: false,
-			displayItems: [],
-			filterState: '',
-			filterCategory: '',
-			filterDate: '',
-			censorStates: [{ value: 'pass', label: '通过' }, { value: 'waiting', label: '待审核' }, { value: 'reject', label: '驳回' }],
-			categories: [{ value: 'nonStandard', label: '学校非标分' },{ value: 'standard', label: '学校标分' }] ,
+			imgFile: require('@/assets/icon/file.png'),
+			imgUpload: require('@/assets/icon/upload-icon1.png'),
+			imgDownload: require('@/assets/icon/download-white.png'),
+			imgSearch: require('@/assets/icon/search.png'),
 			recordTableMetaAdmin: [
 				['index', '指标'],
 				['name', '姓名'],
@@ -165,6 +213,20 @@ export default {
 				['uploadTime', '提交日期'],
 				['state', '状态']
 			],
+			metaInfo:{
+				state:[],
+				category:[],
+				achievement_category:[],
+				assessment_item:[],
+				achievement_attribute:[],
+				is_landmark:[],
+			},
+			menuIndex: '2',
+			isAdmin: false,
+			filterState: '',
+			filterCategory: '',
+			filterDate: '',
+			filterSearch:'',
 			queryParams:{
 				"curPage": 1,
 				"pageSize": 10,
@@ -175,82 +237,16 @@ export default {
 				"input": null,
 				"currentStaffNum": null
 			},
-			testData: [
-				{
-					aimIndex: 'J.4.11',
-					name: '张三',
-					workerId: '40768',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'pass'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'reject'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'waiting'
-				},
-				{
-					aimIndex: 'J.4.11',
-					name: '李四',
-					workerId: '40761',
-					catagory: '教学业绩',
-					assesment: '国家级大学生创新创业项目/省新苗计划项目',
-					recordName: '基于边缘计算神经网络的压力',
-					level: '1',
-					score: '0.6',
-					isSignal: '非标志性',
-					personelType: '在编',
-					recordProperty: '其他类',
-					noneStandardScore: '0.6',
-					submitDate: '2023.11.6 15:33',
-					state: 'waiting'
-				},
-			],
+			displayItems: [],
+			dialogControlItem:{},
 			currentPage: 1,
 			pageSize: 10,
-			imgUpload: require('@/assets/icon/upload-icon1.png'),
-			imgDownload: require('@/assets/icon/download-white.png'),
-			imgSearch: require('@/assets/icon/search.png'),
+			totalItem: 0,
+			showDialogControl:false,
 			showDialogUpload:false,
 		}
 	},
 	computed:{
-		totalItem() { return this.testData.length },
 	},
 	mounted() {
 		this.isAdmin = window.sessionStorage.role === 'super_admin' || window.sessionStorage.role === 'admin'
@@ -263,8 +259,11 @@ export default {
 			this.queryParams.currentStaffNum = null
 		}
 
+		this.getRelatedDict()
+
 		this.getList(this.queryParams)
 		console.log(this.displayItems)
+
 	},
 	methods: {
 		handleMenuSelect(val) {
@@ -280,8 +279,26 @@ export default {
 			console.log('item downloaded')
 		},
 		handleQuery() {
+			this.queryParams.state = this.filterState
+			this.queryParams.isLandmark = this.filterCategory
+			this.queryParams.startTime = this.filterDate[0]
+			this.queryParams.endTime = this.filterDate[1]
+
 			this.getList(this.queryParams)
 		},	
+		handleSearch() {
+			this.queryParams.input = this.filterSearch
+
+			this.getList(this.queryParams)
+		},
+		async handleControl(row){
+			console.log(row)
+			const {data} = await getAchieveByID(row.id)
+			this.dialogControlItem = data.data
+			console.log(data.data)
+			console.log(this.dialogControlItem)
+			this.showDialogControl = true
+		},
 		addRecord() {
 			this.showDialogUpload = true
 		},
@@ -292,22 +309,49 @@ export default {
 		},
 		async getList(queryParams){
 			try {
-        const {data} = await getAchieveList(queryParams)
-				console.log('成果列表返回值：')
-				console.log(data)
-        // if (data.code === 200){
-        //   this.$message.success('登陆成功')
-        //   window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
-        //   window.sessionStorage.role = data.data.role;
-        //   window.sessionStorage.staffNum = data.data.staffNum;
-        //   window.localStorage.isAuthenticated = true
-        // } else {
-        //   this.$message.error(data.msg)
-        // }
-				console.log(data.data)
+				const {data} = await getAchieveList(queryParams)
+				// console.log('成果列表返回值：')
+				// console.log(data)
+				// if (data.code === 200){
+				//   this.$message.success('登陆成功')
+				//   window.sessionStorage[data.data.tokenName] = data.data.tokenValue;
+				//   window.sessionStorage.role = data.data.role;
+				//   window.sessionStorage.staffNum = data.data.staffNum;
+				//   window.localStorage.isAuthenticated = true
+				// } else {
+				//   this.$message.error(data.msg)
+				// }
+				// console.log(data.data)
 				this.displayItems = data.data
-      } catch (err) {console.log(err)}
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
 			
+		},
+		async getRelatedDict(){
+			try {
+				const {data} = await getDict('state')
+				this.metaInfo.state = data.data
+			} catch (err) {console.log(err)}
+			try {
+				const {data} = await getDict('is_landmark')
+				this.metaInfo.category = data.data
+			} catch (err) {console.log(err)}
+			try {
+				const {data} = await getDict('achievement_category')
+				this.metaInfo.achievement_category = data.data
+			} catch (err) {console.log(err)}
+			try {
+				const {data} = await getDict('assessment_item')
+				this.metaInfo.assessment_item = data.data
+			} catch (err) {console.log(err)}
+			try {
+				const {data} = await getDict('achievement_attribute')
+				this.metaInfo.achievement_attribute = data.data
+			} catch (err) {console.log(err)}
+			try {
+				const {data} = await getDict('is_landmark')
+				this.metaInfo.is_landmark = data.data
+			} catch (err) {console.log(err)}
 		},
 		flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
