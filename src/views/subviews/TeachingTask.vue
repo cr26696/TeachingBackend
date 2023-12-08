@@ -51,8 +51,7 @@
 					:label="item[1]"
 					:min-width="flexColumnWidth(item[0], displayItems)"
 					:max-width="80"
-				>
-				</el-table-column>
+				></el-table-column>
 				<el-table-column label="操作" :width="90"><img :src=imgFile style="cursor: pointer;" @click="handleControl"></el-table-column>
 			</el-table>
 			<div class="flex-space-between">
