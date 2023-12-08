@@ -5,13 +5,13 @@ export const getDict = dictType => {
 	return request({
 		method: 'get',
 		url: '/dict/query',
-		params:{ 
-			dictType
+		params: {
+			dictType: dictType
 		}
 	})
 }
 //全字典接口
-export const getAllDict = dictType => {
+export const getAllDict = () => {
 	return request({
 		method: 'get',
 		url: '/dict/list'
