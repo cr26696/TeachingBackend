@@ -50,6 +50,10 @@
 
 <script>
 import axios from 'axios'
+import {
+	getRankList
+} from "@/services/request.js"
+
 export default {
   name: 'SchoolRankAdmin',
   data () {
@@ -72,9 +76,9 @@ export default {
         ]
       },
       MetaRankInfo:[
-        ["id","id"],
-        ["schoolYear","学年"],
-        ["semester","学期"],
+        // ["id","id"],
+        // ["schoolYear","学年"],
+        // ["semester","学期"],
         ["department","教师部门"],
         ["staffNum","教师工号"],
         ["name","教师姓名"],
@@ -83,13 +87,23 @@ export default {
         ["schoolRank","学校排名"],
         ["schoolRankRatio","学校排名比"],
         ["uploadTime","上传时间"],
-        ["collegeRank","学院排名"],
+        // ["collegeRank","学院排名"],
       ],
       rankList:[],
       displayItems:[],
       currentPage:1,
       pageSize:10,
       totalItem:0,
+      queryParams:{
+			// "curPage": 0,
+			// "pageSize": 0,
+			// "startTime": "string",
+			// "endTime": "string",
+			"schoolYear": "2022-2023",
+			"semester": "1",
+			// "department": "string",
+			// "input": "string"
+		  },
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-grey.png'),
       imgSearch: require('@/assets/icon/search.png'),
@@ -99,6 +113,7 @@ export default {
   methods:{
     handleDetail() {
       //详情
+
     },
     handleUpload() {
       //上传内容
@@ -108,57 +123,67 @@ export default {
     },
     handleFilter() {
       console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
-      this.getRankList(this.currentPage,this.filterYear,this.filterSemester)
+      this.getList(this.currentPage,this.filterYear,this.filterSemester)
     },
     handleQuery() {
-      this.getRankList(this.currentPage,this.filterYear,this.filterSemester,this.filterQuery)
+      this.getList(this.queryParams)
     },
     handlePaginationChange(val) {
-      this.getRankList(val,this.filterYear,this.filterSemester)
-      this.currentPage = val
-    },
-    async initRankList () {
-      // eslint-disable-next-line
-      const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
-        "schoolYear":this.filterYear,
-        "semester":this.filterSemester
-      },{
-        headers: {
-          "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
-        }
-      })
-      if (res.code === 200) {
-        this.rankList = res.data
-        this.totalItem = res.totalRows
-        this.displayItems = this.rankList
-      }
-    },
-    async getRankList (page,year,semester,query) {
-			let name, num;
-			if (query) {
-				if (isNaN(query)) { name = query; num = '' }
-				else { name = ''; num = query }
-			} else { name = ''; num = '' }
+			this.currentPage = val
+			this.queryParams.curPage = val
+			this.getList(this.queryParams)
+		},
+    // async initRankList () {
+    //   // eslint-disable-next-line
+    //   const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
+    //     "schoolYear":this.filterYear,
+    //     "semester":this.filterSemester
+    //   },{
+    //     headers: {
+    //       "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
+    //     }
+    //   })
+    //   if (res.code === 200) {
+    //     this.rankList = res.data
+    //     this.totalItem = res.totalRows
+    //     this.displayItems = this.rankList
+    //   }
+    // },
+    // async getRankList (page,year,semester,query) {
+		// 	let name, num;
+		// 	if (query) {
+		// 		if (isNaN(query)) { name = query; num = '' }
+		// 		else { name = ''; num = query }
+		// 	} else { name = ''; num = '' }
 
-			// eslint-disable-next-line
-			const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
-			"curPage":page,
-			"schoolYear":year,
-			"semester":semester,
-			"name":name,
-			"staffNum":num
-			},{
-        headers: {
-          "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
-        }
-      })
-      if (res.code === 200) {
-        this.rankList = res.data
-        this.totalItem = res.totalRows
-        this.displayItems = this.rankList
-      }
-			console.log(res)
-    },
+		// 	// eslint-disable-next-line
+		// 	const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
+		// 	"curPage":page,
+		// 	"schoolYear":year,
+		// 	"semester":semester,
+		// 	"name":name,
+		// 	"staffNum":num
+		// 	},{
+    //     headers: {
+    //       "satoken": "24eed2d1-13ff-4561-b70e-8621ef8e126c"
+    //     }
+    //   })
+    //   if (res.code === 200) {
+    //     this.rankList = res.data
+    //     this.totalItem = res.totalRows
+    //     this.displayItems = this.rankList
+    //   }
+		// 	console.log(res)
+    // },
+    async getList(queryParams){
+			try {
+				const {data} = await getRankList(queryParams)
+				console.log('成果列表返回值：',data)
+				// console.log(data)
+				this.displayItems = data.data
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
+		},
     flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
 			// flag为可选值，可不传该参数,传参时可选'max'或'equal',默认为'max'
@@ -221,7 +246,7 @@ export default {
 		},
   },
   mounted() {
-    this.initRankList()
+    this.getList(this.queryParams)
   }
 
 }

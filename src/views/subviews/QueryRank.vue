@@ -29,6 +29,9 @@ import TeachingPerfAssess from './subpage/TeachingPerfAssess.vue';
 import TeachingTaskAssess from './subpage/TeachingTaskAssess.vue';
 import experimentClassA from './subpage/experimentClassA.vue';
 import TeachingPerfAssessuser from './subpage/TeachingPerfAssessuser.vue';
+import {
+	getRankList
+} from "@/services/request.js"
 
 export default {
 	name: 'QueryRank',
@@ -65,6 +68,15 @@ export default {
 				case 'Statistic': { this.com = this.$options.components['TeachingTaskAssess']; break; }
 			}
 		},
+		// async getList(){
+		// 	try {
+		// 		const {data} = await getRankList(queryParams)
+		// 		console.log('成果列表返回值：',data)
+		// 		// console.log(data)
+		// 		this.displayItems = data.data
+		// 		this.totalItem = data.totalRows
+		// 	} catch (err) {console.log(err)}
+		// }
 	}
 }
 </script>
