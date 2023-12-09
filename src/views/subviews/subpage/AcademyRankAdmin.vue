@@ -96,7 +96,7 @@ export default {
         ["totalScore","总得分"],
         // ["schoolRank","学校排名"],
         ["collegeRank","学院排名"],
-        // ["schoolRankRatio","学校排名比"],
+        ["schoolRankRatio","学校排名比"],
         ["uploadTime","上传时间"],
   
       ],
@@ -106,18 +106,18 @@ export default {
       pageSize:10,
       totalItem:0,
       queryParams:{
-			// "curPage": 0,
-			// "pageSize": 0,
-			// "startTime": "string",
-			// "endTime": "string",
+			"curPage": 1,
+			"pageSize": 10,
+			"startTime": null,
+			"endTime": null,
 			"schoolYear": "2022-2023",
 			"semester": "1",
-			// "department": "string",
-			// "input": "string"
+			"department": null,
+			"input": null
 		  },
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-grey.png'),
-      imgSearch: require('@/assets/icon/search.png'),
+      		imgSearch: require('@/assets/icon/search.png'),
 			imgFile: require('@/assets/icon/file.png'),
     }
   },
@@ -133,6 +133,9 @@ export default {
     },
     handleFilter() {
       console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
+      this.queryParams.curPage = this.currentPage
+      this.queryParams.schoolYear = this.filterYear
+      this.queryParams.semester = this.filterSemester
       this.getList(this.queryParams)
     },
     handleQuery() {

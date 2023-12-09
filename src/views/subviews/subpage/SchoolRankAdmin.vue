@@ -95,14 +95,14 @@ export default {
       pageSize:10,
       totalItem:0,
       queryParams:{
-			// "curPage": 0,
-			// "pageSize": 0,
-			// "startTime": "string",
-			// "endTime": "string",
+			"curPage": 1,
+			"pageSize": 10,
+			"startTime": null,
+			"endTime": null,
 			"schoolYear": "2022-2023",
 			"semester": "1",
-			// "department": "string",
-			// "input": "string"
+			"department": null,
+			"input": null
 		  },
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-grey.png'),
@@ -123,7 +123,10 @@ export default {
     },
     handleFilter() {
       console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
-      this.getList(this.currentPage,this.filterYear,this.filterSemester)
+      this.queryParams.curPage = this.currentPage
+      this.queryParams.schoolYear = this.filterYear
+      this.queryParams.semester = this.filterSemester
+      this.getList(this.queryParams)
     },
     handleQuery() {
       this.getList(this.queryParams)

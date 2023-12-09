@@ -69,15 +69,6 @@ export const getRankList = data => {
 	return request({
 		method: 'post',
 		url: '/rank/list',
-		data:{
-			// "curPage": 0,
-			// "pageSize": 0,
-			// "startTime": "string",
-			// "endTime": "string",
-			"schoolYear": "string",
-			"semester": "string",
-			// "department": "string",
-			// "input": "string"
-		  }
+		data
 	})
 }
