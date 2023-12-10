@@ -105,7 +105,11 @@
 						<span v-else-if="scope.row.state === 'reject'"><i class="circle circle-red"></i><span>未审核</span></span>
 					</template>
 				</el-table-column>
-				<el-table-column label="操作"><img :src=imgFile style="cursor: pointer;" @click="handleControl(scope.row)"></el-table-column>
+				<el-table-column label="操作">
+					<template slot-scope="scope">
+						<img :src=imgFile style="cursor: pointer;" @click="handleControl(scope.row)">
+					</template>
+				</el-table-column>
 			</el-table>
 			<div class="flex-space-between" style="margin-top: 28px;">
 				<span v-if="isAdmin" class="buttons-warper">
@@ -378,11 +382,13 @@ export default {
 			console.log('item downloaded')
 		},
 		handleQuery() {
+			//if else 用于处理点击x后filterDate直接为null
+			if (this.filterDate) {
+				this.ItemsQueryParams.startTime = this.filterDate[0]
+				this.ItemsQueryParams.endTime = this.filterDate[1]
+			} else { this.ItemsQueryParams = {} }
 			this.ItemsQueryParams.state = this.filterState
 			this.ItemsQueryParams.isLandmark = this.filterCategory
-			this.ItemsQueryParams.startTime = this.filterDate[0]
-			this.ItemsQueryParams.endTime = this.filterDate[1]
-
 			this.getList(this.ItemsQueryParams)
 		},	
 		handleSearch() {
@@ -392,21 +398,24 @@ export default {
 		},
 		async handleControl(row){
 			// console.log("row:",row)
-			this.dialogControlItem = row
+
 			try {
 				const { data } = await getAchieveByID(row.id)
-				//row中已有部分数据，这里获取一些缺少的数据
-				this.dialogControlItem.department = data.data.department
-				this.dialogControlItem.assessmentItems = data.data.assessmentItems[0]
+				this.dialogControlItem = data.data
 			} catch (err){console.log(err)}
-			// console.log(data.data)
-			// console.log(this.dialogControlItem)
-			//console.log(data.data.savePaths)
 			if (this.dialogControlItem.state === '通过'){
 				this.showDialogItemView = true
 			} else {
-				if (this.isAdmin){this.showDialogItemJudge = true} 
-				else {this.showDialogItemUpdate = true }
+				if (this.isAdmin){
+					//表格参数与目标条目同步
+					this.dialogJudgeForm = this.dialogControlItem
+					//防止覆盖删掉callbackReason
+					if (!this.dialogJudgeForm.callBackReason){this.dialogJudgeForm.callBackReason = ''}
+					this.showDialogItemJudge = true
+				} 
+				else {
+					this.showDialogItemUpdate = true 
+				}
 			}
 		},
 		addRecord() {
@@ -414,13 +423,12 @@ export default {
 		},
 		async handleJudge(decide){
 			try {
-				this.dialogJudgeForm.id = this.dialogControlItem.id
-				this.dialogJudgeForm.achievementAttribute = this.dialogControlItem.achievementAttribute
-				this.dialogJudgeForm.awardGrade = this.dialogControlItem.awardGrade
-				this.dialogJudgeForm.isLandmark = this.dialogControlItem.isLandmark
-				this.dialogJudgeForm.isLandmarkScores = this.dialogControlItem.isLandmarkScores
-				this.dialogJudgeForm.score = this.dialogControlItem.score
-				this.dialogJudgeForm.callBackReason = this.dialogControlItem.callBackReason
+				// this.dialogJudgeForm.id = this.dialogControlItem.id
+				// this.dialogJudgeForm.achievementAttribute = this.dialogControlItem.achievementAttribute
+				// this.dialogJudgeForm.awardGrade = this.dialogControlItem.awardGrade
+				// this.dialogJudgeForm.isLandmark = this.dialogControlItem.isLandmark
+				// this.dialogJudgeForm.isLandmarkScores = this.dialogControlItem.isLandmarkScores
+				// this.dialogJudgeForm.score = this.dialogControlItem.score
 				this.dialogJudgeForm.state = decide
 				const {data} = await achieveJudge(this.dialogJudgeForm)
 				console.log("judge result:",data)

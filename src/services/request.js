@@ -1,5 +1,14 @@
 import request from '@/utils/request';
 
+//获取课程列表 传入form Object data
+export const getCourseList = data => {
+	return request({
+		method: 'post',
+		url: '/course/list',
+		data
+	})
+}
+
 //获取成果列表 传入form Object data
 export const getAchieveList = data => {
 	return request({
