@@ -8,11 +8,11 @@
 						<el-option v-for="item in filterList.Year" :key="item" :label="item" :value="item">
 						</el-option>
 					</el-select>
-					<span>学期</span>
+					<!-- <span>学期</span>
 					<el-select v-model="filterSemester" placeholder="请选择">
 						<el-option v-for="item in filterList.Semester" :key="item" :label="'第'+item+'学期'" :value="item">
 						</el-option>
-					</el-select>
+					</el-select> -->
           <span>学院</span>
 					<el-select v-model="filterDepartment" placeholder="请选择">
 						<el-option v-for="item in filterList.Department" :key="item" :label="item" :value="item">
@@ -35,7 +35,7 @@
 					:max-width="80"
 				>
 				</el-table-column>
-				<el-table-column label="各科详情" :width="90"><img :src=imgFile style="cursor: pointer;" @click="handleDetail"></el-table-column>
+				<!-- <el-table-column label="各科详情" :width="90"><img :src=imgFile style="cursor: pointer;" @click="handleDetail"></el-table-column> -->
 			</el-table>
 			<div class="flex-space-between">
 				<span ref="scrollButtons" class="buttons-warper">
@@ -55,6 +55,9 @@
 
 <script>
 import axios from 'axios'
+import {
+	getAsseList
+} from "@/services/request.js"
 export default {
   name: 'TeachingPerfAssess',
   data () {
@@ -66,7 +69,7 @@ export default {
       filterList:{
         Department:[
           "电子信息学院（微电子学院）",
-          "计算机科学与技术（计算机学院）",
+          "计算机科学与技术学院",
         ],
         Year:[
           "2017-2018",
@@ -91,12 +94,23 @@ export default {
         ["assessmentLevel","考核等级"],
         ["remark","备注"],
         ["uploadTime","上传时间"],
+        ["department","教师部门"],
       ],
       rankList:[],
       displayItems:[],
       currentPage:1,
       pageSize:10,
       totalItem:0,
+      queryParams:{
+        "curPage": 1,
+        "pageSize": 10,
+        "startTime": null,
+        "endTime": null,
+        "schoolYear": null,
+        "department": null,
+        "input": null,
+        "currentStaffNum": null
+		  },
 			imgUpload: require('@/assets/icon/upload-icon1.png'),
 			imgDownload: require('@/assets/icon/download-grey.png'),
       imgSearch: require('@/assets/icon/search.png'),
@@ -115,49 +129,32 @@ export default {
     },
     handleFilter() {
       console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
-      this.getAssessList(this.currentPage,this.filterYear,this.filterSemester)
+      this.queryParams.curPage = this.currentPage
+      this.queryParams.schoolYear = this.filterYear
+      this.queryParams.department = this.filterDepartment
+      this.getList(this.queryParams)
     },
     handleQuery() {
-      this.getAssessList(this.currentPage,this.filterYear,this.filterSemester,this.filterQuery)
+	    this.queryParams.input = this.filterQuery
+      this.queryParams.schoolYear = null
+      this.queryParams.department = null
+      this.getList(this.queryParams)
     },
     handlePaginationChange(val) {
-      this.getAssessList(val,this.filterYear,this.filterSemester)
-      this.currentPage = val
-    },
-    async initAssessList () {
-      // eslint-disable-next-line
-      const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
-        "schoolYear":this.filterYear,
-        "semester":this.filterSemester
-      })
-      if (res.code === 200) {
-        this.rankList = res.data
-        this.totalItem = res.totalRows
-        this.displayItems = this.rankList
-      }
-    },
-    async getAssessList (page,year,semester,query) {
-			let name, num;
-			if (query) {
-				if (isNaN(query)) { name = query; num = '' }
-				else { name = ''; num = query }
-			} else { name = ''; num = '' }
+			this.currentPage = val
+			this.queryParams.curPage = val
+			this.getList(this.queryParams)
+		},
 
-			// eslint-disable-next-line
-			const { data: res } = await axios.post('http://49.235.106.165:8088/teaching-evaluation-system/rank/list', {
-			"curPage":page,
-			"schoolYear":year,
-			"semester":semester,
-			"name":name,
-			"stuffNum":"22005"
-			})
-      if (res.code === 200) {
-        this.rankList = res.data
-        this.totalItem = res.totalRows
-        this.displayItems = this.rankList
-      }
-			console.log(res)
-    },
+    async getList(queryParams){
+			try {
+				const {data} = await getAsseList(queryParams)
+				console.log('成果列表返回值：',data)
+				// console.log(data)
+				this.displayItems = data.data
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
+		},
     flexColumnWidth(str, arr1, flag = 'max') {
 			// str为该列的字段名(传字符串);tableData为该表格的数据源(传变量);
 			// flag为可选值，可不传该参数,传参时可选'max'或'equal',默认为'max'
@@ -220,7 +217,7 @@ export default {
 		},
   },
   mounted() {
-    this.initAssessList()
+    this.getList(this.queryParams)
   }
 
 }

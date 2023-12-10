@@ -72,3 +72,12 @@ export const getRankList = data => {
 		data
 	})
 }
+
+export const getAsseList = data => {
+	return request({
+		method: 'post',
+		url: '/teaching_performance_assessment/list',
+		data
+	})
+}
+

@@ -25,7 +25,7 @@ import SchoolRankuser from './subpage/SchoolRankuser.vue';
 import AcademyRankAdmin from './subpage/AcademyRankAdmin.vue';
 import AcademyRank from './subpage/AcademyRank.vue';
 import AcademyRankuser from './subpage/AcademyRankuser.vue';
-import TeachingPerfAssess from './subpage/TeachingPerfAssess.vue';
+import TeachingPerfAssessAdmin from './subpage/TeachingPerfAssessAdmin.vue';
 import TeachingTaskAssess from './subpage/TeachingTaskAssess.vue';
 import experimentClassA from './subpage/experimentClassA.vue';
 import TeachingPerfAssessuser from './subpage/TeachingPerfAssessuser.vue';
@@ -38,7 +38,7 @@ export default {
 	data() {
 		return {
 			com: '',
-			admin: true
+			admin: true,
 		}
 	},
 	components: {
@@ -48,7 +48,7 @@ export default {
 		AcademyRankAdmin,
 		AcademyRank,
 		AcademyRankuser,
-		TeachingPerfAssess,
+		TeachingPerfAssessAdmin,
 		TeachingTaskAssess,
 		experimentClassA,
 		TeachingPerfAssessuser
@@ -68,6 +68,7 @@ export default {
 				case 'Statistic': { this.com = this.$options.components['TeachingTaskAssess']; break; }
 			}
 		},
+
 		// async getList(){
 		// 	try {
 		// 		const {data} = await getRankList(queryParams)
