@@ -90,3 +90,10 @@ export const getAsseList = data => {
 	})
 }
 
+export const getCourseDetailList = data => {
+	return request({
+		method: 'post',
+		url: '/course_detail/list',
+		data
+	})
+}

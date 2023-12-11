@@ -1,21 +1,36 @@
 <template>
     <el-container>
-        <span id="title-font">学院总计</span>
-        <!-- <el-row><el-button id="download-button" type="primary"><img id="download" :src=download><span id="download-font">下载</span></el-button></el-row> -->
+        <span id="title-font">学院排名</span>
+        
+					<span id="schoolyearfont">学年</span>
+          <span id="semesterfont">学期</span>
+          <el-container id="first-select">
+            <el-select v-model="filterYear" placeholder="请选择" @change="yearChange">
+						<el-option v-for="item in filterList.Year" :key="item" :label="item" :value="item">
+						</el-option>
+					</el-select>
+          </el-container>
+          <el-container id="second-select">
+            <el-select v-model="filterSemester" placeholder="请选择" @change="semesterChange">
+						<el-option v-for="item in filterList.Semester" :key="item" :label="'第'+item+'学期'" :value="item">
+						</el-option>
+					</el-select>
+          </el-container>
+ 
         <el-row>
           <el-button id="upload-button" type="primary" @click="downloadfile"><img id="download1" :src=download><span id="download-font">下载</span></el-button>
-          <!-- <el-button id="download-button1" type="info" plain @click="downloadfile"><img id="download1" :src=download1></el-button> -->
         </el-row>
         <el-main class="content-container">
+          <div id="date">{{ date }}</div>
+          <img :src=logo id="logo">
           <div id="rank-form"><span id="form-title">排名表格</span></div>
           <div class="facultyinfo">
-          <div id="info-font1">{{ facultyName }}</div>
-          <div id="info-font2">{{ facultyNumb }}</div>
-          <div id="info-font2">{{ facultyOrg }}</div>
+          <div id="info-font1">{{ staffLitter.name }}</div>
+          <div id="info-font2">{{ staffLitter.staffNum }}</div>
+          <div id="info-font2">{{ staffLitter.department }}</div>
         </div>
-          <!-- <el-button id="back-button" @click="goback"><span id="back-font">返回</span></el-button> -->
           <el-table
-          :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          :data="displayItems"
           header-align="center"
           id="classTable"
           :header-cell-style="{padding:'18px 0px','text-align':'center',fontSize:'16px',fontWeight:'800',color:'rgba(0,0,0,1)'}"
@@ -23,61 +38,61 @@
           :row-style="{height:'60px'}" 
           >
           <el-table-column
-            prop="course"
+            prop="courseName"
             label="课程名称"
             min-width="40%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="class"
+            prop="teachingClass"
             label="教学班名称"
             min-width="40%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="number"
+            prop="evaluatorCount"
             label="参评人数"
             min-width="24%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="attitude"
+            prop="teachingAttitude"
             label="教学态度"
             min-width="24%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="ability"
+            prop="teachingAbility"
             label="教学能力"
             min-width="24%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="interact"
+            prop="teacherStudentCommunication"
             label="师生交流"
             min-width="24%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="outcome"
+            prop="teachingEffectiveness"
             label="教学成果"
             min-width="24%"
             align="center">
           </el-table-column>
           <el-table-column
-            prop="rate"
+            prop="score"
             label="评分"
             min-width="24%"
             align="center">
           </el-table-column>
           </el-table>
-          <div id="rank">学院排名 {{ rank }}</div>
+          <div id="rank">全院排名 <span v-if="rankNum">{{ rankNum.collegeRank }}</span></div>
         </el-main>
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-size="pageSize"
-          :total="tableData.length"
+          :total="totalItem"
           :background="enbackground"
           :pager-count="5"
           :hide-on-single-page="value"
@@ -88,6 +103,9 @@
   </template>
   
   <script>
+  import {
+    getCourseDetailList
+  } from "@/services/request.js"
   
   export default {
   name: 'AcademyRankuser',
@@ -96,137 +114,56 @@
       download: require('@/assets/icon/download-white.png'),
       upload: require('@/assets/icon/upload-icon1.png'),
       download1: require('@/assets/icon/download-grey.png'),
-      facultyName: '张显飞',
-      facultyNumb: '40285',
-      facultyOrg: '电子信息学院(微电子学院)',
-      rank: '1',
-      tableData:[
-        {
-          course:'智能系统设计及应用',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'现代数字电子技术基础',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'智能车设计综合实验',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'数字系统设计实践',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'现代数字电子技术基础实验',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'智能系统设计及应用',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'智能系统设计及应用',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'现代数字电子技术基础',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'智能车设计综合实验',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'数字系统设计实践',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'现代数字电子技术基础实验',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-        {
-          course:'智能系统设计及应用',
-          class:'(2022-2023-1)-YJ040110-1',
-          number:'11',
-          attitude:'95.000',
-          ability:'91.816',
-          interact:'92.273',
-          outcome:'95.000',
-          rate:'93.499'
-        },
-      ],
+      logo: require('@/assets/icon/logo-assistance.png'),
+      date: '2023年2月-2023年11月6日',
+      // facultyName: '张显飞',
+      // facultyNumb: '40285',
+      // facultyOrg: '电子信息学院(微电子学院)',
+      // rank: '1',
       enbackground: true,
       displayItems: [],
       currentPage: 1,
       pageSize: 8,
-      value:true
+      value:true,
+      totalItem:0,
+      filterYear:"2022-2023",
+      filterSemester:"1",
+      filterQuery:'',
+      filterList:{
+        Year:[
+          "2017-2018",
+          "2018-2019",
+          "2019-2020",
+          "2020-2021",
+          "2021-2022",
+          "2022-2023",
+        ],
+        Semester:[
+          "1",
+          "2",
+        ]
+      },
+      rankNum:{
+                id: 0,
+                collegeRank: 0,
+                schoolRank: 0,
+                schoolRankRatio: 0,
+                schoolYear: "",
+                semester: ""
+              },
+      staffLitter:{
+                    id: 0,
+                    name: "",
+                    staffNum: "",
+                    department: ""
+                  },
+      queryParams:{
+                    "curPage": 1,
+                    "pageSize": 10,
+                    "staffNum": null,
+                    "schoolYear": '2022-2023',
+                    "semester": '1'
+                  }
     }
   },
   methods:{
@@ -240,16 +177,51 @@
       //下载内容
       console.log('download complete')
     },
+    semesterChange(){
+      this.queryParams.curPage = this.currentPage
+      this.queryParams.semester = this.filterSemester
+      console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
+      this.getList(this.queryParams)
+      
+    },
+    yearChange(){
+      this.queryParams.curPage = this.currentPage
+      this.queryParams.schoolYear = this.filterYear
+      console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear + ' 学期：' + this.filterSemester)
+      this.getList(this.queryParams)
+    },
     handleCurrentChange (val) {
       this.currentPage = val
+			this.queryParams.curPage = val
+			this.getList(this.queryParams)
       // this.getDisplayItems()
-    }
+    },
     // getDisplayItems() {
     //   const start = (this.currentPage - 1) * this.pageSize
     //   const end = start + this.pageSize
     //   this.displayItems = this.items.slice(start, end)
     // }
-  }
+    async getList(queryParams){
+			try {
+				const {data} = await getCourseDetailList(queryParams)
+				console.log('成果列表返回值：',data)
+				// console.log(data)
+				this.displayItems = data.data.list
+        this.staffLitter = data.data.staffLitter
+        console.log(this.staffLitter)
+        this.rankNum = data.data.rankNum
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
+		},
+  },
+  created(){
+    this.queryParams.staffNum = window.sessionStorage.getItem('staffNum')
+    this.getList(this.queryParams)
+  },
+  // mounted(){
+  //   this.queryParams.staffNum = window.sessionStorage.getItem('staffNum')
+  //   this.getList(this.queryParams)
+  // }
   
   }
   </script>
@@ -407,6 +379,21 @@
     line-height: 22px;
     color: rgba(130, 145, 169, 1);
   }
+  #date{
+  position: absolute;
+  top: 20px;
+  right: 55px;
+  color: rgba(130, 145, 169, 1);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  line-height: 30px;
+}
+#logo{
+    position: absolute;
+    top: 58px;
+    right: 55px;
+  }
   #rank{
     position: absolute;
     left: 34px;
@@ -414,12 +401,12 @@
     width: 140px;
     height: 45px;
     border-radius: 6px;
-    border: 2px solid rgba(255, 61, 87, 0.15);
+    border: 2px solid rgba(255, 138, 72, 0.2);
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 0px;
     line-height: 20px;
-    color: rgba(255, 0, 0, 1);
+    color: rgba(255, 138, 72, 1);
     text-align: center;
     vertical-align: top;
     padding: 12px;
@@ -430,5 +417,28 @@
     top: 209px;
     width: 97%;
   }
-
+#schoolyearfont{
+  position: absolute;
+    right: 425px;
+    top: 65px;
+}
+#semesterfont{
+  position: absolute;
+    right: 210px;
+    top: 65px;
+}
+#first-select{
+  position: absolute;
+    right: 255px;
+    top: 58px;
+    width: 160px;
+    height: 40;
+}
+#second-select{
+  position: absolute;
+    right: 35px;
+    top: 58px;
+    width: 160px;
+    height: 40;
+}
   </style>
