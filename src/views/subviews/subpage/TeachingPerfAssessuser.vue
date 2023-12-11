@@ -3,27 +3,14 @@
         <span id="title-font">教学业绩考核</span>
         <el-button id="upload-button" type="primary" @click="downloadfile"><img id="download" :src=download><span id="download-font">下载</span></el-button>
         <div id="year-font">学年</div>
-        <el-container id="year-selected">
-          <el-date-picker
-            v-model="value0"
-            type="year"
-            value-format="yyyy"
-            @change="showchange">
-          </el-date-picker>
-        </el-container>
-        <div id="session-font">学期</div>
-        <el-container id="selected">
-            <el-select v-model="selected" size="medium">
-            <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-            </el-option>
-        </el-select>
-        </el-container>
+        <el-container id="first-select">
+            <el-select v-model="filterYear" placeholder="请选择" @change="yearChange">
+						<el-option v-for="item in filterList.Year" :key="item" :label="item" :value="item">
+						</el-option>
+					</el-select>
+          </el-container>
         <el-main class="content-container">
-            <PerformanceTable v-for="(data, index) in dataList" :key="index" :data="data"></PerformanceTable>
+            <PerformanceTable v-for="(data, index) in displayItems" :key="index" :data="data"></PerformanceTable>
         </el-main>
         
    </el-container>
@@ -31,6 +18,9 @@
   
   <script>
 import PerformanceTable from './PerformanceTable.vue';
+import {
+	getAsseList
+} from "@/services/request.js"
 
   export default {
     name: 'SchoolRank',
@@ -40,6 +30,17 @@ import PerformanceTable from './PerformanceTable.vue';
             upload: require('@/assets/icon/upload-icon1.png'),
             download1: require('@/assets/icon/download-grey.png'),
             displayItems: [],
+            filterYear:"2022-2023",
+            filterList:{
+                          Year:[
+                            "2017-2018",
+                            "2018-2019",
+                            "2019-2020",
+                            "2020-2021",
+                            "2021-2022",
+                            "2022-2023",
+                          ]
+                        },
             dataList:[{
               Academy:'电子信息学院（微电子学院）',
               name:'xxx',
@@ -52,13 +53,18 @@ import PerformanceTable from './PerformanceTable.vue';
               title:'S1封顶100,S3封顶'
             }],
             value: true,
-            options: [{
-                value: '选项1',
-                label: '第一学期'
-                },{
-                value: '选项2',
-                label: '第二学期'
-                }],
+            currentPage: 1,
+            
+                queryParams:{
+                  "curPage": 0,
+                  "pageSize": 0,
+                  "startTime": null,
+                  "endTime": null,
+                  "schoolYear": "2022-2023",
+                  "department": null,
+                  "input": null,
+                  "currentStaffNum": null
+                  },
             selected:'',
             value0:''
         };
@@ -67,9 +73,25 @@ import PerformanceTable from './PerformanceTable.vue';
         downloadfile() {
             //下载内容
         },
-        showchange(){
-          console.log(this.value0)
-        }
+        yearChange(){
+                      this.queryParams.curPage = this.currentPage
+                      this.queryParams.schoolYear = this.filterYear
+                      console.log('查询 页数：' + this.currentPage + ' 年份：' + this.filterYear)
+                      this.getList(this.queryParams)
+                    },
+        async getList(queryParams){
+			try {
+				const {data} = await getAsseList(queryParams)
+				console.log('成果列表返回值：',data)
+				// console.log(data)
+				this.displayItems = data.data
+				this.totalItem = data.totalRows
+			} catch (err) {console.log(err)}
+		},
+    },
+    mounted(){
+      this.queryParams.currentStaffNum = window.sessionStorage.getItem('staffNum')
+      this.getList(this.queryParams)
     },
     components: { PerformanceTable }
 }
@@ -203,15 +225,9 @@ import PerformanceTable from './PerformanceTable.vue';
     vertical-align: top;
 }
 #year-font{
-    position: absolute;
-    font-size: 13px;
-    top: 58px;
-    right: 485px;
-    letter-spacing: 0px;
-    line-height: 20px;
-    color: rgba(0, 0, 0, 1);
-    text-align: right;
-    vertical-align: top;
+  position: absolute;
+    right: 210px;
+    top: 65px;
 }
 #year-selected{
     position: absolute;
@@ -227,5 +243,12 @@ import PerformanceTable from './PerformanceTable.vue';
 .el-input--medium .el-input__inner {
     height: 40px;
     line-height: 40px;
+}
+#first-select{
+  position: absolute;
+    right: 35px;
+    top: 58px;
+    width: 160px;
+    height: 40;
 }
 </style>

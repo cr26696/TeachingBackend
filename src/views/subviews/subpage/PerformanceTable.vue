@@ -6,9 +6,9 @@
             <el-col :span="8"><span class="title-font">教师工号</span></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px">
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.Academy }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.department }}</span></div></el-col>
             <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.name }}</span></div></el-col>
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.number }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.staffNum }}</span></div></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="8"><span class="title-font">承担主讲课程学时数是否不低于64学时</span></el-col>
@@ -16,9 +16,9 @@
             <el-col :span="8"><span class="title-font">考核分数</span></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px">
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.lessthen64 }}</span></div></el-col>
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.accident }}</span></div></el-col>
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.score }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.lectureHoursNotLessThan64 }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.teachingAccidentOccurrence }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.assessmentScore }}</span></div></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="8"><span class="title-font">考核等级</span></el-col>
@@ -26,9 +26,9 @@
             <el-col :span="8"><span class="title-font">职称</span></el-col>
         </el-row>
         <el-row :gutter="20" style="margin-top: 30px;">
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.rank }}</span></div></el-col>
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.note }}</span></div></el-col>
-            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.title }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.assessmentLevel }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.remark }}</span></div></el-col>
+            <el-col :span="8"><div class="content-style"><span class="content-font">{{ data.jobTitle }}</span></div></el-col>
         </el-row>
     </div>
 </template>
